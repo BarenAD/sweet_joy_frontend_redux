@@ -1,0 +1,66 @@
+.contacts-main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  text-align: left;
+
+  .customize-card {
+    width: 500px;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    overflow: hidden;
+
+    .map-icon {
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+    }
+
+    .is-bold {
+      font-weight: bolder;
+    }
+
+    table {
+      width: 100%;
+
+      tr {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 10px 0;
+      }
+
+      td {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        text-align: left;
+        flex: 1;
+      }
+
+      td:nth-child(odd) {
+        text-transform: capitalize;
+      }
+
+      td:nth-child(even) {
+        justify-content: flex-end;
+        text-align: right;
+        flex: 2;
+      }
+
+      details {
+        summary {
+          cursor: pointer;
+          outline: none;
+          border: none;
+        }
+      }
+    }
+  }
+}

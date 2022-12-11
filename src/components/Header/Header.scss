@@ -1,9 +1,11 @@
+@import "src/config/variables";
+
 .top-bar-main-container {
   position: fixed;
   top: 0;
   z-index: 100;
   width: 100%;
-  height: 80px;
+  height: $headerHeight;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
@@ -32,7 +34,7 @@
   }
 }
 
-@media(max-width: 1000px) {
+@media(max-width: $mediaStep1) {
   .top-bar-main-container {
     .container-advantages {
       display: none;
@@ -40,7 +42,7 @@
   }
 }
 
-@media(max-width: 600px) {
+@media(max-width: $mediaStep3) {
   .top-bar-main-container {
     position: relative;
     flex-direction: column;

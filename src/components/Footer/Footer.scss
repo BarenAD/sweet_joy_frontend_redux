@@ -1,3 +1,5 @@
+@import "src/config/variables";
+
 .footer-main-container {
   position: fixed;
   bottom: 0;
@@ -34,7 +36,7 @@
   }
 }
 
-@media(max-width: 800px) {
+@media(max-width: $mediaStep3) {
   .footer-main-container {
     position: relative;
     flex-direction: column;

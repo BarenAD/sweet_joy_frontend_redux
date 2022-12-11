@@ -33,6 +33,7 @@ export type IShop = {
   phone: string;
   schedule_id: string;
   map_integration: string;
+  schedule: ISchedule;
 };
 
 export type IShopProduct = {
@@ -56,3 +57,17 @@ export type IConfiguration = {
   identify: typeof SITE_CONFIG_IDENTIFIERS[keyof typeof SITE_CONFIG_IDENTIFIERS];
   value: string;
 };
+
+export type ISchedule = {
+  id: number;
+  name: string;
+  monday: string;
+  tuesday: string;
+  wednesday: string;
+  thursday: string;
+  friday: string;
+  saturday: string;
+  sunday: string;
+  holiday: string;
+  particular: string;
+}

@@ -1,4 +1,4 @@
-import {configureStore, ThunkAction, Action} from '@reduxjs/toolkit';
+import {configureStore, ThunkAction, Action} from "@reduxjs/toolkit";
 import appSlice from "../components/App/appSlice";
 import metricSlice from "../utils/metrics/metricsSlice";
 import {STORE_STATUSES} from "../config/storeStatuses";

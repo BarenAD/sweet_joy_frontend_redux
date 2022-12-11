@@ -1,0 +1,73 @@
+@import "src/config/variables";
+
+.modal-main-container {
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  z-index: 101;
+  width: 100vw;
+  height: 100vh;
+
+  .modal-background-container {
+    top: 0;
+    left: 0;
+    display: block;
+    z-index: 100;
+    position: absolute;
+    background: #000000;
+    opacity: 0.7;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .modal-content-container {
+    display: flex;
+    flex-direction: row;
+    max-width: 100%;
+    max-height: 100%;
+    background: none;
+    overflow: auto;
+    outline: none;
+    border: none;
+    position: relative;
+    z-index: 102;
+
+    .modal-children-container {
+      display: block;
+      background-color: white;
+      max-width: 100%;
+      outline: none;
+      border: none;
+      overflow: auto;
+    }
+
+    .modal-close_container {
+      display: flex;
+      outline: none;
+      border: none;
+      cursor: pointer;
+
+      .modal-close-icon-container {
+        width: 30px;
+        height: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: $colorGrayC4;
+        cursor: pointer;
+        outline: none;
+        border: none;
+      }
+    }
+
+    .modal-close-container-mobile {
+      position: absolute;
+      right: 0;
+      z-index: 103;
+      cursor: pointer;
+    }
+  }
+}

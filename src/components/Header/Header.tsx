@@ -14,19 +14,19 @@ const Header: FC = () => {
   const documentOnTopBar = useAppSelector(getDocuments)[DOCUMENT_LOCATIONS.MAIN_TOP_BAR_DOCUMENT];
 
   return (
-    <div className="top-bar-main-container">
+    <div className='top-bar-main-container'>
       {siteConfigurations[SITE_CONFIG_IDENTIFIERS.DEMO_MODE] ?
-        <Link to="/management">
+        <Link to='/management'>
           <b>Панель</b>
           <br/>
           <b>управления</b>
         </Link>
         :
-        <img src="/images/logo.gif" alt="BAREAND"/>
+        <img src='/images/logo.gif' alt='BAREAND'/>
       }
       <Link
-        to="/"
-        className="link-container"
+        to='/'
+        className='link-container'
         onClick={() => {
           dispatch(actionOnTheSite(METRIC_ACTIONS.NAVIGATION_CHANGE_PAGE));
         }}
@@ -36,8 +36,8 @@ const Header: FC = () => {
       {documentOnTopBar &&
         <a
           href={documentOnTopBar.url}
-          className="link-container"
-          target="_blank"
+          className='link-container'
+          target='_blank'
           onClick={() => {
             dispatch(actionOnTheSite(METRIC_ACTIONS.NAVIGATION_OPEN_TOP_BAR_DOCUMENT));
           }}
@@ -46,8 +46,8 @@ const Header: FC = () => {
         </a>
       }
       <Link
-        to="/about"
-        className="link-container"
+        to='/about'
+        className='link-container'
         onClick={() => {
           dispatch(actionOnTheSite(METRIC_ACTIONS.NAVIGATION_CHANGE_PAGE));
         }}
@@ -55,8 +55,8 @@ const Header: FC = () => {
         О нас
       </Link>
       <Link
-        to="/contacts"
-        className="link-container"
+        to='/contacts'
+        className='link-container'
         onClick={() => {
           dispatch(actionOnTheSite(METRIC_ACTIONS.NAVIGATION_CHANGE_PAGE));
         }}
@@ -64,7 +64,7 @@ const Header: FC = () => {
         Контакты
       </Link>
       <div
-        className="container-advantages"
+        className='container-advantages'
         dangerouslySetInnerHTML={{__html: siteConfigurations[SITE_CONFIG_IDENTIFIERS.HEADER_LAST]?.value || 'BARENAD'}}
       >
       </div>

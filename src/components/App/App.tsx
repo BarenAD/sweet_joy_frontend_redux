@@ -1,10 +1,9 @@
-import React, {FC, useEffect} from 'react';
-import logo from '../../logo.svg';
-import './App.css';
+import React, {FC, useEffect} from "react";
+import "./App.scss";
 import {useAppDispatch} from "../../redux/hooks";
 import {refreshStore} from "./appSlice";
 import {Route, Routes} from "react-router";
-import Home from "../Home/Home";
+import Main from "../Home/Main";
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -14,10 +13,10 @@ const App: FC = () => {
   }, []);
 
   return (
-    <div className="App">
+    <div className='App'>
       <Routes>
         {/*<Route path='/management' element={<Navigation />}/>*/}
-        <Route path='/*' element={<Home />}/>
+        <Route path='/*' element={<Main />}/>
       </Routes>
     </div>
   );

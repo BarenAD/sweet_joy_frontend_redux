@@ -1,5 +1,5 @@
-import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {IRootState} from '../../redux/store';
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {IRootState} from "../../redux/store";
 import {IAppStore} from "./appTypes";
 import {API_ROUTES} from "../../config/apiRoutes";
 import {ERRORS} from "../../config/errors";
