@@ -1,13 +1,21 @@
 import {IBaseStore} from "../../redux/store";
 import {SITE_CONFIG_IDENTIFIERS} from "../../config/siteConfigIdentifiers";
 
+export type IKeyNumberStoreObject<T> = {
+  [key: number]: T;
+};
+
+export type IKeyStringStoreObject<T> = {
+  [key: string]: T;
+};
+
 export type IAppStore = IBaseStore & {
   products: IProduct[];
   categories: ICategory[];
   shops: IShop[];
-  shopProducts: {[key: number]: IShopProduct[]};
-  documents: {[key: string]: IDocument};
-  configuration: {[key: string]: IConfiguration};
+  shopProducts: IKeyNumberStoreObject<IShopProduct[]>;
+  documents: IKeyStringStoreObject<IDocument>;
+  configuration: IKeyStringStoreObject<IConfiguration>;
 };
 
 export type IProduct = {
