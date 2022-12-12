@@ -1,6 +1,7 @@
 @import "src/config/variables";
 
 .top-bar-main-container {
+  box-sizing: border-box;
   position: fixed;
   top: 0;
   z-index: 100;
@@ -13,9 +14,19 @@
   box-shadow: 0 1px 24px 0 rgba(0,0,0,0.14);
   background: white;
   overflow: hidden;
+  padding: 0 30px;
 
   & a {
-    max-width: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    min-height: $headerHeightElement;
+    text-align: center;
+
+    &:visited {
+      color: $colorTextBlack;
+    }
   }
 
   .link-container {
@@ -29,8 +40,10 @@
   .container-advantages {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: flex-start;
+    min-height: $headerHeightElement;
+    flex: 1;
   }
 }
 

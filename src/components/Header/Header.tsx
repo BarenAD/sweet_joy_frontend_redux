@@ -22,7 +22,7 @@ const Header: FC = () => {
           <b>управления</b>
         </Link>
         :
-        <img src='/images/logo.gif' alt='BAREAND'/>
+        <img src='/images/logo.gif' alt='BARENAD'/>
       }
       <Link
         to='/'
