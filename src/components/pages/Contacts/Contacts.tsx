@@ -1,13 +1,13 @@
 import React, {FC, ReactElement, useState} from "react";
-import {useAppSelector} from "../../redux/hooks";
-import {getShops} from "../App/appSlice";
-import Modal from "../common/Modal/Modal";
+import {useAppSelector} from "../../../redux/hooks";
+import {getShops} from "../../App/appSlice";
+import Modal from "../../common/Modal/Modal";
 import "./Contacts.scss";
-import MapOutlined from "../../assets/icons/map_outline.svg";
-import Card from "../common/Card/Card";
-import {preparePhoneByMask} from "../../utils/utils";
-import {ISchedule} from "../App/appTypes";
-import Map from "../common/Map/Map";
+import MapOutlined from "../../../assets/icons/map_outline.svg";
+import Card from "../../common/Card/Card";
+import {preparePhoneByMask} from "../../../utils/utils";
+import {ISchedule} from "../../App/appTypes";
+import Map from "../../common/Map/Map";
 
 const Contacts: FC = () => {
   const [modalContent, setModalContent] = useState<ReactElement | null>(null);

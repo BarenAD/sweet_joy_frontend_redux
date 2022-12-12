@@ -3,7 +3,7 @@ import "./App.scss";
 import {useAppDispatch} from "../../redux/hooks";
 import {refreshStore} from "./appSlice";
 import {Route, Routes} from "react-router";
-import Main from "../Home/Main";
+import Main from "../pages/Main/Main";
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
