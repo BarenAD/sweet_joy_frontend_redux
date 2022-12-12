@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {IRootState} from "../../redux/store";
-import {IAppStore} from "./appTypes";
+import {IAppStore, ICategory, IKeyNumberStoreObject, IProduct, IShop, IShopProduct} from "./appTypes";
 import {API_ROUTES} from "../../config/apiRoutes";
 import {ERRORS} from "../../config/errors";
 import {APP_DEBUG, REQUEST_MODE} from "../../config/config";
@@ -59,7 +59,7 @@ export const appSlice = createSlice({
           products: data.products,
           categories: data.categories,
           shops: data.shops,
-          shopProducts: data.shopProducts,
+          shopProducts: data.shop_products,
           documents: data.documents,
           configuration: data.site_configurations,
         };
@@ -85,5 +85,49 @@ export const getShops = (state: IRootState) => state.app.shops;
 export const getShopProducts = (state: IRootState) => state.app.shopProducts;
 export const getDocuments = (state: IRootState) => state.app.documents;
 export const getConfigurations = (state: IRootState) => state.app.configuration;
+export const getShopProductsByFilters = (
+  state: IRootState,
+  filter: {
+    shopId?: number,
+    categoryIds?: number[],
+    allOrNothing?: boolean,
+  }
+): IKeyNumberStoreObject<IShopProduct[]> => {
+  return !filter.shopId && !filter.categoryIds ?
+    {...state.app.shopProducts}
+    :
+    Object.entries<IShopProduct[]>(state.app.shopProducts)
+      .reduce((
+        result: IKeyNumberStoreObject<IShopProduct[]>,
+        [productID, shopProducts]
+      ): IKeyNumberStoreObject<IShopProduct[]> => {
+        const numberProductID = parseInt(productID);
+        //фильтрация по магазину
+        const allowByShop: boolean = !filter.shopId || !!shopProducts
+          .find(findShopProducts => findShopProducts.shop_id === filter.shopId);
+        //фильтрация по категориям
+        const product: IProduct | undefined = !filter.categoryIds ?
+          undefined
+          :
+          state.app.products.find(findProduct => findProduct.id === numberProductID);
+        const intersecionCount: number = product ?
+          product.categories
+            //@ts-ignore
+            .filter(categoryId => filter.categoryIds
+              .includes(categoryId))
+            .length
+          :
+          0;
+        const allowByCategories: boolean = !product || filter.allOrNothing ?
+          intersecionCount === filter.categoryIds?.length
+          :
+          intersecionCount > 0;
+        if (allowByShop && allowByCategories) {
+          result[numberProductID] = shopProducts;
+        }
+        return result;
+      }, {});
+};
+
 
 export default appSlice.reducer;
