@@ -1,17 +1,10 @@
-.container_main_products {
+@import "../../../config/variables";
+
+.products-container {
   display: flex;
   flex-direction: row;
 
-  .container_options_sampling {
-    width: 300px;
-    height: max-content;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .container_pagination_and_cards_product {
+  .content {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -20,7 +13,7 @@
     margin-top: 30px;
     margin-bottom: 50px;
 
-    .container_cards_product {
+    .product-cards {
       flex: 1;
       height: max-content;
       display: flex;
@@ -29,19 +22,15 @@
       flex-wrap: wrap;
       margin-bottom: 30px;
 
-      @media (max-width: 550px) {
+      @media (max-width: $mediaStep3) {
         justify-content: center;
       }
     }
   }
 }
 
-@media (max-width: 1000px) {
-  .container_main_products {
+@media (max-width: $mediaStep1) {
+  .products-container {
     flex-direction: column;
-
-    .container_options_sampling {
-      width: 100%;
-    }
   }
 }

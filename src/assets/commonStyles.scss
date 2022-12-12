@@ -13,3 +13,22 @@
   justify-content: center;
   align-items: center;
 }
+
+.product-category-container {
+  width: max-content;
+  height: max-content;
+  font-weight: bold;
+  padding: 5px;
+  margin: 5px;
+  border: 1px solid rgba(0,0,0,0.4);
+  border-radius: 10px;
+  background: rgba(0,0,0,0.1);
+  white-space: nowrap;
+}
+
+.product-category-container-delete {
+  &:hover {
+    background: rgba(255,0,0,0.2);;
+    cursor: pointer;
+  }
+}

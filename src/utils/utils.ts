@@ -12,13 +12,13 @@ export const filterShopProducts = (
   shopProducts: IKeyNumberStoreObject<IShopProduct[]>,
   products: IProduct[],
   filter: {
-    shopId?: number,
+    shopId?: number | null,
     categoryIds?: number[],
     allOrNothing?: boolean,
   }
 ): IKeyNumberStoreObject<IShopProduct[]> => {
   console.log('CALCULATIONS!');
-  return !filter.shopId && !filter.categoryIds ?
+  return (!filter.shopId && (!filter.categoryIds || !filter.categoryIds.length)) ?
     {...shopProducts}
     :
     Object.entries<IShopProduct[]>(shopProducts)
@@ -31,7 +31,7 @@ export const filterShopProducts = (
         const allowByShop: boolean = !filter.shopId || !!shopProducts
           .find(findShopProducts => findShopProducts.shop_id === filter.shopId);
         //фильтрация по категориям
-        const product: IProduct | undefined = !filter.categoryIds ?
+        const product: IProduct | undefined = (!filter.categoryIds || !filter.categoryIds.length) ?
           undefined
           :
           products.find(findProduct => findProduct.id === numberProductID);

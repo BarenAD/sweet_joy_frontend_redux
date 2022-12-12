@@ -1,7 +1,7 @@
 import {FC} from "react";
 import "./Product.scss";
 import {IProduct} from "../../App/appTypes";
-import Card from "../Card/Card";
+import {Card} from "@mui/material";
 
 const Product: FC<{
   product: IProduct;
@@ -12,16 +12,16 @@ const Product: FC<{
 }) => {
   return (
     <Card
-      className="product_card"
+      className="product-card"
       onClick={handleOpenDetails}
     >
-      <div className="product_card_image_container">
+      <div className="product-card-image-container">
         <img
           src={product.image_mini}
           alt="img"
         />
       </div>
-      <div className="product_info_container">
+      <div className="product-info-container">
         <span className="head">
           {product.name}
         </span>

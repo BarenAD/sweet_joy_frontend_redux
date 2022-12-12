@@ -1,0 +1,32 @@
+@import "src/assets/commonStyles";
+@import "../../../config/variables";
+
+.filters-container {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 300px;
+  height: max-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  margin: 15px;
+
+  .filter-part {
+    width: 100%;
+    margin-top: 15px;
+  }
+
+  .filter-part-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@media(max-width: $mediaStep1) {
+  .filters-container {
+    margin: 30px auto;
+  }
+}
