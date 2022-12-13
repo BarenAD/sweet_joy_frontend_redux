@@ -92,6 +92,7 @@ const Products: FC = () => {
       <Filters
         selectedShopId={filteringByShopId}
         isAllOrNothing={isFilteringByAllOrNothing}
+        selectedCategoryIds={filteringByCategoriesIds}
         handleChangeSelectedShopId={setFilteringByShopId}
         handleChangeIsAllOrNothing={setIsFilteringByAllOrNothing}
         handleChangeSelectedCategoryIds={setFilteringByCategoriesIds}

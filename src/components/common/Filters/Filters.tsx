@@ -18,6 +18,7 @@ import {getCategories, getShops} from "../../App/appSlice";
 type IFiltersProps = {
   selectedShopId: number | null;
   isAllOrNothing: boolean;
+  selectedCategoryIds: number[];
   handleChangeSelectedShopId: (newValue: number | null) => void;
   handleChangeIsAllOrNothing: (newValue: boolean) => void;
   handleChangeSelectedCategoryIds: (newValue: number[]) => void;
@@ -26,6 +27,7 @@ type IFiltersProps = {
 const Filters: FC<IFiltersProps> = ({
   selectedShopId,
   isAllOrNothing,
+  selectedCategoryIds,
   handleChangeSelectedShopId,
   handleChangeIsAllOrNothing,
   handleChangeSelectedCategoryIds,
@@ -82,7 +84,12 @@ const Filters: FC<IFiltersProps> = ({
       </div>
       <div className='filter-part'>
         <Autocomplete
-          options={categories.map(category => {return {...category, label: category.name}})}
+          options={categories
+            .filter(value => !selectedCategoryIds.includes(value.id))
+            .map(category => {
+              return {...category, label: category.name}
+            })
+          }
           renderInput={(params) => <TextField {...params} label="Добавить категорию" />}
           onChange={(event, newValue) => {
             handleChangeSelectedCategoryIds(newValue.map(value => value.id));
