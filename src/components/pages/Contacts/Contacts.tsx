@@ -1,13 +1,14 @@
 import React, {FC, ReactElement, useState} from "react";
+import {Card, IconButton, Modal} from "@mui/material";
 import {useAppSelector} from "../../../redux/hooks";
 import {getShops} from "../../App/appSlice";
-import Modal from "../../common/Modal/Modal";
+import ModalContent from "../../common/ModalContent/ModalContent";
 import "./Contacts.scss";
-import MapOutlined from "../../../assets/icons/map_outline.svg";
-import Card from "../../common/Card/Card";
 import {preparePhoneByMask} from "../../../utils/utils";
 import {ISchedule} from "../../App/appTypes";
 import Map from "../../common/Map/Map";
+import {MapOutlined} from "@mui/icons-material";
+import {RUS_WEEK_DAYS, WEEK_DAYS, WEEK_DAYS_ORDER} from "../../../config/config";
 
 const Contacts: FC = () => {
   const [modalContent, setModalContent] = useState<ReactElement | null>(null);
@@ -20,13 +21,18 @@ const Contacts: FC = () => {
   return (
     <div className='contacts-main-container'>
       <Modal
-        isShow={!!modalContent}
-        allowClose
-        handleClose={() => {
+        open={!!modalContent}
+        onClose={() => {
           setModalContent(null)
         }}
       >
-        {modalContent}
+        <ModalContent
+          handleClose={() => {
+            setModalContent(null)
+          }}
+        >
+          {modalContent}
+        </ModalContent>
       </Modal>
       {shops.map((shop) => {
         return (
@@ -46,12 +52,12 @@ const Contacts: FC = () => {
                 <tr>
                   <td>Карта:</td>
                   <td>
-                    <img
-                      src={MapOutlined}
-                      alt=''
-                      className='map-icon'
+                    <IconButton
+                      color='inherit'
                       onClick={() => {handlePreviewMap(shop.map_integration)}}
-                    />
+                    >
+                      <MapOutlined className='map-icon'/>
+                    </IconButton>
                   </td>
                 </tr>
               }
@@ -67,24 +73,20 @@ const Contacts: FC = () => {
   );
 }
 
-const rusWeekDays = ['воскресенье', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота', 'праздники', 'другое'] as const;
-const weekDays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'holiday', 'particular'] as const;
-const weekDaysOrder = [1,2,3,4,5,6,0,7,8] as const;
-
 const renderSchedule = (schedule: ISchedule) => {
   const currentWeekDay: number = new Date().getDay();
   return (
     <>
       <hr/>
-      {weekDaysOrder.map((indexDay) => {
-        const weekDay = weekDays[indexDay];
+      {WEEK_DAYS_ORDER.map((indexDay) => {
+        const weekDay = WEEK_DAYS[indexDay];
         if (!schedule[weekDay]) {
           return null;
         }
         return renderWeekDay(
           schedule[weekDay],
-          rusWeekDays[indexDay],
-          weekDay === weekDays[currentWeekDay]
+          RUS_WEEK_DAYS[indexDay],
+          weekDay === WEEK_DAYS[currentWeekDay]
         );
       })}
     </>
@@ -93,7 +95,7 @@ const renderSchedule = (schedule: ISchedule) => {
 
 const renderWeekDay = (
   schedulePart: string,
-  rusWeekDay: typeof rusWeekDays[keyof typeof rusWeekDays],
+  rusWeekDay: typeof RUS_WEEK_DAYS[keyof typeof RUS_WEEK_DAYS],
   isCurrentWeekDay: boolean = false,
 ) => {
   return (

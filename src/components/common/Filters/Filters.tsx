@@ -90,7 +90,7 @@ const Filters: FC<IFiltersProps> = ({
               return {...category, label: category.name}
             })
           }
-          renderInput={(params) => <TextField {...params} label="Добавить категорию" />}
+          renderInput={(params) => <TextField {...params} label="Выбрать категории" />}
           onChange={(event, newValue) => {
             handleChangeSelectedCategoryIds(newValue.map(value => value.id));
           }}

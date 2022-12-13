@@ -1,3 +1,5 @@
+@import "src/config/variables";
+
 .root-container {
   margin: 0;
   width: 100%;
@@ -15,15 +17,19 @@
 }
 
 .product-category-container {
-  width: max-content;
-  height: max-content;
+  display: block;
+  width: $categoryContainerWidth;
+  max-width: 100%;
+  box-sizing: border-box;
   font-weight: bold;
-  padding: 5px;
-  margin: 5px;
+  padding: 7px 5px;
+  margin: $categoryContainerMargin;
   border: 1px solid rgba(0,0,0,0.4);
   border-radius: 10px;
   background: rgba(0,0,0,0.1);
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis !important;
 }
 
 .product-category-container-delete {

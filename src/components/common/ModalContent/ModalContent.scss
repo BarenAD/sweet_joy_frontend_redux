@@ -1,0 +1,37 @@
+@import "src/assets/commonStyles";
+@import "src/config/variables";
+
+.modal-content-container {
+  @extend .flexbox-center;
+  display: block;
+  width: max-content;
+  height: max-content;
+  max-width: 85%;
+  max-height: 85%;
+  background-color: white;
+  overflow-x: hidden;
+  overflow-y: auto !important;
+  position: relative;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 103;
+
+  .modal-close_container {
+    width: max-content;
+    height: max-content;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 104;
+  }
+}
+
+@media(max-width: $mediaStep3) {
+  .modal-content-container {
+    max-width: 100%;
+    max-height: 100%;
+  }
+}
+
+

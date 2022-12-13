@@ -7,12 +7,14 @@ import { actionOnTheSite } from "../../../utils/metrics/metricsSlice";
 import {METRIC_ACTIONS} from "../../../config/metricActions";
 import {COUNT_PRODUCTS_ON_PAGE} from "../../../config/config";
 import {
+  Modal,
   Pagination,
 } from "@mui/material";
-import Modal from "../../common/Modal/Modal";
+import ModalContent from "../../common/ModalContent/ModalContent";
 import Product from "../../common/Product/Product";
 import {filterShopProducts} from "../../../utils/utils";
 import Filters from "../../common/Filters/Filters";
+import ProductDetailsModal from "../../common/ProductDetailsModal/ProductDetailsModal";
 
 const Products: FC = () => {
   const products = useAppSelector(getProducts);
@@ -45,7 +47,7 @@ const Products: FC = () => {
 
   const handleOpenDetails = (product: IProduct) => {
     actionOnTheSite({...METRIC_ACTIONS.PRODUCT_OPEN_DETAILS, payload: {product_id: product.id}});
-    setModalContent(null);
+    setModalContent(<ProductDetailsModal product={product} />);
   }
 
   const handleChangePage = (event: object, newPage: number) => {
@@ -81,13 +83,18 @@ const Products: FC = () => {
   return (
     <div className="products-container">
       <Modal
-        isShow={!!modalContent}
-        allowClose
-        handleClose={() => {
+        open={!!modalContent}
+        onClose={() => {
           setModalContent(null)
         }}
       >
-        {modalContent}
+        <ModalContent
+          handleClose={() => {
+            setModalContent(null)
+          }}
+        >
+          {modalContent}
+        </ModalContent>
       </Modal>
       <Filters
         selectedShopId={filteringByShopId}

@@ -22,14 +22,14 @@
       flex-wrap: wrap;
       margin-bottom: 30px;
 
-      @media (max-width: $mediaStep3) {
+      @media (max-width: $mediaStep4) {
         justify-content: center;
       }
     }
   }
 }
 
-@media (max-width: $mediaStep1) {
+@media (max-width: $mediaStep2) {
   .products-container {
     flex-direction: column;
   }

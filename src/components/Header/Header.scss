@@ -47,7 +47,7 @@
   }
 }
 
-@media(max-width: $mediaStep1) {
+@media(max-width: $mediaStep2) {
   .top-bar-main-container {
     .container-advantages {
       display: none;
@@ -55,7 +55,7 @@
   }
 }
 
-@media(max-width: $mediaStep2) {
+@media(max-width: $mediaStep3) {
   .top-bar-main-container {
     position: relative;
     flex-direction: column;

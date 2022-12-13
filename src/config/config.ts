@@ -10,3 +10,7 @@ export const AUTHOR_CONTACTS: IAuthorContacts = {
 type IAuthorContacts = {
   VK: string;
 };
+
+export const RUS_WEEK_DAYS = ['воскресенье', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота', 'праздники', 'другое'] as const;
+export const WEEK_DAYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'holiday', 'particular'] as const;
+export const WEEK_DAYS_ORDER = [1,2,3,4,5,6,0,7,8] as const;
