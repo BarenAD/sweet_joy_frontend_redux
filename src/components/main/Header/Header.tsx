@@ -1,12 +1,13 @@
 import {FC} from "react";
 import "./Header.scss";
-import {useAppDispatch, useAppSelector} from "../../redux/hooks";
-import {getConfigurations, getDocuments} from "../App/appSlice";
-import {SITE_CONFIG_IDENTIFIERS} from "../../config/siteConfigIdentifiers";
+import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
+import {getConfigurations, getDocuments} from "../../App/appSlice";
+import {SITE_CONFIG_IDENTIFIERS} from "../../../config/siteConfigIdentifiers";
 import {Link} from "react-router-dom";
-import {actionOnTheSite} from "../../utils/metrics/metricsSlice";
-import {METRIC_ACTIONS} from "../../config/metricActions";
-import {DOCUMENT_LOCATIONS} from "../../config/documentLocations";
+import {actionOnTheSite} from "../../../redux/metrics/metricsSlice";
+import {METRIC_ACTIONS} from "../../../config/metricActions";
+import {DOCUMENT_LOCATIONS} from "../../../config/documentLocations";
+import {ROUTES} from "../../../config/routes";
 
 const Header: FC = () => {
   const dispatch = useAppDispatch();
@@ -15,7 +16,7 @@ const Header: FC = () => {
 
   return (
     <div className='top-bar-main-container'>
-      {siteConfigurations[SITE_CONFIG_IDENTIFIERS.DEMO_MODE] ?
+      {!!siteConfigurations[SITE_CONFIG_IDENTIFIERS.DEMO_MODE]?.value ?
         <Link to='/management'>
           <b>Панель</b>
           <br/>
@@ -25,7 +26,7 @@ const Header: FC = () => {
         <img src='/images/logo.gif' alt='BARENAD'/>
       }
       <Link
-        to='/'
+        to={ROUTES.PRODUCTS.link}
         className='link-container'
         onClick={() => {
           dispatch(actionOnTheSite(METRIC_ACTIONS.NAVIGATION_CHANGE_PAGE));
@@ -46,7 +47,7 @@ const Header: FC = () => {
         </a>
       }
       <Link
-        to='/about'
+        to={ROUTES.ABOUT.link}
         className='link-container'
         onClick={() => {
           dispatch(actionOnTheSite(METRIC_ACTIONS.NAVIGATION_CHANGE_PAGE));
@@ -55,7 +56,7 @@ const Header: FC = () => {
         О нас
       </Link>
       <Link
-        to='/contacts'
+        to={ROUTES.CONTACTS.link}
         className='link-container'
         onClick={() => {
           dispatch(actionOnTheSite(METRIC_ACTIONS.NAVIGATION_CHANGE_PAGE));

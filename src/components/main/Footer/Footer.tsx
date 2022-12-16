@@ -1,11 +1,11 @@
 import {FC} from "react";
 
 import "./Footer.scss"
-import {useAppSelector} from "../../redux/hooks";
-import {getAppStoreStatus, getConfigurations} from "../App/appSlice";
-import {STORE_STATUSES} from "../../config/storeStatuses";
-import {SITE_CONFIG_IDENTIFIERS} from "../../config/siteConfigIdentifiers";
-import {AUTHOR_CONTACTS} from "../../config/config";
+import {useAppSelector} from "../../../redux/hooks";
+import {getAppStoreStatus, getConfigurations} from "../../App/appSlice";
+import {STORE_STATUSES} from "../../../config/storeStatuses";
+import {SITE_CONFIG_IDENTIFIERS} from "../../../config/siteConfigIdentifiers";
+import {AUTHOR_CONTACTS} from "../../../config/config";
 
 const Footer: FC = () => {
   const currentDate = new Date();
@@ -27,7 +27,7 @@ const Footer: FC = () => {
       </div>
       <div className='copyright-container'>
         {storeStatus === STORE_STATUSES.COMPLETE ?
-          siteConfigurations[SITE_CONFIG_IDENTIFIERS.DEMO_MODE] ?
+          !!siteConfigurations[SITE_CONFIG_IDENTIFIERS.DEMO_MODE]?.value ?
             <a href={AUTHOR_CONTACTS.VK} target='_blank' style={{color: 'white'}}>© BarenAD</a>
             :
             <span>Copyright © 2011-{currentDate.getFullYear()}. Сладкая Радость</span>

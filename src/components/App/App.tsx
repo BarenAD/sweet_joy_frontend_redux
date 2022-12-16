@@ -1,24 +1,50 @@
-import React, {FC, useEffect} from "react";
+import React, {createContext, FC, useEffect} from "react";
 import "./App.scss";
-import {useAppDispatch} from "../../redux/hooks";
+import {useAppDispatch, useAppSelector} from "../../redux/hooks";
 import {refreshStore} from "./appSlice";
-import {Route, Routes} from "react-router";
-import Main from "../pages/Main/Main";
+import {Navigate, Route, Routes} from "react-router";
+import Main from "../main/pages/Main/Main";
+import {ROUTES} from "../../config/routes";
+import ManagementMain from "../management/Main/ManagementMain";
+import {changeAuthStatus, getAuthStatus, HandleChangeAuthStatusContext} from "../../redux/auth/authSlice";
+import Login from "../common/Login/Login";
+import {addNotification, HandleAddNotificationContext, INotification} from "../../redux/notifications/notificationsSlice";
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
+  const isAuth = useAppSelector(getAuthStatus);
+  const handleAddNotification = (notification: INotification) => {
+    dispatch(addNotification(notification));
+  };
+  const handleChangeAuthStatus = (newStatus: boolean) => {
+    dispatch(changeAuthStatus(newStatus));
+  };
 
   useEffect(() => {
     dispatch(refreshStore());
   }, []);
 
   return (
-    <div className='App'>
-      <Routes>
-        {/*<Route path='/management' element={<Navigation />}/>*/}
-        <Route path='/*' element={<Main />}/>
-      </Routes>
-    </div>
+    <HandleChangeAuthStatusContext.Provider value={handleChangeAuthStatus}>
+      <HandleAddNotificationContext.Provider value={handleAddNotification}>
+        <div className='App'>
+          <Routes>
+            <Route
+              path={ROUTES.AUTH.path}
+              element={isAuth ? <Navigate to={ROUTES.MANAGEMENT.link} replace /> : <Login />}
+            />
+            <Route
+              path={ROUTES.MANAGEMENT.path}
+              element={isAuth ? <ManagementMain /> : <Navigate to={ROUTES.AUTH.link} replace />}
+            />
+            <Route
+              path={ROUTES.MAIN.path}
+              element={<Main />}
+            />
+          </Routes>
+        </div>
+      </HandleAddNotificationContext.Provider>
+    </HandleChangeAuthStatusContext.Provider>
   );
 }
 

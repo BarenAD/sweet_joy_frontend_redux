@@ -1,0 +1,48 @@
+@import "/src/config/variables";
+
+.management-header-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  box-sizing: border-box;
+  position: fixed;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  height: $managementHeaderHeight;
+  box-shadow: 0 1px 24px 0 rgba(0,0,0,0.14);
+  background: #3f51b5;
+  overflow: hidden;
+  padding: 0 30px;
+
+  .left-tab, .right-tab {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex: 1;
+    color: white;
+  }
+
+  .left-tab {
+    justify-content: flex-start;
+
+    .current-page-container {
+      margin-left: 20px;
+      margin-top: 5px;
+    }
+  }
+
+  .right-tab {
+    justify-content: flex-end;
+  }
+
+  @media(max-width: $mediaStep3) {
+    flex-direction: column;
+    height: max-content;
+    position: relative;
+
+    .left-tab, .right-tab {
+      flex-direction: column;
+    }
+  }
+}

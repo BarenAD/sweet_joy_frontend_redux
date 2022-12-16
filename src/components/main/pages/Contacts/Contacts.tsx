@@ -1,14 +1,14 @@
 import React, {FC, ReactElement, useState} from "react";
 import {Card, IconButton, Modal} from "@mui/material";
-import {useAppSelector} from "../../../redux/hooks";
-import {getShops} from "../../App/appSlice";
-import ModalContent from "../../common/ModalContent/ModalContent";
+import {useAppSelector} from "../../../../redux/hooks";
+import {getShops} from "../../../App/appSlice";
+import ModalContent from "../../../common/ModalContent/ModalContent";
 import "./Contacts.scss";
-import {preparePhoneByMask} from "../../../utils/utils";
-import {ISchedule} from "../../App/appTypes";
-import Map from "../../common/Map/Map";
+import {preparePhoneByMask} from "../../../../utils/utils";
+import {ISchedule} from "../../../App/appTypes";
+import Map from "../../../common/Map/Map";
 import {MapOutlined} from "@mui/icons-material";
-import {RUS_WEEK_DAYS, WEEK_DAYS, WEEK_DAYS_ORDER} from "../../../config/config";
+import {RUS_WEEK_DAYS, WEEK_DAYS, WEEK_DAYS_ORDER} from "../../../../config/config";
 
 const Contacts: FC = () => {
   const [modalContent, setModalContent] = useState<ReactElement | null>(null);

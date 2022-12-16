@@ -1,0 +1,20 @@
+@import "/src/config/variables";
+
+.management-main-container {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding-top: $managementHeaderHeight;
+  padding-bottom: $footerHeight;
+  overflow: hidden;
+
+  .content_pages_container {
+
+  }
+
+  @media(max-width: $mediaStep3) {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}

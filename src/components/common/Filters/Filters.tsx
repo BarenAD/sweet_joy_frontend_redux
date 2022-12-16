@@ -10,7 +10,7 @@ import {
   Select,
   Switch, TextField
 } from "@mui/material";
-import {actionOnTheSite} from "../../../utils/metrics/metricsSlice";
+import {actionOnTheSite} from "../../../redux/metrics/metricsSlice";
 import {METRIC_ACTIONS} from "../../../config/metricActions";
 import {useAppSelector} from "../../../redux/hooks";
 import {getCategories, getShops} from "../../App/appSlice";

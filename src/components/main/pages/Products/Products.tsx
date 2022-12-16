@@ -1,20 +1,20 @@
 import React, {FC, ReactElement, useEffect, useMemo, useState} from "react";
 import "./Products.scss";
-import {IProduct, IShopProduct} from "../../App/appTypes";
-import {useAppSelector} from "../../../redux/hooks";
-import {getProducts, getShopProducts} from "../../App/appSlice";
-import { actionOnTheSite } from "../../../utils/metrics/metricsSlice";
-import {METRIC_ACTIONS} from "../../../config/metricActions";
-import {COUNT_PRODUCTS_ON_PAGE} from "../../../config/config";
+import {IProduct, IShopProduct} from "../../../App/appTypes";
+import {useAppSelector} from "../../../../redux/hooks";
+import {getProducts, getShopProducts} from "../../../App/appSlice";
+import { actionOnTheSite } from "../../../../redux/metrics/metricsSlice";
+import {METRIC_ACTIONS} from "../../../../config/metricActions";
+import {COUNT_PRODUCTS_ON_PAGE} from "../../../../config/config";
 import {
   Modal,
   Pagination,
 } from "@mui/material";
-import ModalContent from "../../common/ModalContent/ModalContent";
-import Product from "../../common/Product/Product";
-import {filterShopProducts} from "../../../utils/utils";
-import Filters from "../../common/Filters/Filters";
-import ProductDetailsModal from "../../common/ProductDetailsModal/ProductDetailsModal";
+import ModalContent from "../../../common/ModalContent/ModalContent";
+import Product from "../../../common/Product/Product";
+import {filterShopProducts} from "../../../../utils/utils";
+import Filters from "../../../common/Filters/Filters";
+import ProductDetailsModal from "../../../common/ProductDetailsModal/ProductDetailsModal";
 
 const Products: FC = () => {
   const products = useAppSelector(getProducts);

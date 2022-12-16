@@ -5,12 +5,13 @@ import "./Main.scss";
 import Header from "../../Header/Header";
 import Footer from "../../Footer/Footer";
 import Contacts from "../Contacts/Contacts";
-import {STORE_STATUSES} from "../../../config/storeStatuses";
-import Preloader from "../../common/Preloader/Preloader";
-import {useAppSelector} from "../../../redux/hooks";
-import {getAppStoreStatus} from "../../App/appSlice";
+import {STORE_STATUSES} from "../../../../config/storeStatuses";
+import Preloader from "../../../common/Preloader/Preloader";
+import {useAppSelector} from "../../../../redux/hooks";
+import {getAppStoreStatus} from "../../../App/appSlice";
 import About from "../About/About";
 import Products from "../Products/Products";
+import {ROUTES} from "../../../../config/routes";
 
 const Main: FC = () => {
   const storeStatus = useAppSelector(getAppStoreStatus);
@@ -19,9 +20,9 @@ const Main: FC = () => {
     if (storeStatus === STORE_STATUSES.COMPLETE) {
       return (
         <Routes>
-          <Route path='/' element={<Products />}/>
-          <Route path='/about' element={<About />}/>
-          <Route path='/contacts' element={<Contacts/>}/>
+          <Route path={ROUTES.PRODUCTS.path} element={<Products />}/>
+          <Route path={ROUTES.ABOUT.path} element={<About />}/>
+          <Route path={ROUTES.CONTACTS.path} element={<Contacts/>}/>
         </Routes>
       );
     }

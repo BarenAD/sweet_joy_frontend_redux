@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {IRootState} from "../../redux/store";
 import {IAppStore, ICategory, IKeyNumberStoreObject, IProduct, IShop, IShopProduct} from "./appTypes";
-import {API_ROUTES} from "../../config/apiRoutes";
+import {ROUTES_API} from "../../config/routesApi";
 import {ERRORS} from "../../config/errors";
 import {APP_DEBUG, REQUEST_MODE} from "../../config/config";
 import {STORE_STATUSES} from "../../config/storeStatuses";
@@ -20,7 +20,7 @@ export const refreshStore = createAsyncThunk(
   'app/refreshStore',
   async (_, {rejectWithValue}) => {
     try {
-      const response = await fetch(API_ROUTES.GET_APP_DATA, {
+      const response = await fetch(ROUTES_API.GET_APP_DATA, {
         mode: REQUEST_MODE,
         headers: {
           Accept: 'Application/json',

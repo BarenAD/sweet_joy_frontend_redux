@@ -1,6 +1,7 @@
 export type IConfigError = {
   id: number;
   message: string;
+  payload?: any;
 }
 
 export type IErrorBody = {
@@ -10,7 +11,7 @@ export type IErrorBody = {
 }
 
 export default class ErrorByConfig extends Error {
-  public config: IConfigError;
+  public body: IConfigError;
   public throwableMessage?: string;
 
   public constructor(
@@ -18,7 +19,7 @@ export default class ErrorByConfig extends Error {
     throwable: Error | null = null,
   ) {
     super(errorConfig.message);
-    this.config = errorConfig;
+    this.body = errorConfig;
     if (throwable && throwable.message) {
       this.throwableMessage = throwable.message;
     }

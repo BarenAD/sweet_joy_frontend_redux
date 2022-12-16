@@ -1,10 +1,14 @@
 import {configureStore, ThunkAction, Action} from "@reduxjs/toolkit";
 import appSlice from "../components/App/appSlice";
-import metricSlice from "../utils/metrics/metricsSlice";
+import metricSlice from "./metrics/metricsSlice";
 import {STORE_STATUSES} from "../config/storeStatuses";
+import authSlice from "./auth/authSlice";
+import notificationsSlice from "./notifications/notificationsSlice";
 
 export const store = configureStore({
   reducer: {
+    auth: authSlice,
+    notifications: notificationsSlice,
     app: appSlice,
     metrics: metricSlice,
   },
