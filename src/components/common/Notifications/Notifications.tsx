@@ -1,4 +1,4 @@
-import {Alert, Slide, Snackbar, Typography} from "@mui/material";
+import {Alert, Snackbar, Typography} from "@mui/material";
 import {deleteNotification, getNotifications} from "./notificationsSlice";
 import React, {FC, useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
