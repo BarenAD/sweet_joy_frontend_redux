@@ -1,4 +1,4 @@
-import {INotification} from "../redux/notifications/notificationsSlice";
+import {INotificationAction} from "../components/common/Notifications/notificationsSlice";
 import {APP_DEBUG, KEY_LOCAL_STORAGE_AUTHORIZATION_ACCESS_TOKEN, REQUEST_MODE} from "../config/config";
 import ErrorByConfig, {IConfigError} from "./ErrorByConfig";
 import {ERRORS} from "../config/errors";
@@ -8,7 +8,7 @@ import {ROUTES} from "../config/routes";
 type IFetchWithTokenProps = RequestInit & {
   url: string,
   isNeedAuth?: boolean;
-  handleAddNotification?: (notification: INotification) => void;
+  handleAddNotification?: (notification: INotificationAction) => void;
   handleChangeAuthStatus?: (newStatus: boolean) => void;
   isDebug?: boolean
 };
@@ -59,8 +59,8 @@ export const httpClient = async <T,>({
       }
       if (isDebug && handleAddNotification) {
         handleAddNotification({
-          type: 'info',
-          message: `Запрос успешно выполнен: ${url}`,
+          type: 'success',
+          message: `[DEBUG] Запрос: ${url}`,
         });
       }
       return {

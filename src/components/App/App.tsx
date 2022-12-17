@@ -1,4 +1,4 @@
-import React, {createContext, FC, useEffect} from "react";
+import React, {FC, useEffect} from "react";
 import "./App.scss";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
 import {refreshStore} from "./appSlice";
@@ -8,12 +8,18 @@ import {ROUTES} from "../../config/routes";
 import ManagementMain from "../management/Main/ManagementMain";
 import {changeAuthStatus, getAuthStatus, HandleChangeAuthStatusContext} from "../../redux/auth/authSlice";
 import Login from "../common/Login/Login";
-import {addNotification, HandleAddNotificationContext, INotification} from "../../redux/notifications/notificationsSlice";
+import {
+  addNotification,
+  HandleAddNotificationContext,
+  INotificationAction
+} from "../common/Notifications/notificationsSlice";
+import Notifications from "../common/Notifications/Notifications";
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
   const isAuth = useAppSelector(getAuthStatus);
-  const handleAddNotification = (notification: INotification) => {
+
+  const handleAddNotification = (notification: INotificationAction) => {
     dispatch(addNotification(notification));
   };
   const handleChangeAuthStatus = (newStatus: boolean) => {
@@ -27,6 +33,7 @@ const App: FC = () => {
   return (
     <HandleChangeAuthStatusContext.Provider value={handleChangeAuthStatus}>
       <HandleAddNotificationContext.Provider value={handleAddNotification}>
+        <Notifications />
         <div className='App'>
           <Routes>
             <Route

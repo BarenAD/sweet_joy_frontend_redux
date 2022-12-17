@@ -4,7 +4,8 @@ export const APP_DEBUG: boolean = true;
 export const COUNT_PRODUCTS_ON_PAGE: number = 30;
 export const KEY_LOCAL_STORAGE_AUTHORIZATION_ACCESS_TOKEN = "access_token";
 export const KEY_LOCAL_STORAGE_AUTHORIZATION_PROFILE = "profile";
-export const MAX_COUNT_NOTIFICATIONS = 5;
+export const NOTIFICATIONS_MAX_COUNT = 5;
+export const NOTIFICATIONS_LIFE_TIME = 5000;
 export const FORMAT_DATE_NOTIFICATION = 'yyyy-MM-dd HH:mm:ss';
 
 export const AUTHOR_CONTACTS: IAuthorContacts = {

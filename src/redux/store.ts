@@ -3,7 +3,7 @@ import appSlice from "../components/App/appSlice";
 import metricSlice from "./metrics/metricsSlice";
 import {STORE_STATUSES} from "../config/storeStatuses";
 import authSlice from "./auth/authSlice";
-import notificationsSlice from "./notifications/notificationsSlice";
+import notificationsSlice from "../components/common/Notifications/notificationsSlice";
 
 export const store = configureStore({
   reducer: {

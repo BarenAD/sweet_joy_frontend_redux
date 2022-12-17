@@ -8,7 +8,7 @@ import Preloader from "../Preloader/Preloader";
 import {httpClient} from "../../../utils/httpClient";
 import {ROUTES_API} from "../../../config/routesApi";
 import {IProfile} from "../../../redux/auth/authTypes";
-import {HandleAddNotificationContext} from "../../../redux/notifications/notificationsSlice";
+import {HandleAddNotificationContext} from "../Notifications/notificationsSlice";
 import { HandleChangeAuthStatusContext } from "../../../redux/auth/authSlice";
 
 const Login: FC = () => {

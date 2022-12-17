@@ -1,28 +1,28 @@
 import { createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {IRootState} from "../store";
+import {IRootState} from "../../../redux/store";
 import {createContext, ReactElement} from "react";
-import {FORMAT_DATE_NOTIFICATION, MAX_COUNT_NOTIFICATIONS} from "../../config/config";
+import {FORMAT_DATE_NOTIFICATION, NOTIFICATIONS_MAX_COUNT} from "../../../config/config";
 import {format} from "date-fns";
 
-export type INotification = {
-  type: 'info' | 'warn' | 'error';
+export type INotificationAction = {
+  type: 'success' | 'info' | 'warning' | 'error';
   message: string | ReactElement;
 };
 
-type INotificationsStore = Array<INotification & {
+export type INotification = INotificationAction & {
   created_at: string;
-}>;
+};
 
-const initialState: INotificationsStore = [];
+const initialState: INotification[] = [];
 
 export const notificationsSlice = createSlice({
   name: 'notifications',
   initialState,
   reducers: {
-    addNotification: (state, action: PayloadAction<INotification>) => {
+    addNotification: (state, action: PayloadAction<INotificationAction>) => {
       const currentDate = format(new Date(), FORMAT_DATE_NOTIFICATION);
       return state.reduce((result, current, index) => {
-        if (index < MAX_COUNT_NOTIFICATIONS-1) {
+        if (index < NOTIFICATIONS_MAX_COUNT-1) {
           result.push(current);
         }
         return result;
@@ -39,8 +39,8 @@ export const notificationsSlice = createSlice({
 
 export const { addNotification, deleteNotification } = notificationsSlice.actions;
 
-export const getNotifications = (state: IRootState) => state;
+export const getNotifications = (state: IRootState) => state.notifications;
 
-export const HandleAddNotificationContext = createContext((notification: INotification) => {});
+export const HandleAddNotificationContext = createContext((notification: INotificationAction) => {});
 
 export default notificationsSlice.reducer;

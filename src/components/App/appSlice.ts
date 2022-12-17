@@ -1,10 +1,20 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {IRootState} from "../../redux/store";
-import {IAppStore, ICategory, IKeyNumberStoreObject, IProduct, IShop, IShopProduct} from "./appTypes";
+import {
+  IAppStore,
+  ICategory, IConfiguration, IDocument,
+  IKeyNumberStoreObject,
+  IKeyStringStoreObject,
+  IProduct,
+  IShop,
+  IShopProduct
+} from "./appTypes";
 import {ROUTES_API} from "../../config/routesApi";
 import {ERRORS} from "../../config/errors";
-import {APP_DEBUG, REQUEST_MODE} from "../../config/config";
+import {APP_DEBUG} from "../../config/config";
 import {STORE_STATUSES} from "../../config/storeStatuses";
+import {httpClient} from "../../utils/httpClient";
+import { addNotification } from "../common/Notifications/notificationsSlice";
 
 const initialState: IAppStore = {
   status: STORE_STATUSES.INITIAL,
@@ -16,21 +26,24 @@ const initialState: IAppStore = {
   configuration: {},
 };
 
+type IResponseRefreshStore = {
+  products: IProduct[];
+  categories: ICategory[],
+  shops: IShop[],
+  shopProducts: IKeyNumberStoreObject<IShopProduct[]>;
+  documents: IKeyStringStoreObject<IDocument>;
+  configuration: IKeyStringStoreObject<IConfiguration>;
+};
+
 export const refreshStore = createAsyncThunk(
   'app/refreshStore',
-  async (_, {rejectWithValue}) => {
+  async (_, {rejectWithValue, dispatch}) => {
     try {
-      const response = await fetch(ROUTES_API.GET_APP_DATA, {
-        mode: REQUEST_MODE,
-        headers: {
-          Accept: 'Application/json',
-        }
+      const {data} = await httpClient<IResponseRefreshStore>({
+        url: ROUTES_API.GET_APP_DATA,
+        handleAddNotification: (notification => dispatch(addNotification(notification)))
       });
-      const body: any = await response.json();
-      if (response.ok) {
-        return body;
-      }
-      throw new Error(body.message || ERRORS.UNKNOWN_ERROR.message);
+      return data;
     } catch (error: any) {
       return rejectWithValue(error);
     }
@@ -42,7 +55,7 @@ export const appSlice = createSlice({
   initialState,
   reducers: {
     setAppStore: (state, action: PayloadAction<IAppStore>) => {
-      state = action.payload;
+      return action.payload;
     },
   },
   extraReducers: (builder) => {
