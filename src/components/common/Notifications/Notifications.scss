@@ -5,6 +5,13 @@
     max-width: 400px;
     margin-top: 7px;
 
+    .notification-message-container {
+      width: 100%;
+      word-wrap: normal;
+      overflow-wrap: anywhere;
+      overflow: hidden;
+    }
+
     .notification-date-container {
       position: absolute;
       bottom: 0;

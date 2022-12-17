@@ -43,7 +43,7 @@ const Notifications: FC = () => {
             severity={notification.type}
             className='notification-container'
           >
-            <Typography>
+            <Typography className='notification-message-container'>
               {notification.message}
             </Typography>
             <Typography className='notification-date-container'>
