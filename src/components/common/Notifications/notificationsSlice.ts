@@ -23,7 +23,7 @@ export const notificationsSlice = createSlice({
       const currentDate = format(new Date(), FORMAT_DATE_NOTIFICATION);
       return state.reduce((result, current, index) => {
         if (index < NOTIFICATIONS_MAX_COUNT-1) {
-          result.push(current);
+          result.unshift(current);
         }
         return result;
       }, [{

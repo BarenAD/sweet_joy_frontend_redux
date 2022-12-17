@@ -1,9 +1,19 @@
 import {Button, IconButton, Menu, MenuItem, Typography} from "@mui/material";
 import {MenuOutlined} from "@mui/icons-material";
 import {Route, Routes} from "react-router";
-import React, {FC, useState} from "react";
+import React, {FC, useContext, useState} from "react";
 import {MANAGEMENT_PAGES} from "../Main/ManagementMain";
 import "./ManagementHeader.scss";
+import {httpClient} from "../../../utils/httpClient";
+import {IResponseLogin} from "../../../redux/auth/authTypes";
+import {ROUTES_API} from "../../../config/routesApi";
+import {
+  KEY_LOCAL_STORAGE_AUTHORIZATION_ACCESS_TOKEN,
+  KEY_LOCAL_STORAGE_AUTHORIZATION_PROFILE
+} from "../../../config/config";
+import {HandleChangeAuthStatusContext, setProfile} from "../../../redux/auth/authSlice";
+import {HandleAddNotificationContext} from "../../common/Notifications/notificationsSlice";
+import {useAppDispatch} from "../../../redux/hooks";
 
 type IManagementHeaderProps = {
   setIsOpenDrawer: (newStatus: boolean) => void;
@@ -12,7 +22,32 @@ type IManagementHeaderProps = {
 const ManagementHeader: FC<IManagementHeaderProps> = ({
   setIsOpenDrawer
 }) => {
+  const dispatch = useAppDispatch();
   const [isOpenExitMenu, setIsOpenExitMenu] = useState<boolean>(false);
+  const handleAddNotificationContext = useContext(HandleAddNotificationContext);
+  const handleChangeAuthStatusContext = useContext(HandleChangeAuthStatusContext);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const handleLogout = (isAll: boolean = false) => {
+    setIsOpenExitMenu(false);
+    setIsLoading(true);
+    httpClient<IResponseLogin>({
+      url: isAll ? ROUTES_API.LOGOUT_ALL : ROUTES_API.LOGOUT,
+      method: 'POST',
+      handleAddNotification: handleAddNotificationContext,
+      handleChangeAuthStatus: handleChangeAuthStatusContext,
+      isNeedAuth: true,
+    })
+      .then(() => {
+        localStorage.removeItem(KEY_LOCAL_STORAGE_AUTHORIZATION_ACCESS_TOKEN);
+        localStorage.removeItem(KEY_LOCAL_STORAGE_AUTHORIZATION_PROFILE);
+        dispatch(setProfile(null));
+        handleChangeAuthStatusContext(false);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
 
   return (
     <div className='management-header-container'>
@@ -51,6 +86,7 @@ const ManagementHeader: FC<IManagementHeaderProps> = ({
           aria-controls='simple-menu'
           aria-haspopup='true'
           onClick={() => {setIsOpenExitMenu(true)}}
+          disabled={isLoading}
         >
           Выйти
         </Button>
@@ -62,12 +98,14 @@ const ManagementHeader: FC<IManagementHeaderProps> = ({
           onClose={() => {setIsOpenExitMenu(false)}}
         >
           <MenuItem
-            //onClick={() => {setIsOpenExitMenu(false), handleLogout);}}
+            disabled={isLoading}
+            onClick={() => {handleLogout(false)}}
           >
             Выйти на этом устройстве
           </MenuItem>
           <MenuItem
-            //onClick={() => {setIsOpenExitMenu(false), handleAllLogout);}}
+            disabled={isLoading}
+            onClick={() => {handleLogout(true)}}
           >
             Выйти на всех устройствах
           </MenuItem>

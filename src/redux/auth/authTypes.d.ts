@@ -3,5 +3,8 @@ export type IProfile = {
   email: string;
   fio: string;
   phone: string;
+};
+
+export type IResponseLogin = IProfile & {
   token: string;
 };

@@ -1,4 +1,4 @@
-import React, {FC} from "react";
+import React, {FC, useEffect} from "react";
 import {Route, Routes} from "react-router-dom";
 
 import "./Main.scss";
@@ -7,14 +7,19 @@ import Footer from "../../Footer/Footer";
 import Contacts from "../Contacts/Contacts";
 import {STORE_STATUSES} from "../../../../config/storeStatuses";
 import Preloader from "../../../common/Preloader/Preloader";
-import {useAppSelector} from "../../../../redux/hooks";
-import {getAppStoreStatus} from "../../../App/appSlice";
+import {useAppDispatch, useAppSelector} from "../../../../redux/hooks";
+import {getAppStoreStatus, refreshStore} from "../../../App/appSlice";
 import About from "../About/About";
 import Products from "../Products/Products";
 import {ROUTES} from "../../../../config/routes";
 
 const Main: FC = () => {
+  const dispatch = useAppDispatch();
   const storeStatus = useAppSelector(getAppStoreStatus);
+
+  useEffect(() => {
+    dispatch(refreshStore());
+  }, []);
 
   const contentByStatus = () => {
     if (storeStatus === STORE_STATUSES.COMPLETE) {

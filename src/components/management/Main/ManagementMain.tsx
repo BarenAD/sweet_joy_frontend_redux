@@ -2,8 +2,6 @@ import React, {FC, ReactElement, useState} from "react";
 import "./ManagementMain.scss";
 import {IRoute, ROUTES} from "../../../config/routes";
 import {Route, Routes} from "react-router";
-import {Drawer} from "@mui/material";
-import {Link} from "react-router-dom";
 import ManagementHeader from "../Header/ManagementHeader";
 import ManagementDrawer from "../Drawer/ManagementDrawer";
 

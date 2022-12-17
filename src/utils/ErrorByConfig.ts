@@ -1,21 +1,22 @@
+import {ReactElement} from "react";
+import {getJSXByError} from "./getJSXByError";
+
 export type IConfigError = {
   id: number;
   message: string;
-  payload?: any;
 }
 
-export type IErrorBody = {
-  id: number;
-  message: string;
-  throwable?: Error;
+export type IErrorBody = IConfigError & {
+  jsxError?: ReactElement;
 }
 
 export default class ErrorByConfig extends Error {
-  public body: IConfigError;
+  public body: IErrorBody;
   public throwableMessage?: string;
 
   public constructor(
     errorConfig: IConfigError,
+    payload?: any,
     throwable: Error | null = null,
   ) {
     super(errorConfig.message);
@@ -29,5 +30,6 @@ export default class ErrorByConfig extends Error {
     if (throwable && throwable.stack) {
       this.stack = throwable.stack;
     }
+    this.body.jsxError = payload ? getJSXByError(errorConfig.id, payload) : undefined;
   }
 };

@@ -1,9 +1,7 @@
 import React, {FC, useContext, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
-import {getConfigurations} from "../../App/appSlice";
-import {SITE_CONFIG_IDENTIFIERS} from "../../../config/siteConfigIdentifiers";
 import {Button, TextField, Typography} from "@mui/material";
-import "./Login.scss"
+import "./Registration.scss"
 import Preloader from "../Preloader/Preloader";
 import {httpClient} from "../../../utils/httpClient";
 import {ROUTES_API} from "../../../config/routesApi";
@@ -15,28 +13,31 @@ import {
   KEY_LOCAL_STORAGE_AUTHORIZATION_PROFILE
 } from "../../../config/config";
 
-const Login: FC = () => {
+const Registration: FC = () => {
   const dispatch = useAppDispatch();
-  const isDemo: boolean = !!useAppSelector(getConfigurations)[SITE_CONFIG_IDENTIFIERS.DEMO_MODE]?.value;
-  const [email, setEmail] = useState<string>(isDemo ? 'admin' : '');
-  const [password, setPassword] = useState<string>(isDemo ? 'admin' : '');
+  const [fio, setFio] = useState<string>('');
+  const [phone, setPhone] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const handleAddNotificationContext = useContext(HandleAddNotificationContext);
   const handleChangeAuthStatusContext = useContext(HandleChangeAuthStatusContext);
 
   const handleValidate = (): boolean => {
-    return email.length > 0 && password.length > 0
+    return fio.length > 0 && phone.length > 0 && email.length > 0 && password.length > 0
   };
 
-  const handleLogin = () => {
+  const handleRegistration = () => {
     setIsLoading(true);
     httpClient<IResponseLogin>({
-      url: ROUTES_API.LOGIN,
+      url: ROUTES_API.REGISTRATION,
       method: 'POST',
       handleAddNotification: handleAddNotificationContext,
       handleChangeAuthStatus: handleChangeAuthStatusContext,
       isNeedAuth: false,
       body: JSON.stringify({
+        fio: fio,
+        phone: phone,
         email: email,
         password: password,
       }),
@@ -50,7 +51,6 @@ const Login: FC = () => {
         handleChangeAuthStatusContext(true);
       })
       .finally(() => {
-        setPassword('');
         setIsLoading(false);
       });
   };
@@ -61,8 +61,24 @@ const Login: FC = () => {
         <Typography
           variant='h4'
         >
-          Авторизация
+          Регистрация
         </Typography>
+        <TextField
+          label='ФИО'
+          variant='outlined'
+          value={fio}
+          className='form-element'
+          disabled={isLoading}
+          onChange={(event) => {setFio(event.target.value)}}
+        />
+        <TextField
+          label='Телефон'
+          variant='outlined'
+          value={phone}
+          className='form-element'
+          disabled={isLoading}
+          onChange={(event) => {setPhone(event.target.value)}}
+        />
         <TextField
           label='E-mail'
           variant='outlined'
@@ -91,10 +107,10 @@ const Login: FC = () => {
             variant='contained'
             color='primary'
             className='form-element'
-            onClick={handleLogin}
+            onClick={handleRegistration}
             disabled={!handleValidate()}
           >
-            Войти
+            Зарегистрироваться
           </Button>
         }
       </div>
@@ -102,4 +118,4 @@ const Login: FC = () => {
   );
 };
 
-export default Login;
+export default Registration;

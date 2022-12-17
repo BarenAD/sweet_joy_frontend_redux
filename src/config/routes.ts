@@ -10,6 +10,7 @@ type IRoutes = {
   CONTACTS: IRoute;
   MANAGEMENT: IRoute;
   AUTH: IRoute;
+  REGISTRATION: IRoute;
   MANAGEMENT_ROLES: IRoute;
   MANAGEMENT_ROLES_PERMISSIONS: IRoute;
   MANAGEMENT_USERS: IRoute;
@@ -46,6 +47,10 @@ export const ROUTES: IRoutes = {
   AUTH: {
     path: '/auth',
     link: '/auth',
+  },
+  REGISTRATION: {
+    path: '/registration',
+    link: '/registration',
   },
   MANAGEMENT_ROLES: {
     path: '/roles',

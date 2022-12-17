@@ -1,7 +1,6 @@
-import React, {FC, useEffect} from "react";
+import React, {FC} from "react";
 import "./App.scss";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
-import {refreshStore} from "./appSlice";
 import {Navigate, Route, Routes} from "react-router";
 import Main from "../main/pages/Main/Main";
 import {ROUTES} from "../../config/routes";
@@ -14,6 +13,7 @@ import {
   INotificationAction
 } from "../common/Notifications/notificationsSlice";
 import Notifications from "../common/Notifications/Notifications";
+import Registration from "../common/Registration/Registration";
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -26,16 +26,16 @@ const App: FC = () => {
     dispatch(changeAuthStatus(newStatus));
   };
 
-  useEffect(() => {
-    dispatch(refreshStore());
-  }, []);
-
   return (
     <HandleChangeAuthStatusContext.Provider value={handleChangeAuthStatus}>
       <HandleAddNotificationContext.Provider value={handleAddNotification}>
         <Notifications />
         <div className='App'>
           <Routes>
+            <Route
+              path={ROUTES.REGISTRATION.path}
+              element={isAuth ? <Navigate to={ROUTES.MANAGEMENT.link} replace /> : <Registration />}
+            />
             <Route
               path={ROUTES.AUTH.path}
               element={isAuth ? <Navigate to={ROUTES.MANAGEMENT.link} replace /> : <Login />}

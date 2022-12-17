@@ -40,7 +40,14 @@ export const httpClient = async <T,>({
   });
 
   if (isNeedAuth && accessToken) {
-    preparedHeaders.append('Authorization', accessToken);
+    preparedHeaders.append('Authorization', `Bearer ${accessToken}`);
+  }
+
+  if (isDebug && handleAddNotification) {
+    handleAddNotification({
+      type: 'info',
+      message: `[DEBUG] Запрос: ${url}`,
+    });
   }
 
   return await fetch(url, {
@@ -52,10 +59,7 @@ export const httpClient = async <T,>({
     .then(async (response) => {
       const responseData = await response.json();
       if (!response.ok) {
-        throwableByStatus(response.status, {
-          response: response,
-          responseData: responseData,
-        });
+        throwableByStatus(response.status, responseData);
       }
       if (isDebug && handleAddNotification) {
         handleAddNotification({
@@ -74,13 +78,9 @@ export const httpClient = async <T,>({
     .catch((error) => {
       const isConfigError: boolean = error instanceof ErrorByConfig;
       if (handleAddNotification) {
-        let message = `Ошибка выполнения запроса! ${error.message}`;
-        if (isConfigError) {
-          message = `Ошибка выполнения запроса! ${error.body?.payload?.responseData?.message ?? error.body.message}`;
-        }
         handleAddNotification({
           type: 'error',
-          message: message,
+          message: error?.body?.jsxError ?? error.message,
         });
       }
       if (isConfigError && error.body.id === ERRORS.UNAUTHORIZED_ERROR.id) {
@@ -102,12 +102,14 @@ const throwableByStatus = (status: number, payload: any) => {
     case 403:
       errorConfig = ERRORS.FORBIDDEN_ERROR;
       break;
+    case 422:
+      throw new ErrorByConfig(ERRORS.VALIDATE_ERROR, payload);
     default:
       errorConfig = ERRORS.UNKNOWN_ERROR;
       break;
   }
   throw new ErrorByConfig({
-    ...errorConfig,
-    payload: payload,
-  });
+    id: errorConfig.id,
+    message: payload?.message ?? errorConfig.message,
+  }, payload);
 };
