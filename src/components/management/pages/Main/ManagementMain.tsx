@@ -80,7 +80,7 @@ const ManagementMain: FC = () => {
         isOpenDrawer={isOpenDrawer}
         setIsOpenDrawer={setIsOpenDrawer}
       />
-      <div className="content_pages_container">
+      <div className="content-pages-container">
         <Routes>
           <Route
             path='/'

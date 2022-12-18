@@ -10,7 +10,10 @@
   padding-bottom: $footerHeight;
   overflow: hidden;
 
-  .content_pages_container {
+  .content-pages-container {
+    height: 100%;
+    overflow-y: auto;
+
     .main-container {
       @extend .flexbox-center;
       margin-top: 30px;
