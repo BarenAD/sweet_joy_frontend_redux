@@ -1,4 +1,4 @@
-import React, {FC, useContext, useState} from "react";
+import React, {FC, useContext, useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
 import {SITE_CONFIG_IDENTIFIERS} from "../../../config/siteConfigIdentifiers";
 import {Button, TextField, Typography} from "@mui/material";
@@ -13,16 +13,31 @@ import {
   KEY_LOCAL_STORAGE_AUTHORIZATION_ACCESS_TOKEN,
   KEY_LOCAL_STORAGE_AUTHORIZATION_PROFILE
 } from "../../../config/config";
-import {getConfigurations} from "../../../redux/configurations/configurationsSlice";
+import {
+  getConfigurations,
+  getConfigurationsStatus,
+  refreshConfigurations
+} from "../../../redux/configurations/configurationsSlice";
+import {STORE_STATUSES} from "../../../config/storeStatuses";
 
 const Login: FC = () => {
   const dispatch = useAppDispatch();
   const configurations = useAppSelector(getConfigurations);
-  const [email, setEmail] = useState<string>(configurations[SITE_CONFIG_IDENTIFIERS.DEMO_USER_EMAIL]?.value ?? '');
-  const [password, setPassword] = useState<string>(configurations[SITE_CONFIG_IDENTIFIERS.DEMO_USER_PASSWORD]?.value ?? '');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const handleAddNotificationContext = useContext(HandleAddNotificationContext);
   const handleChangeAuthStatusContext = useContext(HandleChangeAuthStatusContext);
+  const configurationsStatus = useAppSelector(getConfigurationsStatus);
+
+  useEffect(() => {
+    dispatch(refreshConfigurations());
+  }, []);
+
+  useEffect(() => {
+    setEmail(configurations[SITE_CONFIG_IDENTIFIERS.DEMO_USER_EMAIL]?.value ?? '');
+    setPassword(configurations[SITE_CONFIG_IDENTIFIERS.DEMO_USER_PASSWORD]?.value ?? '');
+  }, [configurations]);
 
   const handleValidate = (): boolean => {
     return email.length > 0 && password.length > 0
@@ -54,6 +69,16 @@ const Login: FC = () => {
         setIsLoading(false);
       });
   };
+
+  if (configurationsStatus === STORE_STATUSES.LOADING) {
+    return (
+      <div className='authorization-login-container'>
+        <div className='form-container'>
+          <Preloader size={50} />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className='authorization-login-container'>

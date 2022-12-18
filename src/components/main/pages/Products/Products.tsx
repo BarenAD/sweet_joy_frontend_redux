@@ -15,10 +15,14 @@ import Product from "../../../common/Product/Product";
 import {filterShopProducts} from "../../../../utils/utils";
 import Filters from "../../../common/Filters/Filters";
 import ProductDetailsModal from "../../../common/ProductDetailsModal/ProductDetailsModal";
+import Demo from "../../../common/Demo/Demo";
+import {SITE_CONFIG_IDENTIFIERS} from "../../../../config/siteConfigIdentifiers";
+import {getConfigurations} from "../../../../redux/configurations/configurationsSlice";
 
 const Products: FC = () => {
   const products = useAppSelector(getProducts);
   const shopProducts = useAppSelector(getShopProducts);
+  const configurations = useAppSelector(getConfigurations);
   const [modalContent, setModalContent] = useState<ReactElement | null>(null);
   const [filteringByShopId, setFilteringByShopId] = useState<number | null>(null);
   const [filteringByCategoriesIds, setFilteringByCategoriesIds] = useState<number[]>([]);
@@ -96,14 +100,19 @@ const Products: FC = () => {
           {modalContent}
         </ModalContent>
       </Modal>
-      <Filters
-        selectedShopId={filteringByShopId}
-        isAllOrNothing={isFilteringByAllOrNothing}
-        selectedCategoryIds={filteringByCategoriesIds}
-        handleChangeSelectedShopId={setFilteringByShopId}
-        handleChangeIsAllOrNothing={setIsFilteringByAllOrNothing}
-        handleChangeSelectedCategoryIds={setFilteringByCategoriesIds}
-      />
+      <div>
+        <Filters
+          selectedShopId={filteringByShopId}
+          isAllOrNothing={isFilteringByAllOrNothing}
+          selectedCategoryIds={filteringByCategoriesIds}
+          handleChangeSelectedShopId={setFilteringByShopId}
+          handleChangeIsAllOrNothing={setIsFilteringByAllOrNothing}
+          handleChangeSelectedCategoryIds={setFilteringByCategoriesIds}
+        />
+        {!!configurations[SITE_CONFIG_IDENTIFIERS.DEMO_MODE]?.value &&
+          <Demo/>
+        }
+      </div>
       <div className="content">
         <Pagination
           page={currentPage}

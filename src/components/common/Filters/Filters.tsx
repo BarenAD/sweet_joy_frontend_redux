@@ -79,7 +79,7 @@ const Filters: FC<IFiltersProps> = ({
               color="primary"
             />
           }
-          label="Все выбранные категории"
+          label="Одновременно все выбранные категории"
         />
       </div>
       <div className='filter-part'>

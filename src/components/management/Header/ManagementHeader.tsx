@@ -11,9 +11,9 @@ import {
   KEY_LOCAL_STORAGE_AUTHORIZATION_ACCESS_TOKEN,
   KEY_LOCAL_STORAGE_AUTHORIZATION_PROFILE
 } from "../../../config/config";
-import {HandleChangeAuthStatusContext, setProfile} from "../../../redux/auth/authSlice";
+import {getProfile, HandleChangeAuthStatusContext, setProfile} from "../../../redux/auth/authSlice";
 import {HandleAddNotificationContext} from "../../common/Notifications/notificationsSlice";
-import {useAppDispatch} from "../../../redux/hooks";
+import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
 
 type IManagementHeaderProps = {
   setIsOpenDrawer: (newStatus: boolean) => void;
@@ -23,6 +23,7 @@ const ManagementHeader: FC<IManagementHeaderProps> = ({
   setIsOpenDrawer
 }) => {
   const dispatch = useAppDispatch();
+  const profile = useAppSelector(getProfile);
   const [isOpenExitMenu, setIsOpenExitMenu] = useState<boolean>(false);
   const handleAddNotificationContext = useContext(HandleAddNotificationContext);
   const handleChangeAuthStatusContext = useContext(HandleChangeAuthStatusContext);
@@ -78,6 +79,17 @@ const ManagementHeader: FC<IManagementHeaderProps> = ({
         </div>
       </div>
       <div className='right-tab'>
+        {profile &&
+          <Typography
+            variant='h6'
+            align='center'
+            fontWeight='bold'
+            alignItems='center'
+            style={{marginRight: '10px'}}
+          >
+            {profile.fio}
+          </Typography>
+        }
         <Button
           style={{color: 'white'}}
           id='button_open_exit_menu'

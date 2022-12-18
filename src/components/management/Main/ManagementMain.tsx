@@ -4,6 +4,9 @@ import {IRoute, ROUTES} from "../../../config/routes";
 import {Route, Routes} from "react-router";
 import ManagementHeader from "../Header/ManagementHeader";
 import ManagementDrawer from "../Drawer/ManagementDrawer";
+import {Card, Typography} from "@mui/material";
+import {useAppSelector} from "../../../redux/hooks";
+import {getProfile} from "../../../redux/auth/authSlice";
 
 type IPageProps = {
   title: string;
@@ -64,6 +67,7 @@ export const MANAGEMENT_PAGES: IPageProps[] = [
 ];
 
 const ManagementMain: FC = () => {
+  const profile = useAppSelector(getProfile);
   const [isOpenDrawer, setIsOpenDrawer] = useState<boolean>(false);
 
   return (
@@ -77,6 +81,25 @@ const ManagementMain: FC = () => {
       />
       <div className="content_pages_container">
         <Routes>
+          <Route
+            path='/'
+            element={(
+              <div className='main-container'>
+                <Card className='main-card'>
+                  <Typography variant='h5' align='center' style={{marginBottom: '30px'}}>
+                    {profile ? <b>{profile.fio.split(' ')[1]}, </b> : ''}добро пожаловать!
+                  </Typography>
+                  <Typography>
+                    Выбирай страницу и начинай влавствовать!
+                  </Typography>
+                  <Typography>
+                    Набор страниц зависит от прав, наделёнными вашему аккаунту.
+                    Если у вас не хватает каких-либо страниц, обратитесь к более старшему администратору.
+                  </Typography>
+                </Card>
+              </div>
+            )}
+          />
           {MANAGEMENT_PAGES.map((page, index) => (
             <Route
               key={`KEY_NAVIGATIONS_PAGE_${index}`}

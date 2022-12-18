@@ -9,6 +9,7 @@ import {METRIC_ACTIONS} from "../../../config/metricActions";
 import {DOCUMENT_LOCATIONS} from "../../../config/documentLocations";
 import {ROUTES} from "../../../config/routes";
 import {getConfigurations} from "../../../redux/configurations/configurationsSlice";
+import {Button, Typography} from "@mui/material";
 
 const Header: FC = () => {
   const dispatch = useAppDispatch();
@@ -18,10 +19,10 @@ const Header: FC = () => {
   return (
     <div className='top-bar-main-container'>
       {!!siteConfigurations[SITE_CONFIG_IDENTIFIERS.DEMO_MODE]?.value ?
-        <Link to='/management'>
-          <b>Панель</b>
-          <br/>
-          <b>управления</b>
+        <Link to='/management' className='link-container'>
+          <Button>
+            <b>Панель управления</b>
+          </Button>
         </Link>
         :
         <img src='/images/logo.gif' alt='BARENAD'/>
@@ -33,7 +34,9 @@ const Header: FC = () => {
           dispatch(actionOnTheSite(METRIC_ACTIONS.NAVIGATION_CHANGE_PAGE));
         }}
       >
-        Товары
+        <Button>
+          Товары
+        </Button>
       </Link>
       {documentOnTopBar &&
         <a
@@ -44,7 +47,9 @@ const Header: FC = () => {
             dispatch(actionOnTheSite(METRIC_ACTIONS.NAVIGATION_OPEN_TOP_BAR_DOCUMENT));
           }}
         >
-          {documentOnTopBar.name}
+          <Button>
+            {documentOnTopBar.name}
+          </Button>
         </a>
       }
       <Link
@@ -54,7 +59,9 @@ const Header: FC = () => {
           dispatch(actionOnTheSite(METRIC_ACTIONS.NAVIGATION_CHANGE_PAGE));
         }}
       >
-        О нас
+        <Button>
+          О нас
+        </Button>
       </Link>
       <Link
         to={ROUTES.CONTACTS.link}
@@ -63,13 +70,15 @@ const Header: FC = () => {
           dispatch(actionOnTheSite(METRIC_ACTIONS.NAVIGATION_CHANGE_PAGE));
         }}
       >
-        Контакты
+        <Button>
+          Контакты
+        </Button>
       </Link>
-      <div
+      <Typography
         className='container-advantages'
         dangerouslySetInnerHTML={{__html: siteConfigurations[SITE_CONFIG_IDENTIFIERS.HEADER_LAST]?.value || 'BARENAD'}}
       >
-      </div>
+      </Typography>
     </div>
   );
 };

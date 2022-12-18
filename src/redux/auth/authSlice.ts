@@ -33,6 +33,7 @@ export const authSlice = createSlice({
 export const { setProfile, changeAuthStatus } = authSlice.actions;
 
 export const getAuthStatus = (state: IRootState) => state.auth.status;
+export const getProfile = (state: IRootState) => state.auth.profile;
 
 export const HandleChangeAuthStatusContext = createContext((newStatus: boolean) => {});
 

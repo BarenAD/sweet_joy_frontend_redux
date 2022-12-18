@@ -1,4 +1,4 @@
-import React, {FC, useEffect} from "react";
+import React, {FC, useEffect, useMemo} from "react";
 import {Route, Routes} from "react-router-dom";
 
 import "./Main.scss";
@@ -12,17 +12,20 @@ import {getAppStoreStatus, refreshStore} from "../../../App/appSlice";
 import About from "../About/About";
 import Products from "../Products/Products";
 import {ROUTES} from "../../../../config/routes";
+import {getConfigurationsStatus, refreshConfigurations} from "../../../../redux/configurations/configurationsSlice";
 
 const Main: FC = () => {
   const dispatch = useAppDispatch();
   const storeStatus = useAppSelector(getAppStoreStatus);
+  const configurationsStatus = useAppSelector(getConfigurationsStatus);
 
   useEffect(() => {
+    dispatch(refreshConfigurations());
     dispatch(refreshStore());
   }, []);
 
-  const contentByStatus = () => {
-    if (storeStatus === STORE_STATUSES.COMPLETE) {
+  const contentByStatus = useMemo(() => {
+    if (storeStatus === STORE_STATUSES.COMPLETE && configurationsStatus === STORE_STATUSES.COMPLETE) {
       return (
         <Routes>
           <Route path={ROUTES.PRODUCTS.path} element={<Products />}/>
@@ -31,9 +34,9 @@ const Main: FC = () => {
         </Routes>
       );
     }
-    if (storeStatus === STORE_STATUSES.ERROR) {
+    if (storeStatus === STORE_STATUSES.ERROR && configurationsStatus !== STORE_STATUSES.LOADING) {
       return (
-        <div>
+        <div className='preloader-container'>
           <b>Произошла непредвиденная ошибка</b>
         </div>
       );
@@ -43,13 +46,13 @@ const Main: FC = () => {
         <Preloader size={50}/>
       </div>
     );
-  }
+  }, [storeStatus, configurationsStatus]);
 
   return (
     <div className='main-container'>
       <Header/>
       <div className='content-container'>
-        {contentByStatus()}
+        {contentByStatus}
       </div>
       <Footer/>
     </div>
