@@ -4,7 +4,7 @@ import {useAppDispatch, useAppSelector} from "../../redux/hooks";
 import {Navigate, Route, Routes} from "react-router";
 import Main from "../main/pages/Main/Main";
 import {ROUTES} from "../../config/routes";
-import ManagementMain from "../management/Main/ManagementMain";
+import ManagementMain from "../management/pages/Main/ManagementMain";
 import {changeAuthStatus, getAuthStatus, HandleChangeAuthStatusContext} from "../../redux/auth/authSlice";
 import Login from "../common/Login/Login";
 import {

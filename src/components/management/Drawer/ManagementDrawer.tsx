@@ -1,7 +1,7 @@
 import React, {FC} from "react";
 import {Link} from "react-router-dom";
 import {Drawer} from "@mui/material";
-import {MANAGEMENT_PAGES} from "../Main/ManagementMain";
+import {MANAGEMENT_PAGES} from "../pages/Main/ManagementMain";
 import "./ManagementDrawer.scss";
 
 type IManagementDrawerProps = {

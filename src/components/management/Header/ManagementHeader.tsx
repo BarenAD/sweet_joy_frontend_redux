@@ -2,7 +2,7 @@ import {Button, IconButton, Menu, MenuItem, Typography} from "@mui/material";
 import {MenuOutlined} from "@mui/icons-material";
 import {Route, Routes} from "react-router";
 import React, {FC, useContext, useState} from "react";
-import {MANAGEMENT_PAGES} from "../Main/ManagementMain";
+import {MANAGEMENT_PAGES} from "../pages/Main/ManagementMain";
 import "./ManagementHeader.scss";
 import {httpClient} from "../../../utils/httpClient";
 import {IResponseLogin} from "../../../redux/auth/authTypes";

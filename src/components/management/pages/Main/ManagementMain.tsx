@@ -1,12 +1,13 @@
 import React, {FC, ReactElement, useState} from "react";
 import "./ManagementMain.scss";
-import {IRoute, ROUTES} from "../../../config/routes";
+import {IRoute, ROUTES} from "../../../../config/routes";
 import {Route, Routes} from "react-router";
-import ManagementHeader from "../Header/ManagementHeader";
-import ManagementDrawer from "../Drawer/ManagementDrawer";
+import ManagementHeader from "../../Header/ManagementHeader";
+import ManagementDrawer from "../../Drawer/ManagementDrawer";
 import {Card, Typography} from "@mui/material";
-import {useAppSelector} from "../../../redux/hooks";
-import {getProfile} from "../../../redux/auth/authSlice";
+import {useAppSelector} from "../../../../redux/hooks";
+import {getProfile} from "../../../../redux/auth/authSlice";
+import ManagementConfigurations from "../Configurations/ManagementConfigurations";
 
 type IPageProps = {
   title: string;
@@ -53,9 +54,9 @@ export const MANAGEMENT_PAGES: IPageProps[] = [
     grants: ['*']
   },
   {
-    title: 'MANAGEMENT_CONFIGURATIONS',
+    title: 'Конфигурация сайта',
     route: ROUTES.MANAGEMENT_CONFIGURATIONS,
-    component: (<div>MANAGEMENT_CONFIGURATIONS</div>),
+    component: <ManagementConfigurations />,
     grants: ['*']
   },
   {

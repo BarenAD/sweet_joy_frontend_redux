@@ -7,4 +7,5 @@ export const ROUTES_API = {
   REGISTRATION: `${API_URL}/auth/register`,
   LOGOUT: `${API_URL}/auth/logout`,
   LOGOUT_ALL: `${API_URL}/auth/logout/all`,
+  MANAGEMENT_CONFIGURATIONS: `${API_URL}/management/configurations/site`,
 };
