@@ -8,6 +8,7 @@ import {Card, Typography} from "@mui/material";
 import {useAppSelector} from "../../../../redux/hooks";
 import {getProfile} from "../../../../redux/auth/authSlice";
 import ManagementConfigurations from "../Configurations/ManagementConfigurations";
+import ManagementCategories from "../Categories/ManagementCategories";
 
 type IPageProps = {
   title: string;
@@ -36,9 +37,9 @@ export const MANAGEMENT_PAGES: IPageProps[] = [
     grants: ['*']
   },
   {
-    title: 'MANAGEMENT_CATEGORIES',
+    title: 'Категории товаров',
     route: ROUTES.MANAGEMENT_CATEGORIES,
-    component: (<div>MANAGEMENT_CATEGORIES</div>),
+    component: <ManagementCategories />,
     grants: ['*']
   },
   {
