@@ -38,6 +38,9 @@ const ManagementConfigurations: FC = () => {
   }, [])
 
   const handleChangeConfiguration = () => {
+    if (!window.confirm(`Вы действительно хотите изменить конфигурацию?`)) {
+      return;
+    }
     if (!changingConfiguration) {
       return;
     }
