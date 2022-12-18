@@ -38,14 +38,12 @@ const ManagementHeader: FC<IManagementHeaderProps> = ({
       handleChangeAuthStatus: handleChangeAuthStatusContext,
       isNeedAuth: true,
     })
-      .then(() => {
+      .finally(() => {
+        setIsLoading(false);
         localStorage.removeItem(KEY_LOCAL_STORAGE_AUTHORIZATION_ACCESS_TOKEN);
         localStorage.removeItem(KEY_LOCAL_STORAGE_AUTHORIZATION_PROFILE);
         dispatch(setProfile(null));
         handleChangeAuthStatusContext(false);
-      })
-      .finally(() => {
-        setIsLoading(false);
       });
   };
 

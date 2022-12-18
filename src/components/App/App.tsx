@@ -1,4 +1,4 @@
-import React, {FC} from "react";
+import React, {FC, useEffect} from "react";
 import "./App.scss";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
 import {Navigate, Route, Routes} from "react-router";
@@ -14,10 +14,20 @@ import {
 } from "../common/Notifications/notificationsSlice";
 import Notifications from "../common/Notifications/Notifications";
 import Registration from "../common/Registration/Registration";
+import {getConfigurationsStatus, refreshConfigurations} from "../../redux/configurations/configurationsSlice";
+import {STATUS_CODES} from "http";
+import {STORE_STATUSES} from "../../config/storeStatuses";
+import Preloader from "../common/Preloader/Preloader";
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
   const isAuth = useAppSelector(getAuthStatus);
+  const configurationsStatus = useAppSelector(getConfigurationsStatus);
+
+
+  useEffect(() => {
+    dispatch(refreshConfigurations());
+  }, []);
 
   const handleAddNotification = (notification: INotificationAction) => {
     dispatch(addNotification(notification));
@@ -30,26 +40,32 @@ const App: FC = () => {
     <HandleChangeAuthStatusContext.Provider value={handleChangeAuthStatus}>
       <HandleAddNotificationContext.Provider value={handleAddNotification}>
         <Notifications />
-        <div className='App'>
-          <Routes>
-            <Route
-              path={ROUTES.REGISTRATION.path}
-              element={isAuth ? <Navigate to={ROUTES.MANAGEMENT.link} replace /> : <Registration />}
-            />
-            <Route
-              path={ROUTES.AUTH.path}
-              element={isAuth ? <Navigate to={ROUTES.MANAGEMENT.link} replace /> : <Login />}
-            />
-            <Route
-              path={ROUTES.MANAGEMENT.path}
-              element={isAuth ? <ManagementMain /> : <Navigate to={ROUTES.AUTH.link} replace />}
-            />
-            <Route
-              path={ROUTES.MAIN.path}
-              element={<Main />}
-            />
-          </Routes>
-        </div>
+        {configurationsStatus === STORE_STATUSES.LOADING ?
+          <div className='flexbox-center'>
+            <Preloader size={50} />
+          </div>
+          :
+          <div className='App'>
+            <Routes>
+              <Route
+                path={ROUTES.REGISTRATION.path}
+                element={isAuth ? <Navigate to={ROUTES.MANAGEMENT.link} replace /> : <Registration />}
+              />
+              <Route
+                path={ROUTES.AUTH.path}
+                element={isAuth ? <Navigate to={ROUTES.MANAGEMENT.link} replace /> : <Login />}
+              />
+              <Route
+                path={ROUTES.MANAGEMENT.path}
+                element={isAuth ? <ManagementMain /> : <Navigate to={ROUTES.AUTH.link} replace />}
+              />
+              <Route
+                path={ROUTES.MAIN.path}
+                element={<Main />}
+              />
+            </Routes>
+          </div>
+        }
       </HandleAddNotificationContext.Provider>
     </HandleChangeAuthStatusContext.Provider>
   );

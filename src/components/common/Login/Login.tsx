@@ -1,6 +1,5 @@
 import React, {FC, useContext, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
-import {getConfigurations} from "../../App/appSlice";
 import {SITE_CONFIG_IDENTIFIERS} from "../../../config/siteConfigIdentifiers";
 import {Button, TextField, Typography} from "@mui/material";
 import "./Login.scss"
@@ -14,12 +13,13 @@ import {
   KEY_LOCAL_STORAGE_AUTHORIZATION_ACCESS_TOKEN,
   KEY_LOCAL_STORAGE_AUTHORIZATION_PROFILE
 } from "../../../config/config";
+import {getConfigurations} from "../../../redux/configurations/configurationsSlice";
 
 const Login: FC = () => {
   const dispatch = useAppDispatch();
-  const isDemo: boolean = !!useAppSelector(getConfigurations)[SITE_CONFIG_IDENTIFIERS.DEMO_MODE]?.value;
-  const [email, setEmail] = useState<string>(isDemo ? 'admin' : '');
-  const [password, setPassword] = useState<string>(isDemo ? 'admin' : '');
+  const configurations = useAppSelector(getConfigurations);
+  const [email, setEmail] = useState<string>(configurations[SITE_CONFIG_IDENTIFIERS.DEMO_USER_EMAIL]?.value ?? '');
+  const [password, setPassword] = useState<string>(configurations[SITE_CONFIG_IDENTIFIERS.DEMO_USER_PASSWORD]?.value ?? '');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const handleAddNotificationContext = useContext(HandleAddNotificationContext);
   const handleChangeAuthStatusContext = useContext(HandleChangeAuthStatusContext);

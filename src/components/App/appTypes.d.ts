@@ -15,7 +15,6 @@ export type IAppStore = IBaseStore & {
   shops: IShop[];
   shopProducts: IKeyNumberStoreObject<IShopProduct[]>;
   documents: IKeyStringStoreObject<IDocument>;
-  configuration: IKeyStringStoreObject<IConfiguration>;
 };
 
 export type IProduct = {
@@ -57,13 +56,6 @@ export type IDocument = {
   name: string;
   url: string;
   location: "main_top_bar_document";
-};
-
-export type IConfiguration = {
-  id: number;
-  name: string;
-  identify: typeof SITE_CONFIG_IDENTIFIERS[keyof typeof SITE_CONFIG_IDENTIFIERS];
-  value: string;
 };
 
 export type ISchedule = {

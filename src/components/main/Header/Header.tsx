@@ -1,13 +1,14 @@
 import {FC} from "react";
 import "./Header.scss";
 import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
-import {getConfigurations, getDocuments} from "../../App/appSlice";
+import {getDocuments} from "../../App/appSlice";
 import {SITE_CONFIG_IDENTIFIERS} from "../../../config/siteConfigIdentifiers";
 import {Link} from "react-router-dom";
 import {actionOnTheSite} from "../../../redux/metrics/metricsSlice";
 import {METRIC_ACTIONS} from "../../../config/metricActions";
 import {DOCUMENT_LOCATIONS} from "../../../config/documentLocations";
 import {ROUTES} from "../../../config/routes";
+import {getConfigurations} from "../../../redux/configurations/configurationsSlice";
 
 const Header: FC = () => {
   const dispatch = useAppDispatch();

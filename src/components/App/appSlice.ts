@@ -2,7 +2,7 @@ import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {IRootState} from "../../redux/store";
 import {
   IAppStore,
-  ICategory, IConfiguration, IDocument,
+  ICategory, IDocument,
   IKeyNumberStoreObject,
   IKeyStringStoreObject,
   IProduct,
@@ -23,7 +23,6 @@ const initialState: IAppStore = {
   shops: [],
   shopProducts: {},
   documents: {},
-  configuration: {},
 };
 
 type IResponseRefreshStore = {
@@ -32,7 +31,6 @@ type IResponseRefreshStore = {
   shops: IShop[],
   shopProducts: IKeyNumberStoreObject<IShopProduct[]>;
   documents: IKeyStringStoreObject<IDocument>;
-  configuration: IKeyStringStoreObject<IConfiguration>;
 };
 
 export const refreshStore = createAsyncThunk(
@@ -74,7 +72,6 @@ export const appSlice = createSlice({
           shops: data.shops,
           shopProducts: data.shop_products,
           documents: data.documents,
-          configuration: data.site_configurations,
         };
       })
       .addCase(refreshStore.rejected, (state, action) => {
@@ -97,7 +94,6 @@ export const getCategories = (state: IRootState) => state.app.categories;
 export const getShops = (state: IRootState) => state.app.shops;
 export const getShopProducts = (state: IRootState) => state.app.shopProducts;
 export const getDocuments = (state: IRootState) => state.app.documents;
-export const getConfigurations = (state: IRootState) => state.app.configuration;
 
 
 export default appSlice.reducer;
