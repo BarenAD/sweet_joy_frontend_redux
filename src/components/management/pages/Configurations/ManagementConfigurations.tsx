@@ -17,9 +17,11 @@ import {ROUTES_API} from "../../../../config/routesApi";
 import {HandleAddNotificationContext} from "../../../common/Notifications/notificationsSlice";
 import {HandleChangeAuthStatusContext} from "../../../../redux/auth/authSlice";
 import Preloader from "../../../common/Preloader/Preloader";
+import ConfirmDialog, {ISimpleDialogContentState} from "../../../common/ConfirmDialog/ConfirmDialog";
 
 const ManagementConfigurations: FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [dialogContent, setDialogContent] = useState<null | ISimpleDialogContentState>(null);
   const [configurations, setConfigurations] = useState<IConfiguration[]>([]);
   const [changingConfiguration, setChangingConfiguration] = useState<IConfiguration | null>(null);
   const handleAddNotificationContext = useContext(HandleAddNotificationContext);
@@ -37,10 +39,18 @@ const ManagementConfigurations: FC = () => {
       .finally(() => setIsLoading(false));
   }, [])
 
+  const confirmChangeConfiguration = () => {
+    setDialogContent({
+      title: `Вы действительно хотите изменить конфигурацию?`,
+      confirmText: 'изменить',
+      handleConfirm: () => {
+        setDialogContent(null);
+        handleChangeConfiguration();
+      },
+    });
+  };
+
   const handleChangeConfiguration = () => {
-    if (!window.confirm(`Вы действительно хотите изменить конфигурацию?`)) {
-      return;
-    }
     if (!changingConfiguration) {
       return;
     }
@@ -77,6 +87,23 @@ const ManagementConfigurations: FC = () => {
 
   return (
     <div>
+      <ConfirmDialog
+        isOpen={!!dialogContent}
+        title={dialogContent?.title}
+        confirmButton={dialogContent ? {
+            text: dialogContent.confirmText,
+            handle: dialogContent.handleConfirm,
+          }
+          :
+          undefined
+        }
+        declineButton={{
+          text: 'Отмена',
+          handle: () => {
+            setDialogContent(null);
+          }
+        }}
+      />
       <TableContainer component={Paper}>
         <Table aria-label="customized table">
           <TableHead>
@@ -119,7 +146,7 @@ const ManagementConfigurations: FC = () => {
                       style={{marginRight: '10px'}}
                       onClick={() => {
                         if (changingConfiguration?.id === configuration.id) {
-                          handleChangeConfiguration();
+                          confirmChangeConfiguration();
                         } else {
                           setChangingConfiguration(configuration);
                         }

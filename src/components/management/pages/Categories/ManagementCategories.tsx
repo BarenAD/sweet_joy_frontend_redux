@@ -20,9 +20,11 @@ import Preloader from "../../../common/Preloader/Preloader";
 import {ICategory} from "../../../App/appTypes";
 import "./ManagementCategories.scss";
 import {MANAGEMENT_COUNT_CATEGORIES_ON_PAGE} from "../../../../config/config";
+import ConfirmDialog, {ISimpleDialogContentState} from "../../../common/ConfirmDialog/ConfirmDialog";
 
 const ManagementCategories: FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [dialogContent, setDialogContent] = useState<null | ISimpleDialogContentState>(null);
   const [filterState, setFilterState] = useState<string>('');
   const [appliedFilter, setAppliedFilter] = useState<string>('');
   const [categories, setCategories] = useState<ICategory[]>([]);
@@ -83,7 +85,7 @@ const ManagementCategories: FC = () => {
                     color="inherit"
                     onClick={() => {
                       setChangingCategory(category);
-                      handleActionCategory('DELETE', category.id);
+                      confirmActionCategory('DELETE', category.id);
                     }}
                   >
                     <DeleteOutline/>
@@ -112,11 +114,19 @@ const ManagementCategories: FC = () => {
       .finally(() => setIsLoading(false));
   }, [])
 
-  const handleActionCategory = (action: 'POST' | 'PUT' | 'DELETE', id?: number) => {
+  const confirmActionCategory = (action: 'POST' | 'PUT' | 'DELETE', id?: number) => {
     const messageAction = action === 'POST' ? 'создать' : action === 'PUT' ? 'изменить' : 'удалить';
-    if (!window.confirm(`Вы действительно хотите ${messageAction} категорию?`)) {
-      return;
-    }
+    setDialogContent({
+      title: `Вы действительно хотите ${messageAction} категорию?`,
+      confirmText: messageAction,
+      handleConfirm: () => {
+        setDialogContent(null);
+        handleActionCategory(action,id)
+      },
+    });
+  };
+
+  const handleActionCategory = (action: 'POST' | 'PUT' | 'DELETE', id?: number) => {
     const queryParam: string = action === 'POST' ? '' : `/${id ?? changingCategory?.id}`;
     setIsLoading(true);
     httpClient<ICategory>({
@@ -173,6 +183,23 @@ const ManagementCategories: FC = () => {
 
   return (
     <div className='management-categories-container'>
+      <ConfirmDialog
+        isOpen={!!dialogContent}
+        title={dialogContent?.title}
+        confirmButton={dialogContent ? {
+            text: dialogContent.confirmText,
+            handle: dialogContent.handleConfirm,
+          }
+          :
+          undefined
+        }
+        declineButton={{
+          text: 'Отмена',
+          handle: () => {
+            setDialogContent(null);
+          }
+        }}
+      />
       <div className='edit-container'>
         <div className='part-container'>
           {filterState !== appliedFilter &&
@@ -225,7 +252,7 @@ const ManagementCategories: FC = () => {
                 color="inherit"
                 style={{marginRight: '10px'}}
                 disabled={isLoading}
-                onClick={() => {handleActionCategory('PUT');}}
+                onClick={() => {confirmActionCategory('PUT');}}
               >
                 <EditOutlined />
               </IconButton>
@@ -247,7 +274,7 @@ const ManagementCategories: FC = () => {
                 edge="start"
                 color="inherit"
                 disabled={isLoading}
-                onClick={() => handleActionCategory('POST')}
+                onClick={() => confirmActionCategory('POST')}
               >
                 <AddCircleOutline />
               </IconButton>
