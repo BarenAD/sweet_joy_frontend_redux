@@ -40,6 +40,7 @@ const Products: FC = () => {
 
   useEffect(() => {
     window.onresize = debounceOnChangeWindow;
+    setWindowWidth(window.innerWidth);
   }, []);
 
   const countCardsPerPage = useMemo<number>(() => {
