@@ -1,7 +1,7 @@
-import React, {FC, useContext, useEffect, useMemo, useState} from "react";
+import React, {FC, useCallback, useContext, useEffect, useMemo, useState} from "react";
 import {
   debounce,
-  IconButton,
+  IconButton, Pagination,
   Paper,
   Table,
   TableBody,
@@ -19,6 +19,7 @@ import {HandleChangeAuthStatusContext} from "../../../../redux/auth/authSlice";
 import Preloader from "../../../common/Preloader/Preloader";
 import {ICategory} from "../../../App/appTypes";
 import "./ManagementCategories.scss";
+import {MANAGEMENT_COUNT_CATEGORIES_ON_PAGE} from "../../../../config/config";
 
 const ManagementCategories: FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -27,49 +28,77 @@ const ManagementCategories: FC = () => {
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [newCategory, setNewCategory] = useState<ICategory>({id: 0, name: ''});
   const [changingCategory, setChangingCategory] = useState<ICategory | null>(null);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [countPages, setCountPages] = useState<number>(0);
   const handleAddNotificationContext = useContext(HandleAddNotificationContext);
   const handleChangeAuthStatusContext = useContext(HandleChangeAuthStatusContext);
-  const debounceAppliedFilter = useMemo(() => {
-    return debounce((newValue: string) => {
+
+  const debounceAppliedFilter = useCallback(
+    debounce((newValue: string) => {
       setAppliedFilter(newValue);
-    }, 2000);
-  }, []);
+    }, 2000),
+    []);
+
+  const filteredCategories = useMemo(() => {
+    return appliedFilter ?
+      categories
+        .filter((category) => ~category.name.toLowerCase().indexOf(appliedFilter.toLowerCase()))
+      :
+      categories;
+  }, [appliedFilter, categories]);
+
+  useEffect(() => {
+    setCountPages(Math.ceil(filteredCategories.length / MANAGEMENT_COUNT_CATEGORIES_ON_PAGE));
+    setCurrentPage(1);
+  }, [filteredCategories]);
+
   const renderedCategories = useMemo(() => {
+    const startValue = (currentPage-1) * MANAGEMENT_COUNT_CATEGORIES_ON_PAGE;
+    const lastValue = (startValue + MANAGEMENT_COUNT_CATEGORIES_ON_PAGE);
     return (
       <TableBody>
-        {categories
-          .filter((category) => ~category.name.toLowerCase().indexOf(appliedFilter.toLowerCase()))
-          .map((category: ICategory) => (
-            <TableRow key={`KEY_MANAGEMENT_CATEGORIES_${category.id}`}>
-              <TableCell component="th" scope="row">
-                <Typography>
-                  {category.name}
-                </Typography>
-              </TableCell>
-              <TableCell component="th" scope="row">
-                <IconButton
-                  edge="start"
-                  color="inherit"
-                  style={{marginRight: '10px'}}
-                  onClick={() => {setChangingCategory(category);}}
-                >
-                  <EditOutlined />
-                </IconButton>
-                <IconButton
-                  edge="start"
-                  color="inherit"
-                  onClick={() => {
-                    handleActionCategory('DELETE', category.id);
-                  }}
-                >
-                  <DeleteOutline/>
-                </IconButton>
-              </TableCell>
-            </TableRow>
-          ))}
+        {filteredCategories
+          .map((category: ICategory, index) => {
+            if (index < startValue || index > lastValue) {
+              return null;
+            }
+            return (
+              <TableRow key={`KEY_MANAGEMENT_CATEGORIES_${category.id}`}>
+                <TableCell component="th" scope="row">
+                  <Typography>
+                    {category.name}
+                  </Typography>
+                </TableCell>
+                <TableCell component="th" scope="row">
+                  <IconButton
+                    edge="start"
+                    color="inherit"
+                    style={{marginRight: '10px'}}
+                    onClick={() => {setChangingCategory(category);}}
+                  >
+                    <EditOutlined />
+                  </IconButton>
+                  <IconButton
+                    edge="start"
+                    color="inherit"
+                    onClick={() => {
+                      setChangingCategory(category);
+                      handleActionCategory('DELETE', category.id);
+                    }}
+                  >
+                    <DeleteOutline/>
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            );
+          })}
       </TableBody>
     );
-  }, [appliedFilter, categories]);
+  }, [filteredCategories, currentPage]);
+
+  const handleChangePage = (event: object, newPage: number) => {
+    setCurrentPage(newPage);
+  };
 
   useEffect(() => {
     httpClient<ICategory[]>({
@@ -156,6 +185,7 @@ const ManagementCategories: FC = () => {
             label="Поиск"
             variant="outlined"
             value={filterState}
+            disabled={isLoading}
             onChange={(event) => {
               setFilterState(event.target.value);
               debounceAppliedFilter(event.target.value);
@@ -168,6 +198,7 @@ const ManagementCategories: FC = () => {
             label="название категории"
             variant="outlined"
             value={changingCategory?.name ?? newCategory.name}
+            disabled={isLoading}
             onChange={(event) => {
               changingCategory ?
                 setChangingCategory({
@@ -193,6 +224,7 @@ const ManagementCategories: FC = () => {
                 edge="start"
                 color="inherit"
                 style={{marginRight: '10px'}}
+                disabled={isLoading}
                 onClick={() => {handleActionCategory('PUT');}}
               >
                 <EditOutlined />
@@ -201,6 +233,7 @@ const ManagementCategories: FC = () => {
                 edge="start"
                 color="inherit"
                 style={{marginRight: '10px'}}
+                disabled={isLoading}
                 onClick={() => {
                   setChangingCategory(null);
                 }}
@@ -213,6 +246,7 @@ const ManagementCategories: FC = () => {
               <IconButton
                 edge="start"
                 color="inherit"
+                disabled={isLoading}
                 onClick={() => handleActionCategory('POST')}
               >
                 <AddCircleOutline />
@@ -220,17 +254,29 @@ const ManagementCategories: FC = () => {
             </div>
         }
       </div>
-      <TableContainer component={Paper}>
-        <Table aria-label="customized table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Название категории</TableCell>
-              <TableCell>Действие</TableCell>
-            </TableRow>
-          </TableHead>
-          {renderedCategories}
-        </Table>
-      </TableContainer>
+      <Pagination
+        page={currentPage}
+        count={countPages}
+        onChange={handleChangePage}
+      />
+      <div className='table-content-container'>
+        <TableContainer component={Paper}>
+          <Table aria-label="customized table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Название категории</TableCell>
+                <TableCell>Действие</TableCell>
+              </TableRow>
+            </TableHead>
+            {renderedCategories}
+          </Table>
+        </TableContainer>
+      </div>
+      <Pagination
+        page={currentPage}
+        count={countPages}
+        onChange={handleChangePage}
+      />
     </div>
   );
 };

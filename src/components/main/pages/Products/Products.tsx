@@ -1,12 +1,13 @@
-import React, {FC, ReactElement, useEffect, useMemo, useState} from "react";
+import React, {FC, ReactElement, useCallback, useEffect, useMemo, useRef, useState} from "react";
 import "./Products.scss";
-import {IProduct, IShopProduct} from "../../../App/appTypes";
+import {IKeyNumberStoreObject, IProduct, IShopProduct} from "../../../App/appTypes";
 import {useAppSelector} from "../../../../redux/hooks";
 import {getProducts, getShopProducts} from "../../../App/appSlice";
 import { actionOnTheSite } from "../../../../redux/metrics/metricsSlice";
 import {METRIC_ACTIONS} from "../../../../config/metricActions";
-import {COUNT_PRODUCTS_ON_PAGE} from "../../../../config/config";
+import {COUNT_PRODUCTS_ROWS, PRODUCT_CARD_WIDTH} from "../../../../config/config";
 import {
+  debounce,
   Modal,
   Pagination,
 } from "@mui/material";
@@ -28,10 +29,28 @@ const Products: FC = () => {
   const [filteringByCategoriesIds, setFilteringByCategoriesIds] = useState<number[]>([]);
   const [isFilteringByAllOrNothing, setIsFilteringByAllOrNothing] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [countVisibleProducts, setCountVisibleProducts] = useState<number>(0);
-  const [countPages, setCountPages] = useState<number>(0);
+  const productsContainer = useRef<HTMLDivElement>(null);
+  const [windowWidth, setWindowWidth] = useState<number>(0);
 
-  const filteredShopProducts = useMemo(() => {
+  const debounceOnChangeWindow = useCallback<() => void>(
+    debounce(() => {
+      setWindowWidth(window.innerWidth);
+    }, 2000),
+    []);
+
+  useEffect(() => {
+    window.onresize = debounceOnChangeWindow;
+  }, []);
+
+  const countCardsPerPage = useMemo<number>(() => {
+    if (!productsContainer.current) {
+      return 0;
+    }
+    const widthContainer = productsContainer.current.getBoundingClientRect();
+    return Math.floor(widthContainer.width / PRODUCT_CARD_WIDTH) * COUNT_PRODUCTS_ROWS;
+  }, [productsContainer.current, windowWidth]);
+
+  const filteredShopProducts = useMemo<IKeyNumberStoreObject<IShopProduct[]>>(() => {
     return filterShopProducts(
       shopProducts,
       products,
@@ -41,32 +60,24 @@ const Products: FC = () => {
         allOrNothing: isFilteringByAllOrNothing,
       }
     );
-  }, [filteringByShopId, filteringByCategoriesIds, isFilteringByAllOrNothing]);
+  }, [
+    shopProducts,
+    products,
+    filteringByShopId,
+    filteringByCategoriesIds,
+    isFilteringByAllOrNothing
+  ]);
 
-  useEffect(() => {
-    const newCountVisibleProducts = Object.keys(filteredShopProducts).length;
-    setCountVisibleProducts(newCountVisibleProducts);
-    setCountPages(Math.ceil(newCountVisibleProducts / COUNT_PRODUCTS_ON_PAGE));
-  }, [filteredShopProducts]);
-
-  const handleOpenDetails = (product: IProduct) => {
-    actionOnTheSite({...METRIC_ACTIONS.PRODUCT_OPEN_DETAILS, payload: {product_id: product.id}});
-    setModalContent(<ProductDetailsModal product={product} />);
-  }
-
-  const handleChangePage = (event: object, newPage: number) => {
-    actionOnTheSite({...METRIC_ACTIONS.PRODUCT_CHANGE_PAGE, payload: {new_page: newPage}})
-    setCurrentPage(newPage);
-  };
-
-  const renderProductsByPagination = () => {
-    const startValue = (currentPage-1) * COUNT_PRODUCTS_ON_PAGE;
-    const expectedLastIndex = (startValue + COUNT_PRODUCTS_ON_PAGE);
-    const lastValue = expectedLastIndex < countVisibleProducts ? expectedLastIndex : countVisibleProducts;
+  const renderedProductsByPagination = useMemo(() => {
+    if (!countCardsPerPage) {
+      return null;
+    }
+    const startValue = (currentPage-1) * (countCardsPerPage);
+    const lastValue = (startValue + (countCardsPerPage));
 
     return Object.entries<IShopProduct[]>(filteredShopProducts)
       .map(([productId, productShops], index) => {
-        if (index < startValue || index > lastValue) {
+        if (index < startValue || index >= lastValue) {
           return null;
         }
         const intProductId = parseInt(productId);
@@ -82,7 +93,21 @@ const Products: FC = () => {
           />
         );
       });
+  }, [filteredShopProducts, countCardsPerPage, currentPage]);
+
+  const countPages = useMemo<number>(() => {
+    return Math.ceil(Object.keys(filteredShopProducts).length / countCardsPerPage);
+  }, [countCardsPerPage, filteredShopProducts]);
+
+  const handleOpenDetails = (product: IProduct) => {
+    actionOnTheSite({...METRIC_ACTIONS.PRODUCT_OPEN_DETAILS, payload: {product_id: product.id}});
+    setModalContent(<ProductDetailsModal product={product} />);
   }
+
+  const handleChangePage = (event: object, newPage: number) => {
+    actionOnTheSite({...METRIC_ACTIONS.PRODUCT_CHANGE_PAGE, payload: {new_page: newPage}})
+    setCurrentPage(newPage);
+  };
 
   return (
     <div className="products-container">
@@ -118,14 +143,16 @@ const Products: FC = () => {
           page={currentPage}
           count={countPages}
           onChange={handleChangePage}
+          className='paginate-container'
         />
-        <div className="product-cards">
-          {renderProductsByPagination()}
+        <div ref={productsContainer} className="product-cards">
+          {renderedProductsByPagination}
         </div>
         <Pagination
           page={currentPage}
           count={countPages}
           onChange={handleChangePage}
+          className='paginate-container'
         />
       </div>
     </div>
