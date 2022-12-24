@@ -56,6 +56,7 @@ export const httpClient = async <T,>({
     });
   }
 
+  const timeBeforeFetch: number = new Date().getTime();
   return await fetch(url, {
     method: method,
     mode: mode,
@@ -68,13 +69,15 @@ export const httpClient = async <T,>({
         throwableByStatus(response.status, responseData);
       }
       if (preparedIsDebug) {
-        console.log('[DEBUG] result response:');
+        const timeAfterFetch: number = new Date().getTime();
+        const fetchTime: number = (timeAfterFetch - timeBeforeFetch) / 1000;
+        console.log(`[DEBUG] request successfully on [${fetchTime}] seconds. Result response:`);
         console.log(response);
         console.log(responseData);
         if (handleAddNotification) {
           handleAddNotification({
             type: 'success',
-            message: `[DEBUG] Запрос: ${url.replace(API_URL, '')}`,
+            message: `[DEBUG] Запрос : ${url.replace(API_URL, '')} успешно выполнен за [${fetchTime}] секунд`,
           });
         }
       }
