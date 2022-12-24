@@ -2,7 +2,7 @@ import React, {FC, ReactElement, useState} from "react";
 import {Card, IconButton, Modal} from "@mui/material";
 import {useAppSelector} from "../../../../redux/hooks";
 import {getShops} from "../../../App/appSlice";
-import ModalContent from "../../../common/ModalContent/ModalContent";
+import CustomModal from "../../../common/ModalContent/CustomModal";
 import "./Contacts.scss";
 import {preparePhoneByMask} from "../../../../utils/utils";
 import {ISchedule} from "../../../App/appTypes";
@@ -20,20 +20,12 @@ const Contacts: FC = () => {
 
   return (
     <div className='contacts-main-container'>
-      <Modal
-        open={!!modalContent}
+      <CustomModal
         onClose={() => {
           setModalContent(null)
         }}
-      >
-        <ModalContent
-          handleClose={() => {
-            setModalContent(null)
-          }}
-        >
-          {modalContent}
-        </ModalContent>
-      </Modal>
+        children={modalContent}
+      />
       {shops.map((shop) => {
         return (
           <Card

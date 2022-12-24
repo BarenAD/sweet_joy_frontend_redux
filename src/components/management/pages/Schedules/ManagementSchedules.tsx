@@ -4,9 +4,8 @@ import {httpClient} from "../../../../utils/httpClient";
 import {ROUTES_API} from "../../../../config/routesApi";
 import {HandleAddNotificationContext} from "../../../common/Notifications/notificationsSlice";
 import {HandleChangeAuthStatusContext} from "../../../../redux/auth/authSlice";
-import {Modal} from "@mui/material";
 import Preloader from "../../../common/Preloader/Preloader";
-import ModalContent from "../../../common/ModalContent/ModalContent";
+import CustomModal from "../../../common/ModalContent/CustomModal";
 import Schedule from "../../Schedule/Schedule";
 import ScheduleEdit from "../../ScheduleEdit/ScheduleEdit";
 import "./ManagementSchedules.scss";
@@ -128,18 +127,10 @@ const ManagementSchedules: FC = () => {
           }
         }}
       />
-      <Modal
-        open={!!modalContent}
+      <CustomModal
         onClose={() => {setModalContent(null)}}
-      >
-        <ModalContent
-          handleClose={() => {
-            setModalContent(null)
-          }}
-        >
-          {modalContent}
-        </ModalContent>
-      </Modal>
+        children={modalContent}
+      />
       <Schedule
         onClick={() => {
           setModalContent(

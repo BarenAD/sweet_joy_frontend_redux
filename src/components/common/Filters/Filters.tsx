@@ -48,7 +48,7 @@ const Filters: FC<IFiltersProps> = ({
           variant='standard'
           labelId={`ID_SELECT_LABEL_FILTERS_SHOP`}
           id={`ID_SELECT_SELECT_FILTERS_SHOP`}
-          value={selectedShopId ? `${selectedShopId}` : undefined}
+          value={selectedShopId ? `${selectedShopId}` : ''}
           onChange={(event) => {
             actionOnTheSite({...METRIC_ACTIONS.PRODUCT_FILTER_SELECT_SHOP, payload: {shop_id: event.target.value}});
             const value = event.target.value;
@@ -59,7 +59,7 @@ const Filters: FC<IFiltersProps> = ({
             }
           }}
         >
-          <MenuItem value="">сбросить выделение</MenuItem>
+          <MenuItem value=''>сбросить выделение</MenuItem>
           {shops.map(shop => (
             <MenuItem
               key={`KEY_SELECT_FILTERS_SHOP_PRODUCT_${shop.id}`}

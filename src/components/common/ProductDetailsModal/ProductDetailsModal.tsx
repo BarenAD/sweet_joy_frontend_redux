@@ -1,39 +1,30 @@
 import {IProduct, IShopProduct} from "../../App/appTypes";
 import React, {FC, ReactElement, useState} from "react";
-import ModalContent from "../ModalContent/ModalContent";
 import {useAppSelector} from "../../../redux/hooks";
 import {getCategories, getShopProducts} from "../../App/appSlice";
 import "./ProductDetailsModal.scss";
-import {Modal} from "@mui/material";
 import ShopProduct from "../ShopProduct/ShopProduct";
+import CustomModal from "../ModalContent/CustomModal";
 
 type TypeProps = {
   product: IProduct;
 };
 
 const ProductDetailsModal: FC<TypeProps> = ({
-                                              product,
-                                            }) => {
+  product,
+}) => {
   const shopProducts: IShopProduct[] = useAppSelector(getShopProducts)[product.id];
   const categories = useAppSelector(getCategories);
   const [modalContent, setModalContent] = useState<ReactElement | null>(null);
 
   return (
     <div className="product-details-container">
-      <Modal
-        open={!!modalContent}
+      <CustomModal
         onClose={() => {
           setModalContent(null)
         }}
-      >
-        <ModalContent
-          handleClose={() => {
-            setModalContent(null)
-          }}
-        >
-          {modalContent}
-        </ModalContent>
-      </Modal>
+        children={modalContent}
+      />
       <div className="details-container">
         <div className="image-container">
           <img

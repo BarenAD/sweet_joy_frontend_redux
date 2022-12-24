@@ -8,10 +8,9 @@ import {METRIC_ACTIONS} from "../../../../config/metricActions";
 import {COUNT_PRODUCTS_ROWS, PRODUCT_CARD_WIDTH} from "../../../../config/config";
 import {
   debounce,
-  Modal,
   Pagination,
 } from "@mui/material";
-import ModalContent from "../../../common/ModalContent/ModalContent";
+import CustomModal from "../../../common/ModalContent/CustomModal";
 import Product from "../../../common/Product/Product";
 import {filterShopProducts} from "../../../../utils/utils";
 import Filters from "../../../common/Filters/Filters";
@@ -113,20 +112,12 @@ const Products: FC = () => {
 
   return (
     <div className="products-container">
-      <Modal
-        open={!!modalContent}
+      <CustomModal
         onClose={() => {
           setModalContent(null)
         }}
-      >
-        <ModalContent
-          handleClose={() => {
-            setModalContent(null)
-          }}
-        >
-          {modalContent}
-        </ModalContent>
-      </Modal>
+        children={modalContent}
+      />
       <div>
         <Filters
           selectedShopId={filteringByShopId}
