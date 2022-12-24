@@ -9,4 +9,5 @@ export const ROUTES_API = {
   LOGOUT_ALL: `${API_URL}/auth/logout/all`,
   MANAGEMENT_CONFIGURATIONS: `${API_URL}/management/configurations/site`,
   MANAGEMENT_CATEGORIES: `${API_URL}/management/categories`,
+  MANAGEMENT_SCHEDULES: `${API_URL}/management/schedules`,
 };

@@ -10,6 +10,7 @@ import {getProfile} from "../../../../redux/auth/authSlice";
 import ManagementConfigurations from "../Configurations/ManagementConfigurations";
 import ManagementCategories from "../Categories/ManagementCategories";
 import ConfigManager from "../../../common/ConfigManager/ConfigManager";
+import ManagementSchedules from "../Schedules/ManagementSchedules";
 
 type IPageProps = {
   title: string;
@@ -50,9 +51,9 @@ export const MANAGEMENT_PAGES: IPageProps[] = [
     grants: ['*']
   },
   {
-    title: 'MANAGEMENT_SCHEDULES',
+    title: 'Расписания',
     route: ROUTES.MANAGEMENT_SCHEDULES,
-    component: (<div>MANAGEMENT_SCHEDULES</div>),
+    component: <ManagementSchedules />,
     grants: ['*']
   },
   {

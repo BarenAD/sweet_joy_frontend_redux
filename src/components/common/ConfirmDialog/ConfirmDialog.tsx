@@ -5,6 +5,7 @@ export type ISimpleDialogContentState = {
   title: string;
   confirmText: string;
   handleConfirm: () => void;
+  callbackDecline?: () => void;
 };
 
 type IConfirmDialogProps = {
