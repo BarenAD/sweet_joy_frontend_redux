@@ -16,12 +16,14 @@
 
     .main-container {
       @extend .flexbox-center;
+      flex-direction: column;
       margin-top: 30px;
 
       .main-card {
         width: 100%;
         max-width: 500px;
         padding: 30px;
+        margin-bottom: 50px;
       }
     }
   }

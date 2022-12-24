@@ -1,5 +1,10 @@
 import {INotificationAction} from "../components/common/Notifications/notificationsSlice";
-import {API_URL, APP_DEBUG, KEY_LOCAL_STORAGE_AUTHORIZATION_ACCESS_TOKEN, REQUEST_MODE} from "../config/config";
+import {
+  API_URL,
+  KEY_LOCAL_STORAGE_AUTHORIZATION_ACCESS_TOKEN,
+  KEY_LOCAL_STORAGE_IS_DEBUG,
+  REQUEST_MODE
+} from "../config/config";
 import ErrorByConfig, {IConfigError} from "./ErrorByConfig";
 import {ERRORS} from "../config/errors";
 import React from "react";
@@ -30,8 +35,9 @@ export const httpClient = async <T,>({
   isNeedAuth = false,
   method = 'get',
   mode = REQUEST_MODE,
-  isDebug = APP_DEBUG
+  isDebug
 }: IFetchWithTokenProps): Promise<IFetchWithTokenResponse<T>> => {
+  const preparedIsDebug = isDebug ?? !!localStorage.getItem(KEY_LOCAL_STORAGE_IS_DEBUG);
   const accessToken = localStorage.getItem(KEY_LOCAL_STORAGE_AUTHORIZATION_ACCESS_TOKEN);
   const preparedHeaders: HeadersInit = new Headers({
     'Accept': 'Application/json',
@@ -43,7 +49,7 @@ export const httpClient = async <T,>({
     preparedHeaders.append('Authorization', `Bearer ${accessToken}`);
   }
 
-  if (isDebug && handleAddNotification) {
+  if (preparedIsDebug && handleAddNotification) {
     handleAddNotification({
       type: 'info',
       message: `[DEBUG] Запрос: ${url.replace(API_URL, '')}`,
@@ -61,7 +67,7 @@ export const httpClient = async <T,>({
       if (!response.ok) {
         throwableByStatus(response.status, responseData);
       }
-      if (isDebug && handleAddNotification) {
+      if (preparedIsDebug && handleAddNotification) {
         handleAddNotification({
           type: 'success',
           message: `[DEBUG] Запрос: ${url.replace(API_URL, '')}`,

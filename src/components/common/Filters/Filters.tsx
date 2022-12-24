@@ -8,7 +8,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  Switch, TextField
+  Switch, TextField, Typography
 } from "@mui/material";
 import {actionOnTheSite} from "../../../redux/metrics/metricsSlice";
 import {METRIC_ACTIONS} from "../../../config/metricActions";
@@ -37,7 +37,11 @@ const Filters: FC<IFiltersProps> = ({
 
   return (
     <Card className='filters-container'>
-      <h4>Фильтры</h4>
+      <Typography
+        variant='h6'
+      >
+        Фильтры
+      </Typography>
       <FormControl style={{width: "90%"}}>
         <InputLabel id={`ID_SELECT_LABEL_FILTERS_SHOP`}>Точка продажи</InputLabel>
         <Select

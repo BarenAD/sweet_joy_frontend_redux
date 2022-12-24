@@ -19,6 +19,7 @@ import ProductDetailsModal from "../../../common/ProductDetailsModal/ProductDeta
 import Demo from "../../../common/Demo/Demo";
 import {SITE_CONFIG_IDENTIFIERS} from "../../../../config/siteConfigIdentifiers";
 import {getConfigurations} from "../../../../redux/configurations/configurationsSlice";
+import ConfigManager from "../../../common/ConfigManager/ConfigManager";
 
 const Products: FC = () => {
   const products = useAppSelector(getProducts);
@@ -135,6 +136,9 @@ const Products: FC = () => {
           handleChangeIsAllOrNothing={setIsFilteringByAllOrNothing}
           handleChangeSelectedCategoryIds={setFilteringByCategoriesIds}
         />
+        {!!configurations[SITE_CONFIG_IDENTIFIERS.DEMO_MODE]?.value &&
+          <ConfigManager/>
+        }
         {!!configurations[SITE_CONFIG_IDENTIFIERS.DEMO_MODE]?.value &&
           <Demo/>
         }

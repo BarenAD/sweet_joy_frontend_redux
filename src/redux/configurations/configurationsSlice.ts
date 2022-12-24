@@ -15,8 +15,7 @@ import {ROUTES_API} from "../../config/routesApi";
 import {addNotification} from "../../components/common/Notifications/notificationsSlice";
 import {STORE_STATUSES} from "../../config/storeStatuses";
 import {ERRORS} from "../../config/errors";
-import {APP_DEBUG} from "../../config/config";
-import {refreshStore} from "../../components/App/appSlice";
+import {KEY_LOCAL_STORAGE_IS_DEBUG} from "../../config/config";
 
 export type IConfiguration = {
   id: number;
@@ -71,7 +70,7 @@ export const configurationsSlice = createSlice({
         state.status = STORE_STATUSES.ERROR;
         const anyPayload: any = action.payload;
         state.error = anyPayload.message || ERRORS.UNKNOWN_ERROR.message;
-        if (APP_DEBUG && anyPayload) {
+        if (!!localStorage.getItem(KEY_LOCAL_STORAGE_IS_DEBUG) && anyPayload) {
           console.error(anyPayload);
         }
       });

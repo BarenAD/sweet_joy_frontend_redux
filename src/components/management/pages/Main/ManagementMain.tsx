@@ -9,6 +9,7 @@ import {useAppSelector} from "../../../../redux/hooks";
 import {getProfile} from "../../../../redux/auth/authSlice";
 import ManagementConfigurations from "../Configurations/ManagementConfigurations";
 import ManagementCategories from "../Categories/ManagementCategories";
+import ConfigManager from "../../../common/ConfigManager/ConfigManager";
 
 type IPageProps = {
   title: string;
@@ -99,6 +100,7 @@ const ManagementMain: FC = () => {
                     Если у вас не хватает каких-либо страниц, обратитесь к более старшему администратору.
                   </Typography>
                 </Card>
+                <ConfigManager/>
               </div>
             )}
           />
