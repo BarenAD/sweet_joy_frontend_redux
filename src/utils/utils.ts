@@ -1,4 +1,5 @@
 import {IKeyNumberStoreObject, IProduct, IShopProduct} from "../components/App/appTypes";
+import {KEY_LOCAL_STORAGE_IS_DEBUG} from "../config/config";
 
 export const preparePhoneByMask = (phone: string): string => {
   const matchedPhone = phone.match(/(\d)(\d{3})(\d{3})(\d{2})(\d{2})/);
@@ -17,7 +18,9 @@ export const filterShopProducts = (
     allOrNothing?: boolean,
   }
 ): IKeyNumberStoreObject<IShopProduct[]> => {
-  console.log('CALCULATIONS!');
+  if (localStorage.getItem(KEY_LOCAL_STORAGE_IS_DEBUG)) {
+    console.log('[DEBUG] [RUN] filterShopProducts');
+  }
   return (!filter.shopId && (!filter.categoryIds || !filter.categoryIds.length)) ?
     {...shopProducts}
     :

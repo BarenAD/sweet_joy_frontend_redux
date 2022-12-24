@@ -1,14 +1,8 @@
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {IMetricAction} from "../../config/metricActions";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {SITE_CONFIG_IDENTIFIERS} from "../../config/siteConfigIdentifiers";
 import {IBaseStore, IRootState} from "../store";
 import {
-  ICategory, IDocument,
-  IKeyNumberStoreObject,
   IKeyStringStoreObject,
-  IProduct,
-  IShop,
-  IShopProduct
 } from "../../components/App/appTypes";
 import {httpClient} from "../../utils/httpClient";
 import {ROUTES_API} from "../../config/routesApi";

@@ -67,11 +67,16 @@ export const httpClient = async <T,>({
       if (!response.ok) {
         throwableByStatus(response.status, responseData);
       }
-      if (preparedIsDebug && handleAddNotification) {
-        handleAddNotification({
-          type: 'success',
-          message: `[DEBUG] Запрос: ${url.replace(API_URL, '')}`,
-        });
+      if (preparedIsDebug) {
+        console.log('[DEBUG] result response:');
+        console.log(response);
+        console.log(responseData);
+        if (handleAddNotification) {
+          handleAddNotification({
+            type: 'success',
+            message: `[DEBUG] Запрос: ${url.replace(API_URL, '')}`,
+          });
+        }
       }
       return {
         response: {
