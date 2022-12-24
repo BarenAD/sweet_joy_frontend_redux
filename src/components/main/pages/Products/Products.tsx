@@ -10,7 +10,7 @@ import {
   debounce,
   Pagination,
 } from "@mui/material";
-import CustomModal from "../../../common/ModalContent/CustomModal";
+import CustomModal from "../../../common/CustomModal/CustomModal";
 import Product from "../../../common/Product/Product";
 import {filterShopProducts} from "../../../../utils/utils";
 import Filters from "../../../common/Filters/Filters";

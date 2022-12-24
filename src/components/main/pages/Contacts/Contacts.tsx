@@ -2,7 +2,7 @@ import React, {FC, ReactElement, useState} from "react";
 import {Card, IconButton, Modal} from "@mui/material";
 import {useAppSelector} from "../../../../redux/hooks";
 import {getShops} from "../../../App/appSlice";
-import CustomModal from "../../../common/ModalContent/CustomModal";
+import CustomModal from "../../../common/CustomModal/CustomModal";
 import "./Contacts.scss";
 import {preparePhoneByMask} from "../../../../utils/utils";
 import {ISchedule} from "../../../App/appTypes";

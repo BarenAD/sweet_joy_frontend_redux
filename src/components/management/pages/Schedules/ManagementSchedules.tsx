@@ -5,7 +5,7 @@ import {ROUTES_API} from "../../../../config/routesApi";
 import {HandleAddNotificationContext} from "../../../common/Notifications/notificationsSlice";
 import {HandleChangeAuthStatusContext} from "../../../../redux/auth/authSlice";
 import Preloader from "../../../common/Preloader/Preloader";
-import CustomModal from "../../../common/ModalContent/CustomModal";
+import CustomModal from "../../../common/CustomModal/CustomModal";
 import Schedule from "../../Schedule/Schedule";
 import ScheduleEdit from "../../ScheduleEdit/ScheduleEdit";
 import "./ManagementSchedules.scss";

@@ -4,7 +4,7 @@ import {useAppSelector} from "../../../redux/hooks";
 import {getCategories, getShopProducts} from "../../App/appSlice";
 import "./ProductDetailsModal.scss";
 import ShopProduct from "../ShopProduct/ShopProduct";
-import CustomModal from "../ModalContent/CustomModal";
+import CustomModal from "../CustomModal/CustomModal";
 
 type TypeProps = {
   product: IProduct;
