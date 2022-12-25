@@ -96,7 +96,6 @@ const ManagementSchedules: FC = () => {
       .finally(() => setIsLoading(false));
   }
 
-
   if (isLoading && !modalContent) {
     return (
       <div className='preloader-center'>

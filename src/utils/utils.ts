@@ -1,6 +1,31 @@
 import {IKeyNumberStoreObject, IProduct, IShopProduct} from "../components/App/appTypes";
 import {KEY_LOCAL_STORAGE_IS_DEBUG} from "../config/config";
 
+export type IParseToFormDataProps = {
+  [key: string]: {
+    type: 'string' | 'json' | 'base';
+    value: any;
+  }
+};
+
+export const parseToFormData = (params: IParseToFormDataProps): FormData => {
+  const preparedBodyForRequest = new FormData();
+  Object.keys(params).forEach((key) => {
+    switch (params[key].type) {
+      case "string":
+        preparedBodyForRequest.append(key, `${params[key].value}`);
+        break;
+      case "json":
+        preparedBodyForRequest.append(key, JSON.stringify(params[key].value));
+        break;
+      default:
+        preparedBodyForRequest.append(key, params[key].value);
+        break;
+    }
+  });
+  return preparedBodyForRequest;
+};
+
 export const preparePhoneByMask = (phone: string): string => {
   const matchedPhone = phone.match(/(\d)(\d{3})(\d{3})(\d{2})(\d{2})/);
   if (!matchedPhone) {

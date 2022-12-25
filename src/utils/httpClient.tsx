@@ -13,6 +13,7 @@ import {ROUTES} from "../config/routes";
 type IFetchWithTokenProps = RequestInit & {
   url: string,
   isNeedAuth?: boolean;
+  bodyIsFormData?: boolean,
   handleAddNotification?: (notification: INotificationAction) => void;
   handleChangeAuthStatus?: (newStatus: boolean) => void;
   isDebug?: boolean
@@ -33,6 +34,7 @@ export const httpClient = async <T,>({
   handleChangeAuthStatus,
   headers = {},
   isNeedAuth = false,
+  bodyIsFormData = false,
   method = 'get',
   mode = REQUEST_MODE,
   isDebug
@@ -41,9 +43,12 @@ export const httpClient = async <T,>({
   const accessToken = localStorage.getItem(KEY_LOCAL_STORAGE_AUTHORIZATION_ACCESS_TOKEN);
   const preparedHeaders: HeadersInit = new Headers({
     'Accept': 'Application/json',
-    'Content-Type': 'Application/json',
     ...headers
   });
+
+  if (!bodyIsFormData) {
+    preparedHeaders.append('Content-Type', 'Application/json');
+  }
 
   if (isNeedAuth && accessToken) {
     preparedHeaders.append('Authorization', `Bearer ${accessToken}`);

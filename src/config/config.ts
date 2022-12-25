@@ -9,6 +9,7 @@ export const NOTIFICATIONS_MAX_COUNT = 5;
 export const NOTIFICATIONS_LIFE_TIME = 5000;
 export const FORMAT_DATE_NOTIFICATION = 'yyyy-MM-dd HH:mm:ss';
 export const MANAGEMENT_COUNT_CATEGORIES_ON_PAGE: number = 30;
+export const MANAGEMENT_COUNT_PRODUCTS_ON_PAGE: number = 19;
 
 export const AUTHOR_CONTACTS: IAuthorContacts = {
   VK: 'https://vk.com/barenad',

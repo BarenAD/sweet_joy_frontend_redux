@@ -1,19 +1,28 @@
-import {FC} from "react";
+import React, {FC} from "react";
 import "./Product.scss";
 import {IProduct} from "../../App/appTypes";
 import {Card} from "@mui/material";
+import {AddCircleOutline} from "@mui/icons-material";
 
 const Product: FC<{
-  product: IProduct;
-  handleOpenDetails: () => void;
+  product?: IProduct;
+  handleOnClick?: () => void;
 }> = ({
   product,
-  handleOpenDetails,
+  handleOnClick,
 }) => {
+  if (!product) {
+    return (
+      <Card className='product-card' onClick={handleOnClick}>
+        <AddCircleOutline className='icon-add'/>
+      </Card>
+    );
+  }
+
   return (
     <Card
       className="product-card"
-      onClick={handleOpenDetails}
+      onClick={handleOnClick}
     >
       <div className="product-card-image-container">
         <img

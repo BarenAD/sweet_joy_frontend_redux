@@ -129,7 +129,7 @@ const ManagementShops: FC = () => {
     ));
   };
 
-  const handlePreviewEdit = (shop?: IShopEdit) => {
+  const handleOpenEdit = (shop?: IShopEdit) => {
     setModalContent((
       <ShopEdit
         shop={shop}
@@ -174,7 +174,7 @@ const ManagementShops: FC = () => {
         children={modalContent}
       />
       <Shop
-        handleShowEdit={() => {handlePreviewEdit()}}
+        handleShowEdit={() => {handleOpenEdit()}}
       />
       {shops.map((shop) => (
         <Shop
@@ -182,7 +182,7 @@ const ManagementShops: FC = () => {
           schedule={schedules.find(findItem => findItem.id === shop.schedule_id)}
           handlePreviewMap={handlePreviewMap}
           handlePreviewSchedule={handlePreviewSchedule}
-          handleShowEdit={(shop) => {handlePreviewEdit(shop)}}
+          handleShowEdit={(shop) => {handleOpenEdit(shop)}}
         />
       ))}
     </div>

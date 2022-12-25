@@ -90,7 +90,7 @@ const Products: FC = () => {
           <Product
             key={`KEY_CARD_PRODUCT_${product.id}`}
             product={product}
-            handleOpenDetails={() => {handleOpenDetails(product)}}
+            handleOnClick={() => {handleOpenDetails(product)}}
           />
         );
       });
