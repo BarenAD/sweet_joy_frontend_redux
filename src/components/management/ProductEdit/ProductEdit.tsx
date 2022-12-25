@@ -1,5 +1,5 @@
 import React, {FC, useState} from "react";
-import {ICategory, IProduct, ISchedule} from "../../App/appTypes";
+import {ICategory, IProduct} from "../../App/appTypes";
 import {Autocomplete, Button, IconButton, TextField, Typography} from "@mui/material";
 import "./ProductEdit.scss";
 import Preloader from "../../common/Preloader/Preloader";
