@@ -1,0 +1,59 @@
+.shop-card-container {
+  width: 300px;
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin: 15px;
+  text-align: left;
+  font-size: 14px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  padding: 15px;
+
+  .icon-add {
+    width: 65px;
+    height: 65px;
+    margin: auto;
+  }
+
+  table {
+    width: 100%;
+
+    tr {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 10px 0;
+    }
+
+    td {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      text-align: left;
+      flex: 1;
+    }
+
+    td:nth-child(odd) {
+      text-transform: capitalize;
+    }
+
+    td:nth-child(even) {
+      justify-content: flex-end;
+      text-align: right;
+      flex: 2;
+    }
+
+    details {
+      summary {
+        cursor: pointer;
+        outline: none;
+        border: none;
+      }
+    }
+  }
+}

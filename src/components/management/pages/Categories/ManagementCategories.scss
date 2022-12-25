@@ -8,6 +8,10 @@
   padding: 15px 0 75px 0;
   position: relative;
 
+  .paginate-container ul {
+    flex-wrap: nowrap;
+  }
+
   .edit-container {
     box-sizing: border-box;
     bottom: 0;

@@ -38,7 +38,7 @@ export type IShop = {
   id: number;
   address: string;
   phone: string;
-  schedule_id: string;
+  schedule_id: number;
   map_integration: string;
   schedule: ISchedule;
 };

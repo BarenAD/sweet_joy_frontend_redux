@@ -30,9 +30,9 @@ const ScheduleEdit: FC<IScheduleEditProps> = ({
     particular: '',
   });
 
-  const preparedHandleAction = (action: 'POST' | 'PUT' | 'DELETE', schedule: ISchedule) => {
+  const preparedHandleAction = (action: 'POST' | 'PUT' | 'DELETE') => {
     setIsLoading(true);
-    handleAction(action, schedule)
+    handleAction(action, changingSchedule)
       .finally(() => {
         setIsLoading(false)
       });
@@ -90,7 +90,7 @@ const ScheduleEdit: FC<IScheduleEditProps> = ({
                 edge="start"
                 color="inherit"
                 disabled={isLoading}
-                onClick={() => preparedHandleAction("PUT", changingSchedule)}
+                onClick={() => preparedHandleAction("PUT")}
               >
                 <EditOutlined />
               </IconButton>
@@ -98,7 +98,7 @@ const ScheduleEdit: FC<IScheduleEditProps> = ({
                 edge="start"
                 color="inherit"
                 disabled={isLoading}
-                onClick={() => preparedHandleAction("DELETE", changingSchedule)}
+                onClick={() => preparedHandleAction("DELETE")}
               >
                 <DeleteOutline />
               </IconButton>
@@ -108,7 +108,7 @@ const ScheduleEdit: FC<IScheduleEditProps> = ({
               edge="start"
               color="inherit"
               disabled={isLoading}
-              onClick={() => preparedHandleAction('POST', changingSchedule)}
+              onClick={() => preparedHandleAction('POST')}
             >
               <AddCircleOutline />
             </IconButton>

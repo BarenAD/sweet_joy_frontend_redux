@@ -33,16 +33,30 @@
   }
 
   .right-tab {
+    max-width: 100%;
     justify-content: flex-end;
+
+    .fio-container {
+      max-width: 100%;
+      margin-right: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 
   @media(max-width: $mediaStep3) {
     flex-direction: column;
-    height: max-content;
+    height: $managementHeaderMobileHeight;
     position: relative;
+    padding: 0 5px;
 
-    .left-tab, .right-tab {
+    .right-tab {
       flex-direction: column;
+
+      .fio-container {
+        margin-right: 0;
+      }
     }
   }
 }

@@ -6,7 +6,7 @@ import "./Schedule.scss";
 
 type IScheduleProps = {
   schedule?: ISchedule;
-  onClick: () => void;
+  onClick?: () => void;
 };
 
 const Schedule: FC<IScheduleProps> = ({

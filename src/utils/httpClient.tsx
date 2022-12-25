@@ -18,7 +18,7 @@ type IFetchWithTokenProps = RequestInit & {
   isDebug?: boolean
 };
 
-type IFetchWithTokenResponse<T> = {
+export type IFetchWithTokenResponse<T> = {
   response: {
     status: number;
     statusText: string;

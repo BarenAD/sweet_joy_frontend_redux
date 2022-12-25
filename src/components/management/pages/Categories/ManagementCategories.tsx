@@ -285,6 +285,7 @@ const ManagementCategories: FC = () => {
         page={currentPage}
         count={countPages}
         onChange={handleChangePage}
+        className='paginate-container'
       />
       <div className='table-content-container'>
         <TableContainer component={Paper}>
@@ -303,6 +304,7 @@ const ManagementCategories: FC = () => {
         page={currentPage}
         count={countPages}
         onChange={handleChangePage}
+        className='paginate-container'
       />
     </div>
   );

@@ -85,7 +85,7 @@ const ManagementHeader: FC<IManagementHeaderProps> = ({
             align='center'
             fontWeight='bold'
             alignItems='center'
-            style={{marginRight: '10px'}}
+            className='fio-container'
           >
             {profile.fio}
           </Typography>

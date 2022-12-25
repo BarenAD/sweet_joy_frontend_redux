@@ -11,6 +11,7 @@ import ManagementConfigurations from "../Configurations/ManagementConfigurations
 import ManagementCategories from "../Categories/ManagementCategories";
 import ConfigManager from "../../../common/ConfigManager/ConfigManager";
 import ManagementSchedules from "../Schedules/ManagementSchedules";
+import ManagementShops from "../Shops/ManagementShops";
 
 type IPageProps = {
   title: string;
@@ -45,15 +46,15 @@ export const MANAGEMENT_PAGES: IPageProps[] = [
     grants: ['*']
   },
   {
-    title: 'MANAGEMENT_SHOPS',
-    route: ROUTES.MANAGEMENT_SHOPS,
-    component: (<div>MANAGEMENT_SHOPS</div>),
-    grants: ['*']
-  },
-  {
     title: 'Расписания',
     route: ROUTES.MANAGEMENT_SCHEDULES,
     component: <ManagementSchedules />,
+    grants: ['*']
+  },
+  {
+    title: 'Торговые точки',
+    route: ROUTES.MANAGEMENT_SHOPS,
+    component: <ManagementShops />,
     grants: ['*']
   },
   {
