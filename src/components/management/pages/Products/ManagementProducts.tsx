@@ -46,14 +46,17 @@ const ManagementProducts: FC = () => {
   }, [filteredProducts]);
 
   useEffect(() => {
-    Promise.all<[Promise<IFetchWithTokenResponse<IProduct[]>>, Promise<IFetchWithTokenResponse<ICategory[]>>]>([
+    Promise.all<[Promise<void>, Promise<void>]>([
       httpClient<IProduct[]>({
         url: ROUTES_API.MANAGEMENT_PRODUCTS,
         method: 'GET',
         handleAddNotification: handleAddNotificationContext,
         handleChangeAuthStatus: handleChangeAuthStatusContext,
         isNeedAuth: true,
-      }),
+      })
+        .then((response) => {
+          setProducts(response.data);
+        }),
       httpClient<ICategory[]>({
         url: ROUTES_API.MANAGEMENT_CATEGORIES,
         method: 'GET',
@@ -61,14 +64,12 @@ const ManagementProducts: FC = () => {
         handleChangeAuthStatus: handleChangeAuthStatusContext,
         isNeedAuth: true,
       })
+        .then((response) => {
+          setCategories(response.data);
+        })
     ])
-      .then((values) => {
-        const [products, categories] = values;
-        setProducts(products.data);
-        setCategories(categories.data);
-      })
       .finally(() => {
-        setIsLoading(false)
+        setIsLoading(false);
       });
   }, []);
 
@@ -147,12 +148,13 @@ const ManagementProducts: FC = () => {
       <ProductEdit
         product={product}
         categories={categories}
+        needGetFullData
         handleAction={confirmActionProduct}
       />
     ));
   };
 
-  if (isLoading && !modalContent) {
+  if (isLoading && products.length === 0) {
     return (
       <div className='preloader-center'>
         <Preloader size={50} />
@@ -181,7 +183,13 @@ const ManagementProducts: FC = () => {
       />
       <CustomModal
         onClose={() => {setModalContent(null)}}
-        children={modalContent}
+        children={(modalContent && isLoading) ?
+          <div className='preloader-modal-container'>
+            <Preloader size={40} />
+          </div>
+          :
+          modalContent
+        }
       />
       <div className='filter-container'>
         {filterState !== appliedFilter &&

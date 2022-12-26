@@ -1,3 +1,11 @@
+@import "/src/assets/commonStyles";
+
+.preloader-modal-container {
+  @extend .flexbox-center;
+  width: 300px;
+  height: 300px;
+}
+
 .management-products-container {
   display: flex;
   flex-direction: column;

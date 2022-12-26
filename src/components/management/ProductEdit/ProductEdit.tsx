@@ -1,14 +1,19 @@
-import React, {FC, useState} from "react";
+import React, {FC, useContext, useEffect, useState} from "react";
 import {ICategory, IProduct} from "../../App/appTypes";
 import {Autocomplete, Button, IconButton, TextField, Typography} from "@mui/material";
 import "./ProductEdit.scss";
 import Preloader from "../../common/Preloader/Preloader";
 import {AddCircleOutline, DeleteOutline, EditOutlined} from "@mui/icons-material";
 import {IParseToFormDataProps, parseToFormData} from "../../../utils/utils";
+import {httpClient} from "../../../utils/httpClient";
+import {ROUTES_API} from "../../../config/routesApi";
+import {HandleAddNotificationContext} from "../../common/Notifications/notificationsSlice";
+import {HandleChangeAuthStatusContext} from "../../../redux/auth/authSlice";
 
 type IProductEditProps = {
   product?: IProduct;
   categories: ICategory[];
+  needGetFullData?: boolean;
   handleAction: (action: 'POST' | 'DELETE', params: FormData, id?: number) => Promise<any>;
 };
 
@@ -16,8 +21,10 @@ const ProductEdit: FC<IProductEditProps> = ({
   product,
   categories,
   handleAction,
+  needGetFullData = false,
 }) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isUploading, setIsUploading] = useState<boolean>(false);
+  const [fullDataLoading, setFullDataLoading] = useState<boolean>(!!product && needGetFullData);
   const [previewImageSrc, setPreviewImageSrc] = useState<string>(product?.image ?? '#');
   const buttonBrowseImage = React.useRef<HTMLInputElement>(null);
   const [image, setImage] = useState<any>(null);
@@ -27,6 +34,27 @@ const ProductEdit: FC<IProductEditProps> = ({
   const [description, setDescription] = useState<string>(product?.description ?? '');
   const [productUnit, setProductUnit] = useState<string>(product?.product_unit ?? '');
   const [categoriesIds, setCategoriesIds] = useState<number[]>(product?.categories ?? []);
+  const handleAddNotificationContext = useContext(HandleAddNotificationContext);
+  const handleChangeAuthStatusContext = useContext(HandleChangeAuthStatusContext);
+
+  useEffect(() => {
+    if (!fullDataLoading || !product) {
+      return;
+    }
+    httpClient<IProduct>({
+      url: ROUTES_API.MANAGEMENT_PRODUCTS+`/${product.id}?withCategories=true`,
+      method: 'GET',
+      handleAddNotification: handleAddNotificationContext,
+      handleChangeAuthStatus: handleChangeAuthStatusContext,
+      isNeedAuth: true,
+    })
+      .then((response) => {
+        setCategoriesIds(response.data.categories);
+      })
+      .finally(() => {
+        setFullDataLoading(false);
+      });
+  }, []);
 
   const preparedHandleAction = (action: 'POST' | 'DELETE') => {
     const actionProps: IParseToFormDataProps = {
@@ -61,14 +89,14 @@ const ProductEdit: FC<IProductEditProps> = ({
         value: image,
       };
     }
-    setIsLoading(true);
+    setIsUploading(true);
     handleAction(
       action,
       parseToFormData(actionProps),
       product?.id
     )
       .finally(() => {
-        setIsLoading(false)
+        setIsUploading(false)
       });
   };
 
@@ -145,28 +173,34 @@ const ProductEdit: FC<IProductEditProps> = ({
         className='field'
         onChange={(event) => {setProductUnit(event.target.value)}}
       />
-      <Autocomplete
-        className='field'
-        options={categories
-          .filter(value => !categoriesIds.includes(value.id))
-          .map(category => {
-            return {...category, label: category.name}
-          })
-        }
-        renderInput={(params) => <TextField {...params} label='Выбрать категории' />}
-        onChange={(event, newValue) => {
-          setCategoriesIds(newValue.map(value => value.id));
-        }}
-        value={categoriesIds.reduce<any>((result, current) => {
-          const foundCategory = categories.find(findItem => findItem.id === current);
-          if (foundCategory) {
-            result.push({...foundCategory, label: foundCategory.name});
+      {fullDataLoading ?
+        <div className='preloader-container'>
+          <Preloader size={30} />
+        </div>
+        :
+        <Autocomplete
+          className='field'
+          options={categories
+            .filter(value => !categoriesIds.includes(value.id))
+            .map(category => {
+              return {...category, label: category.name}
+            })
           }
-          return result;
-        }, [])}
-        multiple
-      />
-      {isLoading ?
+          renderInput={(params) => <TextField {...params} label='Выбрать категории' />}
+          onChange={(event, newValue) => {
+            setCategoriesIds(newValue.map(value => value.id));
+          }}
+          value={categoriesIds.reduce<any>((result, current) => {
+            const foundCategory = categories.find(findItem => findItem.id === current);
+            if (foundCategory) {
+              result.push({...foundCategory, label: foundCategory.name});
+            }
+            return result;
+          }, [])}
+          multiple
+        />
+      }
+      {isUploading ?
         <div className='buttons-container'>
           <Preloader size={25} />
         </div>
@@ -177,7 +211,7 @@ const ProductEdit: FC<IProductEditProps> = ({
               <IconButton
                 edge="start"
                 color="inherit"
-                disabled={isLoading}
+                disabled={isUploading || fullDataLoading}
                 onClick={() => preparedHandleAction('POST')}
               >
                 <EditOutlined />
@@ -185,7 +219,7 @@ const ProductEdit: FC<IProductEditProps> = ({
               <IconButton
                 edge="start"
                 color="inherit"
-                disabled={isLoading}
+                disabled={isUploading || fullDataLoading}
                 onClick={() => preparedHandleAction('DELETE')}
               >
                 <DeleteOutline />
@@ -195,7 +229,7 @@ const ProductEdit: FC<IProductEditProps> = ({
             <IconButton
               edge="start"
               color="inherit"
-              disabled={isLoading}
+              disabled={isUploading || fullDataLoading}
               onClick={() => preparedHandleAction('POST')}
             >
               <AddCircleOutline />
