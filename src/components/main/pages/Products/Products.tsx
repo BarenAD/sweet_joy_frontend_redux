@@ -1,8 +1,8 @@
 import React, {FC, ReactElement, useCallback, useEffect, useMemo, useRef, useState} from "react";
 import "./Products.scss";
-import {IKeyNumberStoreObject, IProduct, IShopProduct} from "../../../App/appTypes";
+import {IProduct} from "../../../App/appTypes";
 import {useAppSelector} from "../../../../redux/hooks";
-import {getProducts, getShopProducts} from "../../../App/appSlice";
+import {getCategories, getProducts, getShopProducts, getShops} from "../../../App/appSlice";
 import { actionOnTheSite } from "../../../../redux/metrics/metricsSlice";
 import {METRIC_ACTIONS} from "../../../../config/metricActions";
 import {COUNT_PRODUCTS_ROWS, PRODUCT_CARD_WIDTH} from "../../../../config/config";
@@ -12,8 +12,8 @@ import {
 } from "@mui/material";
 import CustomModal from "../../../common/CustomModal/CustomModal";
 import Product from "../../../common/Product/Product";
-import {filterShopProducts} from "../../../../utils/utils";
-import Filters from "../../../common/Filters/Filters";
+import {filterProducts} from "../../../../utils/utils";
+import Filters, {IFiltersState} from "../../../common/Filters/Filters";
 import ProductDetailsModal from "../../../common/ProductDetailsModal/ProductDetailsModal";
 import Demo from "../../../common/Demo/Demo";
 import {SITE_CONFIG_IDENTIFIERS} from "../../../../config/siteConfigIdentifiers";
@@ -22,15 +22,21 @@ import ConfigManager from "../../../common/ConfigManager/ConfigManager";
 
 const Products: FC = () => {
   const products = useAppSelector(getProducts);
+  const shops = useAppSelector(getShops);
+  const categories = useAppSelector(getCategories);
   const shopProducts = useAppSelector(getShopProducts);
   const configurations = useAppSelector(getConfigurations);
   const [modalContent, setModalContent] = useState<ReactElement | null>(null);
-  const [filteringByShopId, setFilteringByShopId] = useState<number | null>(null);
-  const [filteringByCategoriesIds, setFilteringByCategoriesIds] = useState<number[]>([]);
-  const [isFilteringByAllOrNothing, setIsFilteringByAllOrNothing] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const productsContainer = useRef<HTMLDivElement>(null);
   const [windowWidth, setWindowWidth] = useState<number>(0);
+  const [filtersState, setFiltersState] = useState<IFiltersState>({
+    selectedName: '',
+    selectedShopId: null,
+    selectedCategoryIds: [],
+    isReverseShopId: false,
+    isAllOrNothing: false,
+  });
 
   const debounceOnChangeWindow = useCallback<() => void>(
     debounce(() => {
@@ -51,22 +57,16 @@ const Products: FC = () => {
     return Math.floor(widthContainer.width / PRODUCT_CARD_WIDTH) * COUNT_PRODUCTS_ROWS;
   }, [productsContainer.current, windowWidth]);
 
-  const filteredShopProducts = useMemo<IKeyNumberStoreObject<IShopProduct[]>>(() => {
-    return filterShopProducts(
+  const filteredProducts = useMemo<IProduct[]>(() => {
+    return filterProducts(
       shopProducts,
       products,
-      {
-        shopId: filteringByShopId,
-        categoryIds: filteringByCategoriesIds,
-        allOrNothing: isFilteringByAllOrNothing,
-      }
+      filtersState
     );
   }, [
     shopProducts,
     products,
-    filteringByShopId,
-    filteringByCategoriesIds,
-    isFilteringByAllOrNothing
+    filtersState
   ]);
 
   const renderedProductsByPagination = useMemo(() => {
@@ -76,29 +76,23 @@ const Products: FC = () => {
     const startValue = (currentPage-1) * (countCardsPerPage);
     const lastValue = (startValue + (countCardsPerPage));
 
-    return Object.entries<IShopProduct[]>(filteredShopProducts)
-      .map(([productId, productShops], index) => {
-        if (index < startValue || index >= lastValue) {
-          return null;
-        }
-        const intProductId = parseInt(productId);
-        const product = products.find(findProduct => findProduct.id === intProductId);
-        if (!product) {
-          return null;
-        }
-        return (
-          <Product
-            key={`KEY_CARD_PRODUCT_${product.id}`}
-            product={product}
-            handleOnClick={() => {handleOpenDetails(product)}}
-          />
-        );
-      });
-  }, [filteredShopProducts, countCardsPerPage, currentPage]);
+    return filteredProducts.map((product, index) => {
+      if (index < startValue || index >= lastValue) {
+        return null;
+      }
+      return (
+        <Product
+          key={`KEY_CARD_PRODUCT_${product.id}`}
+          product={product}
+          handleOnClick={() => {handleOpenDetails(product)}}
+        />
+      );
+    });
+  }, [filteredProducts, countCardsPerPage, currentPage]);
 
   const countPages = useMemo<number>(() => {
-    return Math.ceil(Object.keys(filteredShopProducts).length / countCardsPerPage);
-  }, [countCardsPerPage, filteredShopProducts]);
+    return Math.ceil(Object.keys(filteredProducts).length / countCardsPerPage);
+  }, [countCardsPerPage, filteredProducts]);
 
   const handleOpenDetails = (product: IProduct) => {
     actionOnTheSite({...METRIC_ACTIONS.PRODUCT_OPEN_DETAILS, payload: {product_id: product.id}});
@@ -120,12 +114,13 @@ const Products: FC = () => {
       />
       <div>
         <Filters
-          selectedShopId={filteringByShopId}
-          isAllOrNothing={isFilteringByAllOrNothing}
-          selectedCategoryIds={filteringByCategoriesIds}
-          handleChangeSelectedShopId={setFilteringByShopId}
-          handleChangeIsAllOrNothing={setIsFilteringByAllOrNothing}
-          handleChangeSelectedCategoryIds={setFilteringByCategoriesIds}
+          shops={shops}
+          categories={categories}
+          currentState={filtersState}
+          handleOnChange={setFiltersState}
+          disabled={{
+            reverseShopId: true,
+          }}
         />
         {!!configurations[SITE_CONFIG_IDENTIFIERS.DEMO_MODE]?.value &&
           <ConfigManager/>

@@ -21,6 +21,7 @@ type IRoutes = {
   MANAGEMENT_SCHEDULES: IRoute;
   MANAGEMENT_CONFIGURATIONS: IRoute;
   MANAGEMENT_DOCUMENTS: IRoute;
+  MANAGEMENT_SHOPS_PRODUCTS: IRoute;
 };
 
 export const ROUTES: IRoutes = {
@@ -79,6 +80,10 @@ export const ROUTES: IRoutes = {
   MANAGEMENT_SHOPS: {
     path: '/shops',
     link: '/management/shops',
+  },
+  MANAGEMENT_SHOPS_PRODUCTS: {
+    path: '/shops/products',
+    link: '/management/shops/products',
   },
   MANAGEMENT_SCHEDULES: {
     path: '/schedules',

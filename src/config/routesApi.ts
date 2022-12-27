@@ -11,5 +11,6 @@ export const ROUTES_API = {
   MANAGEMENT_CATEGORIES: `${API_URL}/management/categories`,
   MANAGEMENT_SCHEDULES: `${API_URL}/management/schedules`,
   MANAGEMENT_SHOPS: `${API_URL}/management/shops`,
+  // MANAGEMENT_SHOPS_PRODUCTS: `${API_URL}/management/shops`,
   MANAGEMENT_PRODUCTS: `${API_URL}/management/products`,
 };

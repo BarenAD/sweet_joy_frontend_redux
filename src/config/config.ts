@@ -2,14 +2,15 @@ export const API_URL: string = 'https://www.products.kemerovo.barenad.ru/api';
 export const REQUEST_MODE: RequestMode = 'cors';
 export const PRODUCT_CARD_WIDTH: number = 240;
 export const COUNT_PRODUCTS_ROWS: number = 10;
-export const KEY_LOCAL_STORAGE_AUTHORIZATION_ACCESS_TOKEN = "access_token";
-export const KEY_LOCAL_STORAGE_AUTHORIZATION_PROFILE = "profile";
-export const KEY_LOCAL_STORAGE_IS_DEBUG = "99c027ab73b0c4c939c40f634d9eac44";
-export const NOTIFICATIONS_MAX_COUNT = 5;
-export const NOTIFICATIONS_LIFE_TIME = 5000;
+export const KEY_LOCAL_STORAGE_AUTHORIZATION_ACCESS_TOKEN: string = "access_token";
+export const KEY_LOCAL_STORAGE_AUTHORIZATION_PROFILE: string = "profile";
+export const KEY_LOCAL_STORAGE_IS_DEBUG: string = "99c027ab73b0c4c939c40f634d9eac44";
+export const NOTIFICATIONS_MAX_COUNT: number = 5;
+export const NOTIFICATIONS_LIFE_TIME: number = 5;
 export const FORMAT_DATE_NOTIFICATION = 'yyyy-MM-dd HH:mm:ss';
 export const MANAGEMENT_COUNT_CATEGORIES_ON_PAGE: number = 30;
 export const MANAGEMENT_COUNT_PRODUCTS_ON_PAGE: number = 19;
+export const DELAY_APPLIED_FILTERS: number = 5;
 
 export const AUTHOR_CONTACTS: IAuthorContacts = {
   VK: 'https://vk.com/barenad',

@@ -34,52 +34,50 @@ export const preparePhoneByMask = (phone: string): string => {
   return `+${matchedPhone[1]} (${matchedPhone[2]}) ${matchedPhone[3]}-${matchedPhone[4]}-${matchedPhone[5]}`;
 }
 
-export const filterShopProducts = (
+export const filterProducts = (
   shopProducts: IKeyNumberStoreObject<IShopProduct[]>,
   products: IProduct[],
-  filter: {
-    shopId?: number | null,
-    categoryIds?: number[],
-    allOrNothing?: boolean,
+  filters: {
+    selectedName?: string;
+    selectedShopId?: number | null;
+    selectedCategoryIds?: number[];
+    isAllOrNothing?: boolean;
+    isReverseShopId?: boolean;
   }
-): IKeyNumberStoreObject<IShopProduct[]> => {
+): IProduct[] => {
   if (localStorage.getItem(KEY_LOCAL_STORAGE_IS_DEBUG)) {
-    console.log('[DEBUG] [RUN] filterShopProducts');
+    console.log('[DEBUG] [RUN] filterProducts');
   }
-  return (!filter.shopId && (!filter.categoryIds || !filter.categoryIds.length)) ?
-    {...shopProducts}
+  return (!filters.selectedName && !filters.selectedShopId && (!filters.selectedCategoryIds || !filters.selectedCategoryIds.length)) ?
+    [...products]
     :
-    Object.entries<IShopProduct[]>(shopProducts)
-      .reduce((
-        result: IKeyNumberStoreObject<IShopProduct[]>,
-        [productId, shopProducts]
-      ): IKeyNumberStoreObject<IShopProduct[]> => {
-        const numberProductID = parseInt(productId);
+    products
+      .filter((product) => {
+        //фильтрация по имени
+        const allowByName: boolean = !filters.selectedName ||
+          product.name.toLowerCase().indexOf(filters.selectedName.toLowerCase()) > -1;
         //фильтрация по магазину
-        const allowByShop: boolean = !filter.shopId || !!shopProducts
-          .find(findShopProducts => findShopProducts.shop_id === filter.shopId);
-        //фильтрация по категориям
-        const product: IProduct | undefined = (!filter.categoryIds || !filter.categoryIds.length) ?
-          undefined
-          :
-          products.find(findProduct => findProduct.id === numberProductID);
-        const intersectionCount: number = product ?
-          product.categories
-            //@ts-ignore
-            .filter(categoryId => filter.categoryIds
-              .includes(categoryId))
-            .length
-          :
-          0;
-        const allowByCategories: boolean = !product || (
-          filter.allOrNothing ?
-          intersectionCount === filter.categoryIds?.length
-          :
-          intersectionCount > 0
+        let allowByShop: boolean = (
+          !filters.selectedShopId ||
+          !!shopProducts[product.id]?.find((findItem) => findItem.shop_id === filters.selectedShopId)
         );
-        if (allowByShop && allowByCategories) {
-          result[numberProductID] = shopProducts;
+        if (filters?.isReverseShopId) {
+          allowByShop = !allowByShop;
         }
-        return result;
-      }, {});
+        //фильтрация по категориям
+        let allowByCategories: boolean = true;
+        if (filters.selectedCategoryIds?.length) {
+          const intersectionCount: number = product.categories
+            //@ts-ignore (filter.selectedCategoryIds is possible undefined, серьёзно????)
+            .filter((categoryId) => filters.selectedCategoryIds
+                .includes(categoryId)
+            )
+            .length;
+          allowByCategories = filters.isAllOrNothing ?
+            intersectionCount === filters.selectedCategoryIds.length
+            :
+            intersectionCount > 0;
+        }
+        return allowByName && allowByShop && allowByCategories;
+      });
 }

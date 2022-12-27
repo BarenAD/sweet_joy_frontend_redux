@@ -22,7 +22,7 @@ const Notifications: FC = () => {
     setAutoHideTimer(
       setTimeout(() => {
         dispatch(deleteNotification(indexNotify));
-      }, NOTIFICATIONS_LIFE_TIME)
+      }, NOTIFICATIONS_LIFE_TIME * 1000)
     );
   }, [notifications]);
 

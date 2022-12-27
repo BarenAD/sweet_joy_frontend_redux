@@ -46,7 +46,7 @@ const ManagementProducts: FC = () => {
   }, [filteredProducts]);
 
   useEffect(() => {
-    Promise.all<[Promise<void>, Promise<void>]>([
+    Promise.all<Promise<void>[]>([
       httpClient<IProduct[]>({
         url: ROUTES_API.MANAGEMENT_PRODUCTS,
         method: 'GET',

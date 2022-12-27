@@ -12,6 +12,13 @@
   align-items: center;
   padding: 10px;
   margin: 15px;
+  position: relative;
+
+  .filters-preloader-container {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+  }
 
   .filter-part {
     width: 100%;
