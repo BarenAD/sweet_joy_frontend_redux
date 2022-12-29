@@ -18,6 +18,7 @@ import {HandleAddNotificationContext} from "../../../common/Notifications/notifi
 import {HandleChangeAuthStatusContext} from "../../../../redux/auth/authSlice";
 import Preloader from "../../../common/Preloader/Preloader";
 import ConfirmDialog, {ISimpleDialogContentState} from "../../../common/ConfirmDialog/ConfirmDialog";
+import "./ManagementConfigurations.scss";
 
 const ManagementConfigurations: FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -86,7 +87,7 @@ const ManagementConfigurations: FC = () => {
   }
 
   return (
-    <div>
+    <div className='management-configurations-container'>
       <ConfirmDialog
         isOpen={!!dialogContent}
         title={dialogContent?.title}

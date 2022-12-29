@@ -119,7 +119,7 @@ const Products: FC = () => {
           currentState={filtersState}
           handleOnChange={setFiltersState}
           disabled={{
-            reverseShopId: true,
+            reverseShopId: 'hide',
           }}
         />
         {!!configurations[SITE_CONFIG_IDENTIFIERS.DEMO_MODE]?.value &&

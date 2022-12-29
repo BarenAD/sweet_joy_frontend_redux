@@ -29,6 +29,12 @@ export type IProduct = {
   categories: number[];
 };
 
+export type IProductCategory = {
+  id: number;
+  product_id: number;
+  category_id: number;
+};
+
 export type ICategory = {
   id: number;
   name: string;
@@ -47,8 +53,8 @@ export type IShopProduct = {
   id: number;
   shop_id: number;
   product_id: number;
-  price: number;
-  count: number;
+  price: number | null;
+  count: number | null;
 };
 
 export type IDocument = {

@@ -26,17 +26,19 @@ export type IFiltersState = {
 
 type IFiltersHandleOnChange = (newState: IFiltersState) => void;
 
+type IFilterPropDisable = 'hide' | 'disabled';
+
 type IFiltersProps = {
   shops: IShop[];
   categories: ICategory[];
   currentState: IFiltersState;
   handleOnChange: IFiltersHandleOnChange;
   disabled?: {
-    allOrNothing?: boolean;
-    reverseShopId?: boolean;
-    filterByShop?: boolean;
-    filterByCategories?: boolean;
-    filterByName?: boolean;
+    allOrNothing?: IFilterPropDisable;
+    reverseShopId?: IFilterPropDisable;
+    filterByShop?: IFilterPropDisable;
+    filterByCategories?: IFilterPropDisable;
+    filterByName?: IFilterPropDisable;
   }
 };
 
@@ -87,12 +89,13 @@ const Filters: FC<IFiltersProps> = ({
           }}
         />
       </div>
-      {!disabled?.filterByName &&
+      {disabled?.filterByName !== 'hide' &&
         <div className='filter-part filter-part-center'>
           <TextField
             label="Название товара"
             variant="outlined"
             value={filtersState.selectedName}
+            disabled={disabled?.filterByName === 'disabled'}
             onChange={(event) => {
               setFiltersState({
                 ...filtersState,
@@ -102,7 +105,7 @@ const Filters: FC<IFiltersProps> = ({
           />
         </div>
       }
-      {!disabled?.filterByShop &&
+      {disabled?.filterByShop  !== 'hide' &&
         <FormControl style={{width: "90%", marginTop: '20px'}}>
           <InputLabel id={`ID_SELECT_LABEL_FILTERS_SHOP`}>Точка продажи</InputLabel>
           <Select
@@ -110,6 +113,7 @@ const Filters: FC<IFiltersProps> = ({
             labelId={`ID_SELECT_LABEL_FILTERS_SHOP`}
             id={`ID_SELECT_SELECT_FILTERS_SHOP`}
             value={filtersState.selectedShopId ? `${filtersState.selectedShopId}` : ''}
+            disabled={disabled?.filterByShop === 'disabled'}
             onChange={(event) => {
               actionOnTheSite({...METRIC_ACTIONS.PRODUCT_FILTER_SELECT_SHOP, payload: {shop_id: event.target.value}});
               const value = event.target.value;
@@ -131,12 +135,13 @@ const Filters: FC<IFiltersProps> = ({
           </Select>
         </FormControl>
       }
-      {!disabled?.reverseShopId &&
+      {disabled?.reverseShopId !== 'hide' &&
         <div className='filter-part filter-part-center'>
           <FormControlLabel
             control={
               <Switch
                 checked={filtersState.isReverseShopId}
+                disabled={disabled?.reverseShopId === 'disabled'}
                 onChange={() => {
                   actionOnTheSite(METRIC_ACTIONS.PRODUCT_FILTER_ALL_OR_NOTHING);
                   setFiltersState({
@@ -152,12 +157,13 @@ const Filters: FC<IFiltersProps> = ({
           />
         </div>
       }
-      {!disabled?.allOrNothing &&
+      {disabled?.allOrNothing !== 'hide' &&
         <div className='filter-part filter-part-center'>
           <FormControlLabel
             control={
               <Switch
                 checked={filtersState.isAllOrNothing}
+                disabled={disabled?.allOrNothing === 'disabled'}
                 onChange={() => {
                   actionOnTheSite(METRIC_ACTIONS.PRODUCT_FILTER_ALL_OR_NOTHING);
                   setFiltersState({
@@ -173,9 +179,10 @@ const Filters: FC<IFiltersProps> = ({
           />
         </div>
       }
-      {!disabled?.filterByCategories &&
+      {disabled?.filterByCategories !== 'hide' &&
         <div className='filter-part'>
           <Autocomplete
+            disabled={disabled?.filterByCategories === 'disabled'}
             options={categories
               .filter(value => !filtersState.selectedCategoryIds.includes(value.id))
               .map(category => {
