@@ -265,13 +265,14 @@ const ManagementDocuments: FC = () => {
               <Button
                 style={{margin: '0 0 0 20px'}}
                 variant='contained'
+                size='small'
                 onClick={() => {
                   if (buttonBrowseDocument.current) {
                     buttonBrowseDocument.current.click()
                   }
                 }}
               >
-                ВЫБРАТЬ&nbsp;<b>PDF</b>&nbsp;ДОКУМЕНТ
+                  ВЫБРАТЬ ДОКУМЕНТ
               </Button>
             </div>
           }
