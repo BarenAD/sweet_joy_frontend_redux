@@ -1,4 +1,4 @@
-import React, {FC, ReactElement, useContext, useEffect, useMemo, useState} from "react";
+import React, {FC, useContext, useEffect, useMemo, useState} from "react";
 import ConfirmDialog, {ISimpleDialogContentState} from "../../../common/ConfirmDialog/ConfirmDialog";
 import CustomModal from "../../../common/CustomModal/CustomModal";
 import Preloader from "../../../common/Preloader/Preloader";
@@ -13,6 +13,7 @@ import Filters, {IFiltersState} from "../../../common/Filters/Filters";
 import {httpClient} from "../../../../utils/httpClient";
 import {ROUTES_API} from "../../../../config/routesApi";
 import ShopProductEdit from "../../ShopProductEdit/ShopProductEdit";
+import "./ManagementShopProducts.scss";
 
 const ManagementShopProducts: FC = () => {
   const [products, setProducts] = useState<IProduct[]>([]);
@@ -163,28 +164,34 @@ const ManagementShopProducts: FC = () => {
         JSON.stringify(params),
     })
       .then((response) => {
-        const nevValue = {...shopProducts};
+        const newValue = {...shopProducts};
         switch (action) {
           case "POST":
-            nevValue[response.data.product_id] = [
-              response.data,
-              ...nevValue[response.data.product_id],
-            ];
+            if (!newValue[response.data.product_id]) {
+              newValue[response.data.product_id] = [
+                response.data,
+              ];
+            } else {
+              newValue[response.data.product_id] = [
+                response.data,
+                ...newValue[response.data.product_id],
+              ];
+            }
             break;
           case "PUT":
-            const indexPut = nevValue[response.data.product_id]
+            const indexPut = newValue[response.data.product_id]
               .findIndex((findItem) => findItem.id === response.data.id);
             if (indexPut > -1) {
-              nevValue[response.data.product_id][indexPut] = response.data;
+              newValue[response.data.product_id][indexPut] = response.data;
             }
             break;
           case "DELETE":
-            nevValue[params.product_id] = nevValue[params.product_id]
+            newValue[params.product_id] = newValue[params.product_id]
               .filter((filterItem) => filterItem.id !== params.id);
             break;
         }
-        setChangingShopProducts(nevValue[params.product_id]);
-        setShopProducts(nevValue);
+        setChangingShopProducts(newValue[params.product_id]);
+        setShopProducts(newValue);
       })
       .finally(() => setIsLoading(false));
   }
@@ -222,7 +229,7 @@ const ManagementShopProducts: FC = () => {
   }
 
   return (
-    <div className='management-products-container'>
+    <div className='management-shops-products-container'>
       <ConfirmDialog
         isOpen={!!dialogContent}
         title={dialogContent?.title}
@@ -247,49 +254,53 @@ const ManagementShopProducts: FC = () => {
         onClose={() => {setChangingProduct(null)}}
         children={modalContent}
       />
-      <Filters
-        shops={shops}
-        categories={categories}
-        currentState={filtersState}
-        handleOnChange={setFiltersState}
-        disabled={{
-          filterByCategories: (!categories.length && !Object.keys(productCategories).length) ? 'disabled' : undefined,
-          allOrNothing: (!categories.length && !Object.keys(productCategories).length) ? 'disabled' : undefined,
-          filterByShop: (!shops.length || !Object.keys(shopProducts).length) ? 'disabled' : undefined,
-          reverseShopId: (!shops.length || !Object.keys(shopProducts).length) ? 'disabled' : undefined,
-        }}
-      />
-      <Pagination
-        page={currentPage}
-        count={countPages}
-        onChange={handleChangePage}
-        className='paginate-container'
-      />
-      <div className='products-container'>
-        {filteredProducts.map((product, index) => {
-          const startValue = (currentPage-1) * MANAGEMENT_COUNT_PRODUCTS_ON_PAGE;
-          const lastValue = (startValue + MANAGEMENT_COUNT_PRODUCTS_ON_PAGE);
-          if (index < startValue || index > lastValue) {
-            return null;
-          }
-          return (
-            <Product
-              key={`KEY_MANAGEMENT_SHOP_PRODUCTS_PRODUCT_${product.id}`}
-              product={product}
-              handleOnClick={() => {
-                setChangingShopProducts(shopProducts[product.id]);
-                setChangingProduct(product);
-              }}
-            />
-          );
-        })}
+      <div>
+        <Filters
+          shops={shops}
+          categories={categories}
+          currentState={filtersState}
+          handleOnChange={setFiltersState}
+          disabled={{
+            filterByCategories: (!categories.length && !Object.keys(productCategories).length) ? 'disabled' : undefined,
+            allOrNothing: (!categories.length && !Object.keys(productCategories).length) ? 'disabled' : undefined,
+            filterByShop: (!shops.length || !Object.keys(shopProducts).length) ? 'disabled' : undefined,
+            reverseShopId: (!shops.length || !Object.keys(shopProducts).length) ? 'disabled' : undefined,
+          }}
+        />
       </div>
-      <Pagination
-        page={currentPage}
-        count={countPages}
-        onChange={handleChangePage}
-        className='paginate-container'
-      />
+      <div className='content'>
+        <Pagination
+          page={currentPage}
+          count={countPages}
+          onChange={handleChangePage}
+          className='paginate-container'
+        />
+        <div className='product-cards'>
+          {filteredProducts.map((product, index) => {
+            const startValue = (currentPage-1) * MANAGEMENT_COUNT_PRODUCTS_ON_PAGE;
+            const lastValue = (startValue + MANAGEMENT_COUNT_PRODUCTS_ON_PAGE);
+            if (index < startValue || index > lastValue) {
+              return null;
+            }
+            return (
+              <Product
+                key={`KEY_MANAGEMENT_SHOP_PRODUCTS_PRODUCT_${product.id}`}
+                product={product}
+                handleOnClick={() => {
+                  setChangingShopProducts(shopProducts[product.id]);
+                  setChangingProduct(product);
+                }}
+              />
+            );
+          })}
+        </div>
+        <Pagination
+          page={currentPage}
+          count={countPages}
+          onChange={handleChangePage}
+          className='paginate-container'
+        />
+      </div>
     </div>
   );
 };
