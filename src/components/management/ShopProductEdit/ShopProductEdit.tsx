@@ -84,7 +84,7 @@ const ShopProductEdit: FC<IShopProductEditProps> = ({
 
   const getJSXSelectShop = (action: number, inValue: number | null, handleChange: (newValue: number | null) => void, currentShopId?: number) => {
     return (
-      <FormControl variant="outlined" style={{width: '100%', minWidth: '200px'}}>
+      <FormControl variant="outlined" style={{width: '100%'}}>
         <InputLabel id={`ID_MANAGEMENT_SHOP_PRODUCTS_SELECT_LABEL_SHOP_${action}`}>Точка продажи</InputLabel>
         <Select
           variant='standard'
@@ -124,7 +124,7 @@ const ShopProductEdit: FC<IShopProductEditProps> = ({
 
   return (
     <div className='shop-product-edit-modal'>
-      <TableContainer component={Paper}>
+
         <Table aria-label='customized table'>
           <TableHead>
             <TableRow>
@@ -290,7 +290,6 @@ const ShopProductEdit: FC<IShopProductEditProps> = ({
             ))}
           </TableBody>
         </Table>
-      </TableContainer>
     </div>
   );
 };
