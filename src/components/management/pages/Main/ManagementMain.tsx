@@ -14,6 +14,7 @@ import ManagementSchedules from "../Schedules/ManagementSchedules";
 import ManagementShops from "../Shops/ManagementShops";
 import ManagementProducts from "../Products/ManagementProducts";
 import ManagementShopProducts from "../ShopProducts/ManagementShopProducts";
+import ManagementDocuments from "../Documents/ManagementDocuments";
 
 type IPageProps = {
   title: string;
@@ -72,9 +73,9 @@ export const MANAGEMENT_PAGES: IPageProps[] = [
     grants: ['*']
   },
   {
-    title: 'MANAGEMENT_DOCUMENTS',
+    title: 'Документы',
     route: ROUTES.MANAGEMENT_DOCUMENTS,
-    component: (<div>MANAGEMENT_DOCUMENTS</div>),
+    component: <ManagementDocuments />,
     grants: ['*']
   },
 ];

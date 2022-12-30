@@ -9,6 +9,7 @@ export const NOTIFICATIONS_MAX_COUNT: number = 5;
 export const NOTIFICATIONS_LIFE_TIME: number = 5;
 export const FORMAT_DATE_NOTIFICATION = 'yyyy-MM-dd HH:mm:ss';
 export const MANAGEMENT_COUNT_CATEGORIES_ON_PAGE: number = 30;
+export const MANAGEMENT_COUNT_DOCUMENTS_ON_PAGE: number = 30;
 export const MANAGEMENT_COUNT_PRODUCTS_ON_PAGE: number = 19;
 export const DELAY_APPLIED_FILTERS: number = 5;
 

@@ -15,4 +15,5 @@ export const ROUTES_API = {
   MANAGEMENT_SHOPS_PRODUCTS_WITH_ID: `${API_URL}/management/shops/:shopId/products`,
   MANAGEMENT_PRODUCTS: `${API_URL}/management/products`,
   MANAGEMENT_PRODUCTS_CATEGORIES: `${API_URL}/management/products/categories`,
+  MANAGEMENT_DOCUMENTS: `${API_URL}/management/documents`,
 };

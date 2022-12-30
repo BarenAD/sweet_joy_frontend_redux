@@ -16,6 +16,14 @@ import {ICategory, IShop} from "../../App/appTypes";
 import Preloader from "../Preloader/Preloader";
 import {DELAY_APPLIED_FILTERS} from "../../../config/config";
 
+export const DEFAULT_VALUE_FILTERS: IFiltersState = {
+  selectedName: '',
+  selectedShopId: null,
+  selectedCategoryIds: [],
+  isReverseShopId: false,
+  isAllOrNothing: false,
+};
+
 export type IFiltersState = {
   selectedName: string;
   selectedShopId: number | null;
@@ -29,8 +37,8 @@ type IFiltersHandleOnChange = (newState: IFiltersState) => void;
 type IFilterPropDisable = 'hide' | 'disabled';
 
 type IFiltersProps = {
-  shops: IShop[];
-  categories: ICategory[];
+  shops?: IShop[];
+  categories?: ICategory[];
   currentState: IFiltersState;
   handleOnChange: IFiltersHandleOnChange;
   disabled?: {
@@ -105,7 +113,7 @@ const Filters: FC<IFiltersProps> = ({
           />
         </div>
       }
-      {disabled?.filterByShop  !== 'hide' &&
+      {shops && disabled?.filterByShop !== 'hide' &&
         <FormControl style={{width: "90%", marginTop: '20px'}}>
           <InputLabel id={`ID_SELECT_LABEL_FILTERS_SHOP`}>Точка продажи</InputLabel>
           <Select
@@ -179,7 +187,7 @@ const Filters: FC<IFiltersProps> = ({
           />
         </div>
       }
-      {disabled?.filterByCategories !== 'hide' &&
+      {categories && disabled?.filterByCategories !== 'hide' &&
         <div className='filter-part'>
           <Autocomplete
             disabled={disabled?.filterByCategories === 'disabled'}

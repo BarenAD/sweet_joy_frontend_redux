@@ -13,7 +13,7 @@ import {
 import CustomModal from "../../../common/CustomModal/CustomModal";
 import Product from "../../../common/Product/Product";
 import {filterProducts} from "../../../../utils/utils";
-import Filters, {IFiltersState} from "../../../common/Filters/Filters";
+import Filters, {DEFAULT_VALUE_FILTERS, IFiltersState} from "../../../common/Filters/Filters";
 import ProductDetailsModal from "../../../common/ProductDetailsModal/ProductDetailsModal";
 import Demo from "../../../common/Demo/Demo";
 import {SITE_CONFIG_IDENTIFIERS} from "../../../../config/siteConfigIdentifiers";
@@ -30,13 +30,7 @@ const Products: FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const productsContainer = useRef<HTMLDivElement>(null);
   const [windowWidth, setWindowWidth] = useState<number>(0);
-  const [filtersState, setFiltersState] = useState<IFiltersState>({
-    selectedName: '',
-    selectedShopId: null,
-    selectedCategoryIds: [],
-    isReverseShopId: false,
-    isAllOrNothing: false,
-  });
+  const [filtersState, setFiltersState] = useState<IFiltersState>(DEFAULT_VALUE_FILTERS);
 
   const debounceOnChangeWindow = useCallback<() => void>(
     debounce(() => {

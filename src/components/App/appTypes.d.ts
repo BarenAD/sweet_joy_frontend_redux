@@ -61,7 +61,7 @@ export type IDocument = {
   id: number;
   name: string;
   url: string;
-  location: "main_top_bar_document";
+  location?: "main_top_bar_document";
 };
 
 export type ISchedule = {

@@ -1,6 +1,4 @@
-@import "src/config/variables";
-
-.management-categories-container {
+.management-documents-container {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -8,13 +6,11 @@
   padding: 15px 0 75px 0;
   position: relative;
 
-  button {
-    height: max-content;
-    margin: 0 10px;
-  }
-
-  .paginate-container ul {
-    flex-wrap: nowrap;
+  .paginate-container {
+    margin: 20px 0;
+    ul {
+      flex-wrap: nowrap;
+    }
   }
 
   .edit-container {
@@ -38,17 +34,18 @@
       align-items: flex-end;
       flex: 1;
       position: relative;
+
+      .filter-preloader {
+        position: absolute;
+        right: 10px;
+        top: 24px;
+      }
     }
 
     .part-container-center {
       align-items: center;
       justify-content: center;
     }
-  }
-
-  .table-content-container {
-    margin: 15px 0;
-    width: 100%;
   }
 
   table {
@@ -67,6 +64,10 @@
 
   th {
     align-items: center;
+  }
+
+  th:first-child {
+    flex: 1;
   }
 
   th:last-child {

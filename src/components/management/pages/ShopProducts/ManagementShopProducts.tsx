@@ -9,7 +9,7 @@ import {ICategory, IKeyNumberStoreObject, IProduct, IProductCategory, IShop, ISh
 import {HandleAddNotificationContext} from "../../../common/Notifications/notificationsSlice";
 import {HandleChangeAuthStatusContext} from "../../../../redux/auth/authSlice";
 import {filterProducts} from "../../../../utils/utils";
-import Filters, {IFiltersState} from "../../../common/Filters/Filters";
+import Filters, {DEFAULT_VALUE_FILTERS, IFiltersState} from "../../../common/Filters/Filters";
 import {httpClient} from "../../../../utils/httpClient";
 import {ROUTES_API} from "../../../../config/routesApi";
 import ShopProductEdit from "../../ShopProductEdit/ShopProductEdit";
@@ -29,13 +29,7 @@ const ManagementShopProducts: FC = () => {
   const [countPages, setCountPages] = useState<number>(0);
   const [changingProduct, setChangingProduct] = useState<IProduct | null>(null);
   const [changingShopProducts, setChangingShopProducts] = useState<IShopProduct[] | null>(null);
-  const [filtersState, setFiltersState] = useState<IFiltersState>({
-    selectedName: '',
-    selectedShopId: null,
-    selectedCategoryIds: [],
-    isReverseShopId: false,
-    isAllOrNothing: false,
-  });
+  const [filtersState, setFiltersState] = useState<IFiltersState>(DEFAULT_VALUE_FILTERS);
 
   useEffect(() => {
     httpClient<IProduct[]>({
