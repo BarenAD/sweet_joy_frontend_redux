@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import {AddCircleOutline, Clear, DeleteOutline, EditOutlined, InsertDriveFileOutlined} from "@mui/icons-material";
 import Filters, {DEFAULT_VALUE_FILTERS, IFiltersState} from "../../../common/Filters/Filters";
-import {ICategory, IDocument} from "../../../App/appTypes";
+import {IDocument} from "../../../App/appTypes";
 import {httpClient} from "../../../../utils/httpClient";
 import {ROUTES_API} from "../../../../config/routesApi";
 import {HandleAddNotificationContext} from "../../../common/Notifications/notificationsSlice";
@@ -144,7 +144,7 @@ const ManagementDocuments: FC = () => {
           value: newName,
         },
       };
-      if (action === 'POST' && newDocument) {
+      if (newDocument) {
         actionProps['document'] = {
           type: 'base',
           value: newDocument,

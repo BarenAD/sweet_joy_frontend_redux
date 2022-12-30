@@ -15,6 +15,7 @@ import ManagementShops from "../Shops/ManagementShops";
 import ManagementProducts from "../Products/ManagementProducts";
 import ManagementShopProducts from "../ShopProducts/ManagementShopProducts";
 import ManagementDocuments from "../Documents/ManagementDocuments";
+import ManagementDocumentLocations from "../DocumentsLocations/ManagementDocumentLocations";
 
 type IPageProps = {
   title: string;
@@ -76,6 +77,12 @@ export const MANAGEMENT_PAGES: IPageProps[] = [
     title: 'Документы',
     route: ROUTES.MANAGEMENT_DOCUMENTS,
     component: <ManagementDocuments />,
+    grants: ['*']
+  },
+  {
+    title: 'Расположение документов',
+    route: ROUTES.MANAGEMENT_DOCUMENTS_LOCATIONS,
+    component:  <ManagementDocumentLocations />,
     grants: ['*']
   },
 ];

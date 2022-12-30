@@ -77,3 +77,10 @@ export type ISchedule = {
   holiday: string;
   particular: string;
 }
+
+export type IDocumentLocation = {
+  id: number;
+  name: string;
+  identify: string;
+  document_id: number | null;
+};

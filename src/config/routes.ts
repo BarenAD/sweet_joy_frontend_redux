@@ -22,6 +22,7 @@ type IRoutes = {
   MANAGEMENT_CONFIGURATIONS: IRoute;
   MANAGEMENT_DOCUMENTS: IRoute;
   MANAGEMENT_SHOPS_PRODUCTS: IRoute;
+  MANAGEMENT_DOCUMENTS_LOCATIONS: IRoute;
 };
 
 export const ROUTES: IRoutes = {
@@ -96,5 +97,9 @@ export const ROUTES: IRoutes = {
   MANAGEMENT_DOCUMENTS: {
     path: '/documents',
     link: '/management/documents',
+  },
+  MANAGEMENT_DOCUMENTS_LOCATIONS: {
+    path: '/documents/locations',
+    link: '/management/documents/locations',
   },
 };

@@ -1,0 +1,40 @@
+.management-documents-locations-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px 0 75px 0;
+  position: relative;
+
+  table {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    flex: 1;
+  }
+
+  tr, th {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex: 3;
+  }
+
+  th {
+    align-items: center;
+  }
+
+  th:first-child {
+    flex: 1;
+  }
+
+  th:last-child {
+    flex: 1;
+    justify-content: center;
+  }
+
+  button {
+    height: max-content;
+    margin: 0 10px;
+  }
+}
