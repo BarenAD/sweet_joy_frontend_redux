@@ -3,6 +3,7 @@ export type IProfile = {
   email: string;
   fio: string;
   phone: string;
+  permissions: string[];
 };
 
 export type IResponseLogin = IProfile & {

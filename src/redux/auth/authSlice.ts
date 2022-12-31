@@ -26,6 +26,11 @@ export const authSlice = createSlice({
     },
     setProfile: (state, action: PayloadAction<IProfile | null>) => {
       state.profile = action.payload;
+      if(!action.payload) {
+        localStorage.removeItem(KEY_LOCAL_STORAGE_AUTHORIZATION_PROFILE);
+      } else {
+        localStorage.setItem(KEY_LOCAL_STORAGE_AUTHORIZATION_PROFILE, JSON.stringify(action.payload));
+      }
     },
   },
 });

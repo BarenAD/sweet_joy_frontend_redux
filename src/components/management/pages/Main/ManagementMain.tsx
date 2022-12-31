@@ -1,12 +1,12 @@
-import React, {FC, ReactElement, useState} from "react";
+import React, {FC, ReactElement, useContext, useEffect, useState} from "react";
 import "./ManagementMain.scss";
 import {IRoute, ROUTES} from "../../../../config/routes";
-import {Route, Routes} from "react-router";
+import {Navigate, Route, Routes} from "react-router";
 import ManagementHeader from "../../Header/ManagementHeader";
 import ManagementDrawer from "../../Drawer/ManagementDrawer";
 import {Card, Typography} from "@mui/material";
-import {useAppSelector} from "../../../../redux/hooks";
-import {getProfile} from "../../../../redux/auth/authSlice";
+import {useAppDispatch, useAppSelector} from "../../../../redux/hooks";
+import {getProfile, HandleChangeAuthStatusContext, setProfile} from "../../../../redux/auth/authSlice";
 import ManagementConfigurations from "../Configurations/ManagementConfigurations";
 import ManagementCategories from "../Categories/ManagementCategories";
 import ConfigManager from "../../../common/ConfigManager/ConfigManager";
@@ -16,12 +16,18 @@ import ManagementProducts from "../Products/ManagementProducts";
 import ManagementShopProducts from "../ShopProducts/ManagementShopProducts";
 import ManagementDocuments from "../Documents/ManagementDocuments";
 import ManagementDocumentLocations from "../DocumentsLocations/ManagementDocumentLocations";
+import {HandleAddNotificationContext} from "../../../common/Notifications/notificationsSlice";
+import {httpClient} from "../../../../utils/httpClient";
+import {IDocument} from "../../../App/appTypes";
+import {ROUTES_API} from "../../../../config/routesApi";
+import Preloader from "../../../common/Preloader/Preloader";
+import {checkAllowByPermissions, generateBaseRules} from "../../../../utils/utils";
 
 type IPageProps = {
   title: string;
   route: IRoute;
   component: ReactElement;
-  grants: string[];
+  permissions: string[];
 };
 
 export const MANAGEMENT_PAGES: IPageProps[] = [
@@ -29,67 +35,104 @@ export const MANAGEMENT_PAGES: IPageProps[] = [
     title: 'MANAGEMENT_USERS',
     route: ROUTES.MANAGEMENT_USERS,
     component: (<div>MANAGEMENT_USERS</div>),
-    grants: ['*']
+    permissions: generateBaseRules('users'),
   },
   {
     title: 'MANAGEMENT_ROLES',
     route: ROUTES.MANAGEMENT_ROLES,
     component: (<div>MANAGEMENT_ROLES</div>),
-    grants: ['*']
+    permissions: generateBaseRules('users.roles'),
   },
   {
     title: 'Категории товаров',
     route: ROUTES.MANAGEMENT_CATEGORIES,
     component: <ManagementCategories />,
-    grants: ['*']
+    permissions: generateBaseRules('categories'),
   },
   {
     title: 'Товары',
     route: ROUTES.MANAGEMENT_PRODUCTS,
     component: <ManagementProducts />,
-    grants: ['*']
+    permissions: generateBaseRules('products'),
   },
   {
     title: 'Расписания',
     route: ROUTES.MANAGEMENT_SCHEDULES,
     component: <ManagementSchedules />,
-    grants: ['*']
+    permissions: generateBaseRules('schedules'),
   },
   {
     title: 'Торговые точки',
     route: ROUTES.MANAGEMENT_SHOPS,
     component: <ManagementShops />,
-    grants: ['*']
+    permissions: generateBaseRules('shops'),
   },
   {
     title: 'Товары в торговых точках',
     route: ROUTES.MANAGEMENT_SHOPS_PRODUCTS,
     component: <ManagementShopProducts />,
-    grants: ['*']
+    permissions: generateBaseRules('shops.products'),
   },
   {
     title: 'Конфигурация сайта',
     route: ROUTES.MANAGEMENT_CONFIGURATIONS,
     component: <ManagementConfigurations />,
-    grants: ['*']
+    permissions: generateBaseRules('configurations'),
   },
   {
     title: 'Документы',
     route: ROUTES.MANAGEMENT_DOCUMENTS,
     component: <ManagementDocuments />,
-    grants: ['*']
+    permissions: generateBaseRules('documents'),
   },
   {
     title: 'Расположение документов',
     route: ROUTES.MANAGEMENT_DOCUMENTS_LOCATIONS,
     component:  <ManagementDocumentLocations />,
-    grants: ['*']
+    permissions: generateBaseRules('documents.locations'),
   },
 ];
 
 const ManagementMain: FC = () => {
   const profile = useAppSelector(getProfile);
+  const dispatch = useAppDispatch();
   const [isOpenDrawer, setIsOpenDrawer] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const handleAddNotificationContext = useContext(HandleAddNotificationContext);
+  const handleChangeAuthStatusContext = useContext(HandleChangeAuthStatusContext);
+
+  useEffect(() => {
+    httpClient<string[]>({
+      url: ROUTES_API.PROFILE_PERMISSIONS,
+      method: 'GET',
+      handleAddNotification: handleAddNotificationContext,
+      handleChangeAuthStatus: handleChangeAuthStatusContext,
+      isNeedAuth: true,
+    })
+      .then((response) => {
+        if (!response.data.length) {
+          handleAddNotificationContext({
+            type: 'error',
+            message: 'Вы не являетесь администратором. Доступ к данному разделу сайта закрыт!',
+          });
+        }
+        if (profile) {
+          dispatch(setProfile({
+            ...profile,
+            permissions: response.data,
+          }));
+        }
+      })
+      .finally(() => setIsLoading(false));
+  }, [])
+
+  if (isLoading) {
+    return (
+      <div className='preloader-center'>
+        <Preloader size={50} />
+      </div>
+    );
+  }
 
   return (
     <div className='management-main-container'>
@@ -101,35 +144,50 @@ const ManagementMain: FC = () => {
         setIsOpenDrawer={setIsOpenDrawer}
       />
       <div className="content-pages-container">
-        <Routes>
-          <Route
-            path='/'
-            element={(
-              <div className='main-container'>
-                <Card className='main-card'>
-                  <Typography variant='h5' align='center' style={{marginBottom: '30px'}}>
-                    {profile ? <b>{profile.fio.split(' ')[1]}, </b> : ''}добро пожаловать!
-                  </Typography>
-                  <Typography>
-                    Выбирай страницу и начинай влавствовать!
-                  </Typography>
-                  <Typography>
-                    Набор страниц зависит от прав, наделёнными вашему аккаунту.
-                    Если у вас не хватает каких-либо страниц, обратитесь к более старшему администратору.
-                  </Typography>
-                </Card>
-                <ConfigManager/>
-              </div>
-            )}
-          />
-          {MANAGEMENT_PAGES.map((page, index) => (
+        {!profile?.permissions?.length ?
+          <div className='main-container'>
+            <Card className='main-card'>
+              <Typography variant='h5' align='center'>
+                Вы не являетесь администратором.
+              </Typography>
+              <Typography variant='h5' align='center'>
+                Доступ к данному функционалу закрыт.
+              </Typography>
+            </Card>
+          </div>
+          :
+          <Routes>
             <Route
-              key={`KEY_NAVIGATIONS_PAGE_${index}`}
-              path={page.route.path}
-              element={page.component}
+              path='/'
+              element={(
+                <div className='main-container'>
+                  <Card className='main-card'>
+                    <Typography variant='h5' align='center' style={{marginBottom: '30px'}}>
+                      {profile ? <b>{profile.fio.split(' ')[1]}, </b> : ''}добро пожаловать!
+                    </Typography>
+                    <Typography>
+                      Выбирай страницу и начинай влавствовать!
+                    </Typography>
+                    <Typography>
+                      Набор страниц зависит от прав, наделёнными вашему аккаунту.
+                      Если у вас не хватает каких-либо страниц, обратитесь к более старшему администратору.
+                    </Typography>
+                  </Card>
+                  <ConfigManager/>
+                </div>
+              )}
             />
-          ))}
-        </Routes>
+            {!!profile?.permissions?.length && MANAGEMENT_PAGES
+              .filter((page) => checkAllowByPermissions(page.permissions, profile?.permissions ?? []))
+              .map((page, index) => (
+              <Route
+                key={`KEY_NAVIGATIONS_PAGE_${index}`}
+                path={page.route.path}
+                element={page.component}
+              />
+            ))}
+          </Routes>
+        }
       </div>
     </div>
   )

@@ -81,3 +81,45 @@ export const filterProducts = (
         return allowByName && allowByShop && allowByCategories;
       });
 }
+
+export const generateBaseRules = (baseRule: string): string[] => {
+  const baseRules = [
+    'index',
+    'store',
+    'update',
+    'destroy'
+  ];
+  return baseRules.map((suffix) => `${baseRule}.${suffix}`);
+};
+
+export const checkAllowByPermissions = (permissions: string[], userPermissions: string[]): boolean => {
+  if (!permissions.length || userPermissions.includes('*')) {
+    return true;
+  }
+  for(let i = 0; i < permissions.length; i++) {
+    if (userPermissions.includes(permissions[i])) {
+      return true;
+    }
+  }
+  const preparedPermissions = permissions.reduce<string[]>((result, permission) => {
+    const splitted = permission.split('.');
+    splitted.pop();
+    let prefix = '';
+    splitted.forEach((partPermission) => {
+      if (prefix.length) {
+        prefix += '.';
+      }
+      prefix += partPermission;
+      if (!result.includes(prefix+'.*')) {
+        result.push(prefix + '.*');
+      }
+    });
+    return result;
+  }, []);
+  for(let i = 0; i < preparedPermissions.length; i++) {
+    if (userPermissions.includes(preparedPermissions[i])) {
+      return true;
+    }
+  }
+  return false;
+};
