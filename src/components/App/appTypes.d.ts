@@ -93,6 +93,12 @@ export type IUser = {
   note: string;
 };
 
+export type IUserRole = {
+  id: number;
+  user_id: number;
+  role_id: number;
+};
+
 export type IRole = {
   id: number;
   name: string;

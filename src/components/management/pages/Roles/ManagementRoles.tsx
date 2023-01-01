@@ -125,7 +125,7 @@ const ManagementRoles: FC = () => {
   useEffect(() => {
     if (!permissions.length &&
       profile?.permissions &&
-      checkAllowByPermissions(generateBaseRules('permissions'), profile.permissions)
+      checkAllowByPermissions(['permissions.index'], profile.permissions)
     ) {
       setIsLoading(true);
       httpClient<IPermission[]>({

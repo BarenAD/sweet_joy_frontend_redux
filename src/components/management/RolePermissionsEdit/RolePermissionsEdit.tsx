@@ -129,7 +129,7 @@ const RolePermissionsEdit: FC<IRoleEditProps> = ({
             )
             .map(permission => (
               <MenuItem
-                key={`KEY_EDIT_SHOP_SELECT_SCHEDULE_ITEM_${permission.id}`}
+                key={`KEY_EDIT_ROLE_SELECT_PERMISSION_ITEM_${permission.id}`}
                 value={permission.id}
                 title={permission.description}
               >
@@ -149,9 +149,9 @@ const RolePermissionsEdit: FC<IRoleEditProps> = ({
     );
   }, [isLoading, selectPermissionID, permissions, rolePermissions]);
 
-  if (isLoading && !rolePermissions.length) {
+  if (isLoading && !rolePermissions.length && !selectPermissionID) {
     return (
-      <div className='role-edit-modal'>
+      <div className='role-permissions-edit-modal'>
         <div className='preloader-center'>
           <Preloader size={50} />
         </div>
@@ -160,7 +160,7 @@ const RolePermissionsEdit: FC<IRoleEditProps> = ({
   }
 
   return (
-    <div className='role-edit-modal'>
+    <div className='role-permissions-edit-modal'>
       <ConfirmDialog
         isOpen={!!dialogContent}
         title={dialogContent?.title}
@@ -182,7 +182,7 @@ const RolePermissionsEdit: FC<IRoleEditProps> = ({
         variant='h6'
         align='center'
       >
-        Редактирование роли
+        Редактирование прав роли
       </Typography>
       <TableContainer>
         <Table aria-label='customized table'>

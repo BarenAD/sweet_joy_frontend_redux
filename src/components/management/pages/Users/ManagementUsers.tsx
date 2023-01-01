@@ -1,8 +1,8 @@
-import React, {FC, useContext, useEffect, useMemo, useState} from "react";
-import {IUser} from "../../../App/appTypes";
+import React, {FC, ReactElement, useContext, useEffect, useMemo, useState} from "react";
+import {IPermission, IRole, IUser} from "../../../App/appTypes";
 import Filters, {DEFAULT_VALUE_FILTERS, IFiltersState} from "../../../common/Filters/Filters";
 import {HandleAddNotificationContext} from "../../../common/Notifications/notificationsSlice";
-import {HandleChangeAuthStatusContext} from "../../../../redux/auth/authSlice";
+import {getProfile, HandleChangeAuthStatusContext} from "../../../../redux/auth/authSlice";
 import ConfirmDialog, {ISimpleDialogContentState} from "../../../common/ConfirmDialog/ConfirmDialog";
 import {MANAGEMENT_COUNT_DOCUMENTS_ON_PAGE, MANAGEMENT_COUNT_USERS_ON_PAGE} from "../../../../config/config";
 import {httpClient} from "../../../../utils/httpClient";
@@ -25,10 +25,14 @@ import {
   MilitaryTechOutlined
 } from "@mui/icons-material";
 import Preloader from "../../../common/Preloader/Preloader";
-import {preparePhoneByMask} from "../../../../utils/utils";
+import {checkAllowByPermissions, preparePhoneByMask} from "../../../../utils/utils";
 import "./ManagementUsers.scss";
+import CustomModal from "../../../common/CustomModal/CustomModal";
+import UserRolesEdit from "../../UserRolesEdit/UserRolesEdit";
+import {useAppSelector} from "../../../../redux/hooks";
 
 const ManagementUsers: FC = () => {
+  const profile = useAppSelector(getProfile);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [users, setUsers] = useState<IUser[]>([]);
   const [filtersState, setFiltersState] = useState<IFiltersState>(DEFAULT_VALUE_FILTERS);
@@ -37,7 +41,9 @@ const ManagementUsers: FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [countPages, setCountPages] = useState<number>(0);
   const [dialogContent, setDialogContent] = useState<null | ISimpleDialogContentState>(null);
+  const [modalContent, setModalContent] = useState<ReactElement | null>(null);
   const [changingUser, setChangingUser] = useState<IUser & {password: string | null} | null>(null);
+  const [roles, setRoles] = useState<IRole[]>([]);
 
   const filteredUsers = useMemo(() => {
     if (!filtersState.selectedName) {
@@ -66,6 +72,33 @@ const ManagementUsers: FC = () => {
       .then((response) => setUsers(response.data))
       .finally(() => setIsLoading(false));
   }, []);
+
+  useEffect(() => {
+    if (!roles.length &&
+      profile?.permissions &&
+      checkAllowByPermissions(['roles.index'], profile.permissions)
+    ) {
+      setIsLoading(true);
+      httpClient<IRole[]>({
+        url: ROUTES_API.MANAGEMENT_ROLES,
+        method: 'GET',
+        handleAddNotification: handleAddNotificationContext,
+        handleChangeAuthStatus: handleChangeAuthStatusContext,
+        isNeedAuth: true,
+      })
+        .then((response) => setRoles(response.data))
+        .finally(() => setIsLoading(false));
+    }
+  }, [profile]);
+
+  const handleOpenEdit = (user: IUser) => {
+    setModalContent((
+      <UserRolesEdit
+        user={user}
+        roles={roles}
+      />
+    ));
+  };
 
   const tableBody = useMemo(() => {
     return (
@@ -102,10 +135,11 @@ const ManagementUsers: FC = () => {
               </TableCell>
               <TableCell component='th' scope='row'>
                 <IconButton
+                  disabled={!roles.length}
                   edge='start'
                   color='inherit'
                   onClick={() => {
-
+                    handleOpenEdit(user);
                   }}
                 >
                   <MilitaryTechOutlined />
@@ -135,7 +169,7 @@ const ManagementUsers: FC = () => {
         })}
       </TableBody>
     );
-  }, [filteredUsers, currentPage]);
+  }, [filteredUsers, currentPage, roles]);
 
   const confirmActionUser = (action: 'PUT' | 'DELETE', id?: number) => {
     const messageAction = action === 'PUT' ? 'изменить' : 'удалить';
@@ -214,6 +248,10 @@ const ManagementUsers: FC = () => {
             setDialogContent(null);
           }
         }}
+      />
+      <CustomModal
+        onClose={() => {setModalContent(null)}}
+        children={modalContent}
       />
       <Filters
         currentState={filtersState}
