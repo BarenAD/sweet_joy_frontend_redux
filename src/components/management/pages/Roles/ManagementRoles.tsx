@@ -1,9 +1,9 @@
-import React, {FC, useContext, useEffect, useMemo, useState} from "react";
+import React, {FC, ReactElement, useContext, useEffect, useMemo, useState} from "react";
 import ConfirmDialog, {ISimpleDialogContentState} from "../../../common/ConfirmDialog/ConfirmDialog";
-import {IRole} from "../../../App/appTypes";
+import {IPermission, IRole} from "../../../App/appTypes";
 import Filters, {DEFAULT_VALUE_FILTERS, IFiltersState} from "../../../common/Filters/Filters";
 import {HandleAddNotificationContext} from "../../../common/Notifications/notificationsSlice";
-import {HandleChangeAuthStatusContext} from "../../../../redux/auth/authSlice";
+import {getProfile, HandleChangeAuthStatusContext} from "../../../../redux/auth/authSlice";
 import {MANAGEMENT_COUNT_ROLES_ON_PAGE} from "../../../../config/config";
 import {
   IconButton,
@@ -20,12 +20,18 @@ import {httpClient} from "../../../../utils/httpClient";
 import {ROUTES_API} from "../../../../config/routesApi";
 import Preloader from "../../../common/Preloader/Preloader";
 import "./ManagementRoles.scss";
+import {useAppSelector} from "../../../../redux/hooks";
+import {checkAllowByPermissions, generateBaseRules} from "../../../../utils/utils";
+import CustomModal from "../../../common/CustomModal/CustomModal";
+import RoleEdit from "../../RoleEdit/RoleEdit";
 
 
 const ManagementRoles: FC = () => {
+  const profile = useAppSelector(getProfile);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [dialogContent, setDialogContent] = useState<null | ISimpleDialogContentState>(null);
   const [roles, setRoles] = useState<IRole[]>([]);
+  const [permissions, setPermissions] = useState<IPermission[]>([]);
   const [newRole, setNewRole] = useState<IRole>({id: 0, name: ''});
   const [changingRole, setChangingRole] = useState<IRole | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -33,6 +39,7 @@ const ManagementRoles: FC = () => {
   const [filtersState, setFiltersState] = useState<IFiltersState>(DEFAULT_VALUE_FILTERS);
   const handleAddNotificationContext = useContext(HandleAddNotificationContext);
   const handleChangeAuthStatusContext = useContext(HandleChangeAuthStatusContext);
+  const [modalContent, setModalContent] = useState<ReactElement | null>(null);
 
   const filteredRoles = useMemo(() => {
     if (!filtersState.selectedName) {
@@ -68,7 +75,7 @@ const ManagementRoles: FC = () => {
                     edge="start"
                     color="inherit"
                     onClick={() => {
-
+                      handleOpenEdit(role);
                     }}
                   >
                     <FormatListBulletedOutlined/>
@@ -113,6 +120,32 @@ const ManagementRoles: FC = () => {
       .then((response) => setRoles(response.data))
       .finally(() => setIsLoading(false));
   }, []);
+
+  useEffect(() => {
+    if (!permissions.length &&
+      profile?.permissions &&
+      checkAllowByPermissions(generateBaseRules('permissions'), profile.permissions)
+    ) {
+      httpClient<IPermission[]>({
+        url: ROUTES_API.MANAGEMENT_PERMISSIONS,
+        method: 'GET',
+        handleAddNotification: handleAddNotificationContext,
+        handleChangeAuthStatus: handleChangeAuthStatusContext,
+        isNeedAuth: true,
+      })
+        .then((response) => setPermissions(response.data))
+        .finally(() => setIsLoading(false));
+    }
+  }, [profile]);
+
+  const handleOpenEdit = (role: IRole) => {
+    setModalContent((
+      <RoleEdit
+        role={role}
+        permissions={permissions}
+      />
+    ));
+  };
 
   const confirmActionRole = (action: 'POST' | 'PUT' | 'DELETE', id?: number) => {
     const messageAction = action === 'POST' ? 'создать' : action === 'PUT' ? 'изменить' : 'удалить';
@@ -198,6 +231,10 @@ const ManagementRoles: FC = () => {
             setDialogContent(null);
           }
         }}
+      />
+      <CustomModal
+        onClose={() => {setModalContent(null)}}
+        children={modalContent}
       />
       <Filters
         currentState={filtersState}

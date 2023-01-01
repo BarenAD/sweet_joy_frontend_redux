@@ -97,3 +97,16 @@ export type IRole = {
   id: number;
   name: string;
 };
+
+export type IRolePermission = {
+  id: number;
+  role_id: number;
+  permission_id: number;
+};
+
+export type IPermission = {
+  id: number;
+  name: string;
+  description: string;
+  permission: string;
+};

@@ -20,4 +20,6 @@ export const ROUTES_API = {
   MANAGEMENT_DOCUMENTS_LOCATIONS: `${API_URL}/management/documents/locations`,
   MANAGEMENT_USERS: `${API_URL}/management/users`,
   MANAGEMENT_ROLES: `${API_URL}/management/roles`,
+  MANAGEMENT_ROLES_PERMISSIONS: `${API_URL}/management/roles/:roleId/permissions`,
+  MANAGEMENT_PERMISSIONS: `${API_URL}/management/permissions`,
 };
