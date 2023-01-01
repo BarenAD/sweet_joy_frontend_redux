@@ -12,7 +12,7 @@ import {
   TableRow,
   Typography
 } from "@mui/material";
-import "./RoleEdit.scss";
+import "./RolePermissionsEdit.scss";
 import {httpClient} from "../../../utils/httpClient";
 import {ROUTES_API} from "../../../config/routesApi";
 import {HandleAddNotificationContext} from "../../common/Notifications/notificationsSlice";
@@ -28,7 +28,7 @@ type IRoleEditProps = {
 
 type IPreparedRolePermissions = IPermission & IRolePermission;
 
-const RoleEdit: FC<IRoleEditProps> = ({
+const RolePermissionsEdit: FC<IRoleEditProps> = ({
   role,
   permissions,
 }) => {
@@ -253,4 +253,4 @@ const RoleEdit: FC<IRoleEditProps> = ({
   );
 };
 
-export default RoleEdit;
+export default RolePermissionsEdit;

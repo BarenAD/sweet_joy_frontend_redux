@@ -23,7 +23,7 @@ import "./ManagementRoles.scss";
 import {useAppSelector} from "../../../../redux/hooks";
 import {checkAllowByPermissions, generateBaseRules} from "../../../../utils/utils";
 import CustomModal from "../../../common/CustomModal/CustomModal";
-import RoleEdit from "../../RoleEdit/RoleEdit";
+import RolePermissionsEdit from "../../RolePermissionsEdit/RolePermissionsEdit";
 
 
 const ManagementRoles: FC = () => {
@@ -142,7 +142,7 @@ const ManagementRoles: FC = () => {
 
   const handleOpenEdit = (role: IRole) => {
     setModalContent((
-      <RoleEdit
+      <RolePermissionsEdit
         role={role}
         permissions={permissions}
       />
