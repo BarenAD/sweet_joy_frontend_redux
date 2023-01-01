@@ -1,6 +1,6 @@
-import React, {FC, ReactElement, useCallback, useContext, useEffect, useMemo, useState} from "react";
-import {ICategory, IProduct, ISchedule} from "../../../App/appTypes";
-import {httpClient, IFetchWithTokenResponse} from "../../../../utils/httpClient";
+import React, {FC, ReactElement, useContext, useEffect, useMemo, useState} from "react";
+import {ICategory, IProduct} from "../../../App/appTypes";
+import {httpClient} from "../../../../utils/httpClient";
 import {ROUTES_API} from "../../../../config/routesApi";
 import {HandleAddNotificationContext} from "../../../common/Notifications/notificationsSlice";
 import {HandleChangeAuthStatusContext} from "../../../../redux/auth/authSlice";
@@ -8,10 +8,11 @@ import ConfirmDialog, {ISimpleDialogContentState} from "../../../common/ConfirmD
 import Preloader from "../../../common/Preloader/Preloader";
 import Product from "../../../common/Product/Product";
 import "./ManagementProducts.scss";
-import {debounce, Pagination, TextField} from "@mui/material";
+import {Pagination} from "@mui/material";
 import CustomModal from "../../../common/CustomModal/CustomModal";
 import {MANAGEMENT_COUNT_PRODUCTS_ON_PAGE} from "../../../../config/config";
 import ProductEdit from "../../ProductEdit/ProductEdit";
+import Filters, {DEFAULT_VALUE_FILTERS, IFiltersState} from "../../../common/Filters/Filters";
 
 const ManagementProducts: FC = () => {
   const [products, setProducts] = useState<IProduct[]>([]);
@@ -23,22 +24,15 @@ const ManagementProducts: FC = () => {
   const handleChangeAuthStatusContext = useContext(HandleChangeAuthStatusContext);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [countPages, setCountPages] = useState<number>(0);
-  const [filterState, setFilterState] = useState<string>('');
-  const [appliedFilter, setAppliedFilter] = useState<string>('');
-
-  const debounceAppliedFilter = useCallback(
-    debounce((newValue: string) => {
-      setAppliedFilter(newValue);
-    }, 2000),
-    []);
+  const [filtersState, setFiltersState] = useState<IFiltersState>(DEFAULT_VALUE_FILTERS);
 
   const filteredProducts = useMemo(() => {
-    return appliedFilter ?
+    return filtersState.selectedName ?
       products
-        .filter((filterItem) => ~filterItem.name.toLowerCase().indexOf(appliedFilter.toLowerCase()))
+        .filter((filterItem) => ~filterItem.name.toLowerCase().indexOf(filtersState.selectedName.toLowerCase()))
       :
       products;
-  }, [appliedFilter, products]);
+  }, [filtersState, products]);
 
   useEffect(() => {
     setCountPages(Math.ceil(filteredProducts.length / MANAGEMENT_COUNT_PRODUCTS_ON_PAGE));
@@ -191,24 +185,34 @@ const ManagementProducts: FC = () => {
           modalContent
         }
       />
-      <div className='filter-container'>
-        {filterState !== appliedFilter &&
-          <div className='filter-preloader'>
-            <Preloader size={30} />
-          </div>
-        }
-        <TextField
-          style={{width: '100%'}}
-          label="Поиск"
-          variant="outlined"
-          value={filterState}
-          disabled={isLoading}
-          onChange={(event) => {
-            setFilterState(event.target.value);
-            debounceAppliedFilter(event.target.value);
-          }}
-        />
-      </div>
+      <Filters
+        currentState={filtersState}
+        handleOnChange={setFiltersState}
+        disabled={{
+          allOrNothing: 'hide',
+          reverseShopId: 'hide',
+          filterByShop: 'hide',
+          filterByCategories: 'hide',
+        }}
+      />
+      {/*<div className='filter-container'>*/}
+      {/*  {filterState !== appliedFilter &&*/}
+      {/*    <div className='filter-preloader'>*/}
+      {/*      <Preloader size={30} />*/}
+      {/*    </div>*/}
+      {/*  }*/}
+      {/*  <TextField*/}
+      {/*    style={{width: '100%'}}*/}
+      {/*    label="Поиск"*/}
+      {/*    variant="outlined"*/}
+      {/*    value={filterState}*/}
+      {/*    disabled={isLoading}*/}
+      {/*    onChange={(event) => {*/}
+      {/*      setFilterState(event.target.value);*/}
+      {/*      debounceAppliedFilter(event.target.value);*/}
+      {/*    }}*/}
+      {/*  />*/}
+      {/*</div>*/}
       <Pagination
         page={currentPage}
         count={countPages}

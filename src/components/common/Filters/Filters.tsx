@@ -100,7 +100,7 @@ const Filters: FC<IFiltersProps> = ({
       {disabled?.filterByName !== 'hide' &&
         <div className='filter-part filter-part-center'>
           <TextField
-            label="Название товара"
+            label="Наименование"
             variant="outlined"
             value={filtersState.selectedName}
             disabled={disabled?.filterByName === 'disabled'}

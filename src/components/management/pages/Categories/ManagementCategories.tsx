@@ -1,6 +1,5 @@
-import React, {FC, useCallback, useContext, useEffect, useMemo, useState} from "react";
+import React, {FC, useContext, useEffect, useMemo, useState} from "react";
 import {
-  debounce,
   IconButton, Pagination,
   Paper,
   Table,
@@ -21,33 +20,27 @@ import {ICategory} from "../../../App/appTypes";
 import "./ManagementCategories.scss";
 import {MANAGEMENT_COUNT_CATEGORIES_ON_PAGE} from "../../../../config/config";
 import ConfirmDialog, {ISimpleDialogContentState} from "../../../common/ConfirmDialog/ConfirmDialog";
+import Filters, {DEFAULT_VALUE_FILTERS, IFiltersState} from "../../../common/Filters/Filters";
 
 const ManagementCategories: FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [dialogContent, setDialogContent] = useState<null | ISimpleDialogContentState>(null);
-  const [filterState, setFilterState] = useState<string>('');
-  const [appliedFilter, setAppliedFilter] = useState<string>('');
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [newCategory, setNewCategory] = useState<ICategory>({id: 0, name: ''});
   const [changingCategory, setChangingCategory] = useState<ICategory | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [countPages, setCountPages] = useState<number>(0);
+  const [filtersState, setFiltersState] = useState<IFiltersState>(DEFAULT_VALUE_FILTERS);
   const handleAddNotificationContext = useContext(HandleAddNotificationContext);
   const handleChangeAuthStatusContext = useContext(HandleChangeAuthStatusContext);
 
-  const debounceAppliedFilter = useCallback(
-    debounce((newValue: string) => {
-      setAppliedFilter(newValue);
-    }, 2000),
-    []);
-
   const filteredCategories = useMemo(() => {
-    return appliedFilter ?
+    return filtersState.selectedName ?
       categories
-        .filter((category) => ~category.name.toLowerCase().indexOf(appliedFilter.toLowerCase()))
+        .filter((category) => ~category.name.toLowerCase().indexOf(filtersState.selectedName.toLowerCase()))
       :
       categories;
-  }, [appliedFilter, categories]);
+  }, [filtersState, categories]);
 
   useEffect(() => {
     setCountPages(Math.ceil(filteredCategories.length / MANAGEMENT_COUNT_CATEGORIES_ON_PAGE));
@@ -200,25 +193,17 @@ const ManagementCategories: FC = () => {
           }
         }}
       />
+      <Filters
+        currentState={filtersState}
+        handleOnChange={setFiltersState}
+        disabled={{
+          allOrNothing: 'hide',
+          reverseShopId: 'hide',
+          filterByShop: 'hide',
+          filterByCategories: 'hide',
+        }}
+      />
       <div className='edit-container'>
-        <div className='part-container'>
-          {filterState !== appliedFilter &&
-            <div className='filter-preloader'>
-              <Preloader size={30} />
-            </div>
-          }
-          <TextField
-            style={{width: '100%'}}
-            label="Поиск"
-            variant="outlined"
-            value={filterState}
-            disabled={isLoading}
-            onChange={(event) => {
-              setFilterState(event.target.value);
-              debounceAppliedFilter(event.target.value);
-            }}
-          />
-        </div>
         <div className='part-container'>
           <TextField
             style={{width: '100%'}}

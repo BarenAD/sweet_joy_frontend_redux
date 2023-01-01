@@ -84,3 +84,11 @@ export type IDocumentLocation = {
   identify: string;
   document_id: number | null;
 };
+
+export type IUser = {
+  id: number;
+  fio: string;
+  email: string;
+  phone: string;
+  note: string;
+};
