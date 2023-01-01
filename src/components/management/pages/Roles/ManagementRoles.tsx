@@ -74,6 +74,7 @@ const ManagementRoles: FC = () => {
                   <IconButton
                     edge="start"
                     color="inherit"
+                    disabled={!permissions.length}
                     onClick={() => {
                       handleOpenEdit(role);
                     }}
@@ -103,7 +104,7 @@ const ManagementRoles: FC = () => {
           })}
       </TableBody>
     );
-  }, [filteredRoles, currentPage]);
+  }, [filteredRoles, currentPage, permissions]);
 
   const handleChangePage = (event: object, newPage: number) => {
     setCurrentPage(newPage);
@@ -126,6 +127,7 @@ const ManagementRoles: FC = () => {
       profile?.permissions &&
       checkAllowByPermissions(generateBaseRules('permissions'), profile.permissions)
     ) {
+      setIsLoading(true);
       httpClient<IPermission[]>({
         url: ROUTES_API.MANAGEMENT_PERMISSIONS,
         method: 'GET',

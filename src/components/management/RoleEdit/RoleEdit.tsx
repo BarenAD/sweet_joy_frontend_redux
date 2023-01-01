@@ -50,7 +50,7 @@ const RoleEdit: FC<IRoleEditProps> = ({
       }
       return result;
     }, []);
-  }, [rolePermissions]);
+  }, [permissions, rolePermissions]);
 
   useEffect(() => {
     httpClient<IRolePermission[]>({
