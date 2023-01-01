@@ -19,6 +19,7 @@ import {HandleAddNotificationContext} from "../../common/Notifications/notificat
 import {HandleChangeAuthStatusContext} from "../../../redux/auth/authSlice";
 import {AddCircleOutline, DeleteOutline} from "@mui/icons-material";
 import ConfirmDialog, {ISimpleDialogContentState} from "../../common/ConfirmDialog/ConfirmDialog";
+import Preloader from "../../common/Preloader/Preloader";
 
 type IRoleEditProps = {
   role: IRole;
@@ -147,6 +148,16 @@ const RoleEdit: FC<IRoleEditProps> = ({
       </FormControl>
     );
   }, [isLoading, selectPermissionID, permissions, rolePermissions]);
+
+  if (isLoading && !rolePermissions.length) {
+    return (
+      <div className='role-edit-modal'>
+        <div className='preloader-center'>
+          <Preloader size={50} />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className='role-edit-modal'>
