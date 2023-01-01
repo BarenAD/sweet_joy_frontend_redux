@@ -35,11 +35,10 @@ const ManagementCategories: FC = () => {
   const handleChangeAuthStatusContext = useContext(HandleChangeAuthStatusContext);
 
   const filteredCategories = useMemo(() => {
-    return filtersState.selectedName ?
-      categories
-        .filter((category) => ~category.name.toLowerCase().indexOf(filtersState.selectedName.toLowerCase()))
-      :
-      categories;
+    if (!filtersState.selectedName) {
+      return categories;
+    }
+    return categories.filter((category) => ~category.name.toLowerCase().indexOf(filtersState.selectedName.toLowerCase()));
   }, [filtersState, categories]);
 
   useEffect(() => {

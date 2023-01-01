@@ -18,4 +18,5 @@ export const ROUTES_API = {
   MANAGEMENT_PRODUCTS_CATEGORIES: `${API_URL}/management/products/categories`,
   MANAGEMENT_DOCUMENTS: `${API_URL}/management/documents`,
   MANAGEMENT_DOCUMENTS_LOCATIONS: `${API_URL}/management/documents/locations`,
+  MANAGEMENT_USERS: `${API_URL}/management/users`,
 };

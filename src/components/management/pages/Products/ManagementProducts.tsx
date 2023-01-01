@@ -27,11 +27,10 @@ const ManagementProducts: FC = () => {
   const [filtersState, setFiltersState] = useState<IFiltersState>(DEFAULT_VALUE_FILTERS);
 
   const filteredProducts = useMemo(() => {
-    return filtersState.selectedName ?
-      products
-        .filter((filterItem) => ~filterItem.name.toLowerCase().indexOf(filtersState.selectedName.toLowerCase()))
-      :
-      products;
+    if (!filtersState.selectedName) {
+      return products;
+    }
+    return products.filter((filterItem) => ~filterItem.name.toLowerCase().indexOf(filtersState.selectedName.toLowerCase()));
   }, [filtersState, products]);
 
   useEffect(() => {

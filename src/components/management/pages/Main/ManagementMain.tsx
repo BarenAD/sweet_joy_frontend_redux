@@ -22,6 +22,7 @@ import {IDocument} from "../../../App/appTypes";
 import {ROUTES_API} from "../../../../config/routesApi";
 import Preloader from "../../../common/Preloader/Preloader";
 import {checkAllowByPermissions, generateBaseRules} from "../../../../utils/utils";
+import ManagementUsers from "../Users/ManagementUsers";
 
 type IPageProps = {
   title: string;
@@ -32,9 +33,9 @@ type IPageProps = {
 
 export const MANAGEMENT_PAGES: IPageProps[] = [
   {
-    title: 'MANAGEMENT_USERS',
+    title: 'Пользователи',
     route: ROUTES.MANAGEMENT_USERS,
-    component: (<div>MANAGEMENT_USERS</div>),
+    component: <ManagementUsers />,
     permissions: generateBaseRules('users'),
   },
   {
