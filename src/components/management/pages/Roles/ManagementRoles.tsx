@@ -1,74 +1,83 @@
 import React, {FC, useContext, useEffect, useMemo, useState} from "react";
-import {
-  IconButton, Pagination,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TextField, Typography
-} from "@mui/material";
-import {AddCircleOutline, Clear, DeleteOutline, EditOutlined} from "@mui/icons-material";
-import {httpClient} from "../../../../utils/httpClient";
-import {ROUTES_API} from "../../../../config/routesApi";
+import ConfirmDialog, {ISimpleDialogContentState} from "../../../common/ConfirmDialog/ConfirmDialog";
+import {IRole} from "../../../App/appTypes";
+import Filters, {DEFAULT_VALUE_FILTERS, IFiltersState} from "../../../common/Filters/Filters";
 import {HandleAddNotificationContext} from "../../../common/Notifications/notificationsSlice";
 import {HandleChangeAuthStatusContext} from "../../../../redux/auth/authSlice";
+import {MANAGEMENT_COUNT_ROLES_ON_PAGE} from "../../../../config/config";
+import {
+  IconButton,
+  Pagination, Paper, Table,
+  TableBody,
+  TableCell,
+  TableContainer, TableHead,
+  TableRow,
+  TextField,
+  Typography
+} from "@mui/material";
+import {AddCircleOutline, Clear, DeleteOutline, EditOutlined, FormatListBulletedOutlined} from "@mui/icons-material";
+import {httpClient} from "../../../../utils/httpClient";
+import {ROUTES_API} from "../../../../config/routesApi";
 import Preloader from "../../../common/Preloader/Preloader";
-import {ICategory} from "../../../App/appTypes";
-import "./ManagementCategories.scss";
-import {MANAGEMENT_COUNT_CATEGORIES_ON_PAGE} from "../../../../config/config";
-import ConfirmDialog, {ISimpleDialogContentState} from "../../../common/ConfirmDialog/ConfirmDialog";
-import Filters, {DEFAULT_VALUE_FILTERS, IFiltersState} from "../../../common/Filters/Filters";
+import "./ManagementRoles.scss";
 
-const ManagementCategories: FC = () => {
+
+const ManagementRoles: FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [dialogContent, setDialogContent] = useState<null | ISimpleDialogContentState>(null);
-  const [categories, setCategories] = useState<ICategory[]>([]);
-  const [newCategory, setNewCategory] = useState<ICategory>({id: 0, name: ''});
-  const [changingCategory, setChangingCategory] = useState<ICategory | null>(null);
+  const [roles, setRoles] = useState<IRole[]>([]);
+  const [newRole, setNewRole] = useState<IRole>({id: 0, name: ''});
+  const [changingRole, setChangingRole] = useState<IRole | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [countPages, setCountPages] = useState<number>(0);
   const [filtersState, setFiltersState] = useState<IFiltersState>(DEFAULT_VALUE_FILTERS);
   const handleAddNotificationContext = useContext(HandleAddNotificationContext);
   const handleChangeAuthStatusContext = useContext(HandleChangeAuthStatusContext);
 
-  const filteredCategories = useMemo(() => {
+  const filteredRoles = useMemo(() => {
     if (!filtersState.selectedName) {
-      return categories;
+      return roles;
     }
-    return categories.filter((category) => ~category.name.toLowerCase().indexOf(filtersState.selectedName.toLowerCase()));
-  }, [filtersState, categories]);
+    return roles.filter((role) => ~role.name.toLowerCase().indexOf(filtersState.selectedName.toLowerCase()));
+  }, [filtersState, roles]);
 
   useEffect(() => {
-    setCountPages(Math.ceil(filteredCategories.length / MANAGEMENT_COUNT_CATEGORIES_ON_PAGE));
+    setCountPages(Math.ceil(filteredRoles.length / MANAGEMENT_COUNT_ROLES_ON_PAGE));
     setCurrentPage(1);
-  }, [filteredCategories]);
+  }, [filteredRoles]);
 
-  const renderedCategories = useMemo(() => {
-    const startValue = (currentPage-1) * MANAGEMENT_COUNT_CATEGORIES_ON_PAGE;
-    const lastValue = (startValue + MANAGEMENT_COUNT_CATEGORIES_ON_PAGE);
+  const renderedRoles = useMemo(() => {
+    const startValue = (currentPage-1) * MANAGEMENT_COUNT_ROLES_ON_PAGE;
+    const lastValue = (startValue + MANAGEMENT_COUNT_ROLES_ON_PAGE);
     return (
       <TableBody>
-        {filteredCategories
-          .map((category: ICategory, index) => {
+        {filteredRoles
+          .map((role: IRole, index) => {
             if (index < startValue || index > lastValue) {
               return null;
             }
             return (
-              <TableRow key={`KEY_MANAGEMENT_CATEGORIES_${category.id}`}>
+              <TableRow key={`KEY_MANAGEMENT_ROLES_ROLE_${role.id}`}>
                 <TableCell component="th" scope="row">
                   <Typography>
-                    {category.name}
+                    {role.name}
                   </Typography>
                 </TableCell>
                 <TableCell component="th" scope="row">
                   <IconButton
                     edge="start"
                     color="inherit"
+                    onClick={() => {
+
+                    }}
+                  >
+                    <FormatListBulletedOutlined/>
+                  </IconButton>
+                  <IconButton
+                    edge="start"
+                    color="inherit"
                     style={{marginRight: '10px'}}
-                    onClick={() => {setChangingCategory(category);}}
+                    onClick={() => {setChangingRole(role);}}
                   >
                     <EditOutlined />
                   </IconButton>
@@ -76,8 +85,7 @@ const ManagementCategories: FC = () => {
                     edge="start"
                     color="inherit"
                     onClick={() => {
-                      setChangingCategory(category);
-                      confirmActionCategory('DELETE', category.id);
+                      confirmActionRole('DELETE', role.id);
                     }}
                   >
                     <DeleteOutline/>
@@ -88,41 +96,41 @@ const ManagementCategories: FC = () => {
           })}
       </TableBody>
     );
-  }, [filteredCategories, currentPage]);
+  }, [filteredRoles, currentPage]);
 
   const handleChangePage = (event: object, newPage: number) => {
     setCurrentPage(newPage);
   };
 
   useEffect(() => {
-    httpClient<ICategory[]>({
-      url: ROUTES_API.MANAGEMENT_CATEGORIES,
+    httpClient<IRole[]>({
+      url: ROUTES_API.MANAGEMENT_ROLES,
       method: 'GET',
       handleAddNotification: handleAddNotificationContext,
       handleChangeAuthStatus: handleChangeAuthStatusContext,
       isNeedAuth: true,
     })
-      .then((response) => setCategories(response.data))
+      .then((response) => setRoles(response.data))
       .finally(() => setIsLoading(false));
   }, []);
 
-  const confirmActionCategory = (action: 'POST' | 'PUT' | 'DELETE', id?: number) => {
+  const confirmActionRole = (action: 'POST' | 'PUT' | 'DELETE', id?: number) => {
     const messageAction = action === 'POST' ? 'создать' : action === 'PUT' ? 'изменить' : 'удалить';
     setDialogContent({
-      title: `Вы действительно хотите ${messageAction} категорию?`,
+      title: `Вы действительно хотите ${messageAction} роль?`,
       confirmText: messageAction,
       handleConfirm: () => {
         setDialogContent(null);
-        handleActionCategory(action,id)
+        handleActionRole(action,id)
       },
     });
   };
 
-  const handleActionCategory = (action: 'POST' | 'PUT' | 'DELETE', id?: number) => {
-    const queryParam: string = action === 'POST' ? '' : `/${id ?? changingCategory?.id}`;
+  const handleActionRole = (action: 'POST' | 'PUT' | 'DELETE', id?: number) => {
+    const queryParam: string = action === 'POST' ? '' : `/${id ?? changingRole?.id}`;
     setIsLoading(true);
-    httpClient<ICategory>({
-      url: ROUTES_API.MANAGEMENT_CATEGORIES + queryParam,
+    httpClient<IRole>({
+      url: ROUTES_API.MANAGEMENT_ROLES + queryParam,
       method: action,
       handleAddNotification: handleAddNotificationContext,
       handleChangeAuthStatus: handleChangeAuthStatusContext,
@@ -131,41 +139,40 @@ const ManagementCategories: FC = () => {
         undefined
         :
         JSON.stringify(action === 'POST' ?
-          newCategory
+          newRole
           :
-          changingCategory
+          changingRole
         ),
     })
       .then((response) => {
         switch (action) {
           case "POST":
-            setCategories([
+            setRoles([
               response.data,
-              ...categories
+              ...roles
             ]);
-            setNewCategory({id: 0, name: ''});
+            setNewRole({id: 0, name: ''});
             break;
           case "PUT":
-            setCategories(
-              categories.map(category => {
-                if (category.id === response.data?.id) {
+            setRoles(
+              roles.map(role => {
+                if (role.id === response.data?.id) {
                   return response.data;
                 }
-                return category;
+                return role;
               })
             );
-            setChangingCategory(null);
+            setChangingRole(null);
             break;
           case "DELETE":
-            setCategories(categories.filter(category => category.id !== id));
-            setChangingCategory(null);
+            setRoles(roles.filter(role => role.id !== id));
             break;
         }
       })
       .finally(() => setIsLoading(false));
   }
 
-  if (isLoading && (!changingCategory && !newCategory.name)) {
+  if (isLoading && !roles.length) {
     return (
       <div className='preloader-center'>
         <Preloader size={50} />
@@ -174,7 +181,7 @@ const ManagementCategories: FC = () => {
   }
 
   return (
-    <div className='management-categories-container'>
+    <div className='management-roles-container'>
       <ConfirmDialog
         isOpen={!!dialogContent}
         title={dialogContent?.title}
@@ -206,37 +213,37 @@ const ManagementCategories: FC = () => {
         <div className='part-container'>
           <TextField
             style={{width: '100%'}}
-            label="название категории"
+            label="название"
             variant="outlined"
-            value={changingCategory?.name ?? newCategory.name}
+            value={changingRole?.name ?? newRole.name}
             disabled={isLoading}
             onChange={(event) => {
-              changingCategory ?
-                setChangingCategory({
-                  ...changingCategory,
+              changingRole ?
+                setChangingRole({
+                  ...changingRole,
                   name: event.target.value,
                 })
                 :
-                setNewCategory({
-                  ...newCategory,
+                setNewRole({
+                  ...newRole,
                   name: event.target.value,
                 });
             }}
           />
         </div>
-        {isLoading && (changingCategory || newCategory.name) ?
+        {isLoading && (changingRole || newRole.name) ?
           <div className='part-container part-container-center'>
             <Preloader size={30} />
           </div>
           :
-          changingCategory ?
+          changingRole ?
             <div className='part-container part-container-center'>
               <IconButton
                 edge="start"
                 color="inherit"
                 style={{marginRight: '10px'}}
                 disabled={isLoading}
-                onClick={() => {confirmActionCategory('PUT');}}
+                onClick={() => {confirmActionRole('PUT');}}
               >
                 <EditOutlined />
               </IconButton>
@@ -246,7 +253,7 @@ const ManagementCategories: FC = () => {
                 style={{marginRight: '10px'}}
                 disabled={isLoading}
                 onClick={() => {
-                  setChangingCategory(null);
+                  setChangingRole(null);
                 }}
               >
                 <Clear/>
@@ -258,7 +265,7 @@ const ManagementCategories: FC = () => {
                 edge="start"
                 color="inherit"
                 disabled={isLoading}
-                onClick={() => confirmActionCategory('POST')}
+                onClick={() => confirmActionRole('POST')}
               >
                 <AddCircleOutline />
               </IconButton>
@@ -276,11 +283,11 @@ const ManagementCategories: FC = () => {
           <Table aria-label="customized table">
             <TableHead>
               <TableRow>
-                <TableCell>Название категории</TableCell>
+                <TableCell>Название роли</TableCell>
                 <TableCell>Действие</TableCell>
               </TableRow>
             </TableHead>
-            {renderedCategories}
+            {renderedRoles}
           </Table>
         </TableContainer>
       </div>
@@ -294,4 +301,4 @@ const ManagementCategories: FC = () => {
   );
 };
 
-export default ManagementCategories;
+export default ManagementRoles;

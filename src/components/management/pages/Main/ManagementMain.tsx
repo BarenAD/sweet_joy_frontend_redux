@@ -23,6 +23,7 @@ import {ROUTES_API} from "../../../../config/routesApi";
 import Preloader from "../../../common/Preloader/Preloader";
 import {checkAllowByPermissions, generateBaseRules} from "../../../../utils/utils";
 import ManagementUsers from "../Users/ManagementUsers";
+import ManagementRoles from "../Roles/ManagementRoles";
 
 type IPageProps = {
   title: string;
@@ -39,9 +40,9 @@ export const MANAGEMENT_PAGES: IPageProps[] = [
     permissions: generateBaseRules('users'),
   },
   {
-    title: 'MANAGEMENT_ROLES',
+    title: 'Роли администраторов',
     route: ROUTES.MANAGEMENT_ROLES,
-    component: (<div>MANAGEMENT_ROLES</div>),
+    component: <ManagementRoles />,
     permissions: generateBaseRules('users.roles'),
   },
   {

@@ -12,6 +12,7 @@ export const MANAGEMENT_COUNT_CATEGORIES_ON_PAGE: number = 30;
 export const MANAGEMENT_COUNT_DOCUMENTS_ON_PAGE: number = 30;
 export const MANAGEMENT_COUNT_USERS_ON_PAGE: number = 30;
 export const MANAGEMENT_COUNT_PRODUCTS_ON_PAGE: number = 19;
+export const MANAGEMENT_COUNT_ROLES_ON_PAGE: number = 30;
 export const DELAY_APPLIED_FILTERS: number = 5;
 
 export const AUTHOR_CONTACTS: IAuthorContacts = {

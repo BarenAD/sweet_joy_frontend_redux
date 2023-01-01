@@ -92,3 +92,8 @@ export type IUser = {
   phone: string;
   note: string;
 };
+
+export type IRole = {
+  id: number;
+  name: string;
+};

@@ -17,7 +17,13 @@ import {
   TableRow,
   TextField
 } from "@mui/material";
-import {Clear, DeleteOutline, EditOutlined} from "@mui/icons-material";
+import {
+  AdminPanelSettingsOutlined,
+  Clear,
+  DeleteOutline,
+  EditOutlined,
+  MilitaryTechOutlined
+} from "@mui/icons-material";
 import Preloader from "../../../common/Preloader/Preloader";
 import {preparePhoneByMask} from "../../../../utils/utils";
 import "./ManagementUsers.scss";
@@ -73,7 +79,7 @@ const ManagementUsers: FC = () => {
           }
 
           return (
-            <TableRow key={`KEY_MANAGEMENT_DOCUMENTS_DOCUMENT_${user.id}`}>
+            <TableRow key={`KEY_MANAGEMENT_USERS_USER_${user.id}`}>
               <TableCell component='th' scope='row'>
                 <p>
                   {user.fio}
@@ -95,6 +101,15 @@ const ManagementUsers: FC = () => {
                 </p>
               </TableCell>
               <TableCell component='th' scope='row'>
+                <IconButton
+                  edge='start'
+                  color='inherit'
+                  onClick={() => {
+
+                  }}
+                >
+                  <MilitaryTechOutlined />
+                </IconButton>
                 <IconButton
                   edge='start'
                   color='inherit'
