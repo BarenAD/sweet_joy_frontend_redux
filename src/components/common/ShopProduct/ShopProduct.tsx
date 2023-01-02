@@ -1,13 +1,13 @@
 import React, {FC, ReactElement} from "react";
 import {Card, IconButton} from "@mui/material";
 import "./ShopProduct.scss";
-import {IShopProduct} from "../../App/appTypes";
+import {IShopProduct} from "../../../types";
 import Map from "../Map/Map";
 import {useAppSelector} from "../../../redux/hooks";
-import {getShops} from "../../App/appSlice";
 import {MapOutlined} from "@mui/icons-material";
 import {preparePhoneByMask} from "../../../utils/utils";
 import {WEEK_DAYS} from "../../../config/config";
+import {getShops} from "../../../redux/slices/shopsSlice";
 
 type IShopProductProps = {
   shopProduct: IShopProduct;

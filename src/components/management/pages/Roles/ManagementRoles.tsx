@@ -1,9 +1,9 @@
 import React, {FC, ReactElement, useContext, useEffect, useMemo, useState} from "react";
 import ConfirmDialog, {ISimpleDialogContentState} from "../../../common/ConfirmDialog/ConfirmDialog";
-import {IPermission, IRole} from "../../../App/appTypes";
+import {IPermission, IRole} from "../../../../types";
 import Filters, {DEFAULT_VALUE_FILTERS, IFiltersState} from "../../../common/Filters/Filters";
-import {HandleAddNotificationContext} from "../../../common/Notifications/notificationsSlice";
-import {getProfile, HandleChangeAuthStatusContext} from "../../../../redux/auth/authSlice";
+import {HandleAddNotificationContext} from "../../../../redux/slices/notificationsSlice";
+import {getProfile, HandleChangeAuthStatusContext} from "../../../../redux/slices/authSlice";
 import {MANAGEMENT_COUNT_ROLES_ON_PAGE} from "../../../../config/config";
 import {
   IconButton,
@@ -21,7 +21,7 @@ import {ROUTES_API} from "../../../../config/routesApi";
 import Preloader from "../../../common/Preloader/Preloader";
 import "./ManagementRoles.scss";
 import {useAppSelector} from "../../../../redux/hooks";
-import {checkAllowByPermissions, generateBaseRules} from "../../../../utils/utils";
+import {checkAllowByPermissions} from "../../../../utils/utils";
 import CustomModal from "../../../common/CustomModal/CustomModal";
 import RolePermissionsEdit from "../../RolePermissionsEdit/RolePermissionsEdit";
 

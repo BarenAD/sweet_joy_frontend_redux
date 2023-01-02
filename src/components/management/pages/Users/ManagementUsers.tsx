@@ -1,8 +1,8 @@
 import React, {FC, ReactElement, useContext, useEffect, useMemo, useState} from "react";
-import {IPermission, IRole, IUser} from "../../../App/appTypes";
+import {IRole, IUser} from "../../../../types";
 import Filters, {DEFAULT_VALUE_FILTERS, IFiltersState} from "../../../common/Filters/Filters";
-import {HandleAddNotificationContext} from "../../../common/Notifications/notificationsSlice";
-import {getProfile, HandleChangeAuthStatusContext} from "../../../../redux/auth/authSlice";
+import {HandleAddNotificationContext} from "../../../../redux/slices/notificationsSlice";
+import {getProfile, HandleChangeAuthStatusContext} from "../../../../redux/slices/authSlice";
 import ConfirmDialog, {ISimpleDialogContentState} from "../../../common/ConfirmDialog/ConfirmDialog";
 import {MANAGEMENT_COUNT_DOCUMENTS_ON_PAGE, MANAGEMENT_COUNT_USERS_ON_PAGE} from "../../../../config/config";
 import {httpClient} from "../../../../utils/httpClient";
@@ -18,7 +18,6 @@ import {
   TextField
 } from "@mui/material";
 import {
-  AdminPanelSettingsOutlined,
   Clear,
   DeleteOutline,
   EditOutlined,

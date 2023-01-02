@@ -1,4 +1,4 @@
-import {IKeyNumberStoreObject, IProduct, IShopProduct} from "../components/App/appTypes";
+import {IKeyNumberStoreObject, IProduct, IShopProduct} from "../types";
 import {KEY_LOCAL_STORAGE_IS_DEBUG} from "../config/config";
 
 export type IParseToFormDataProps = {
@@ -49,7 +49,7 @@ export const filterProducts = (
     console.log('[DEBUG] [RUN] filterProducts');
   }
   return (!filters.selectedName && !filters.selectedShopId && (!filters.selectedCategoryIds || !filters.selectedCategoryIds.length)) ?
-    [...products]
+    products
     :
     products
       .filter((product) => {

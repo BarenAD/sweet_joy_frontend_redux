@@ -1,4 +1,5 @@
 export const API_URL: string = 'https://www.products.kemerovo.barenad.ru/api';
+//export const API_URL: string = 'http://127.0.0.1:8000/api';
 export const REQUEST_MODE: RequestMode = 'cors';
 export const PRODUCT_CARD_WIDTH: number = 240;
 export const COUNT_PRODUCTS_ROWS: number = 10;

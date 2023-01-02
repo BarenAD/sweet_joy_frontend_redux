@@ -1,5 +1,5 @@
 import React, {FC, ReactElement, useEffect, useMemo, useState} from "react";
-import {ISchedule} from "../../App/appTypes";
+import {ISchedule} from "../../../types";
 import {FormControl, IconButton, InputLabel, MenuItem, Select, TextField, Typography} from "@mui/material";
 import Schedule from "../Schedule/Schedule";
 import "./ShopEdit.scss";

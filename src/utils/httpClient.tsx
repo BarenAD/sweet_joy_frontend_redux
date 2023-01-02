@@ -1,4 +1,4 @@
-import {INotificationAction} from "../components/common/Notifications/notificationsSlice";
+import {INotificationAction} from "../redux/slices/notificationsSlice";
 import {
   API_URL,
   KEY_LOCAL_STORAGE_AUTHORIZATION_ACCESS_TOKEN,

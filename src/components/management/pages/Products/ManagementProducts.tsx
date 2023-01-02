@@ -1,9 +1,9 @@
 import React, {FC, ReactElement, useContext, useEffect, useMemo, useState} from "react";
-import {ICategory, IProduct} from "../../../App/appTypes";
+import {ICategory, IProduct} from "../../../../types";
 import {httpClient} from "../../../../utils/httpClient";
 import {ROUTES_API} from "../../../../config/routesApi";
-import {HandleAddNotificationContext} from "../../../common/Notifications/notificationsSlice";
-import {HandleChangeAuthStatusContext} from "../../../../redux/auth/authSlice";
+import {HandleAddNotificationContext} from "../../../../redux/slices/notificationsSlice";
+import {HandleChangeAuthStatusContext} from "../../../../redux/slices/authSlice";
 import ConfirmDialog, {ISimpleDialogContentState} from "../../../common/ConfirmDialog/ConfirmDialog";
 import Preloader from "../../../common/Preloader/Preloader";
 import Product from "../../../common/Product/Product";

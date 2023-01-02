@@ -1,18 +1,26 @@
 import {configureStore, ThunkAction, Action} from "@reduxjs/toolkit";
-import appSlice from "../components/App/appSlice";
-import metricSlice from "./metrics/metricsSlice";
+import metricSlice from "./slices/metricsSlice";
 import {STORE_STATUSES} from "../config/storeStatuses";
-import authSlice from "./auth/authSlice";
-import notificationsSlice from "../components/common/Notifications/notificationsSlice";
-import configurationsSlice from "./configurations/configurationsSlice";
+import authSlice from "./slices/authSlice";
+import notificationsSlice from "./slices/notificationsSlice";
+import configurationsSlice from "./slices/configurationsSlice";
+import productsSlice from "./slices/productsSlice";
+import categoriesSlice from "./slices/categoriesSlice";
+import shopsSlice from "./slices/shopsSlice";
+import shopProductsSlice from "./slices/shopProductsSlice";
+import documentsSlice from "./slices/documentsSlice";
 
 export const store = configureStore({
   reducer: {
     auth: authSlice,
     notifications: notificationsSlice,
-    app: appSlice,
     metrics: metricSlice,
     configurations: configurationsSlice,
+    products: productsSlice,
+    categories: categoriesSlice,
+    shops: shopsSlice,
+    shopProducts: shopProductsSlice,
+    documents: documentsSlice,
   },
 });
 

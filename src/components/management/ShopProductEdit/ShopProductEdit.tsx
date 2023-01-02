@@ -1,19 +1,18 @@
-import React, {FC, useMemo, useState} from "react";
+import React, {FC, useState} from "react";
 import {
   FormControl,
   IconButton, InputLabel, MenuItem,
-  Paper, Select,
+  Select,
   Table,
   TableBody,
   TableCell,
-  TableContainer,
   TableHead,
   TableRow,
   TextField
 } from "@mui/material";
 import {AddCircleOutline, Clear, DeleteOutline, EditOutlined} from "@mui/icons-material";
 import "./ShopProductEdit.scss";
-import {IProduct, IShop, IShopProduct} from "../../App/appTypes";
+import {IProduct, IShop, IShopProduct} from "../../../types";
 
 type IShopProductEditProps = {
   product: IProduct;

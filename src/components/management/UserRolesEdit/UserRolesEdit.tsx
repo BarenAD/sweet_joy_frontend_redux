@@ -1,5 +1,5 @@
 import React, {FC, ReactElement, useContext, useEffect, useMemo, useState} from "react";
-import {IRole, IUser, IUserRole} from "../../App/appTypes";
+import {IRole, IUser, IUserRole} from "../../../types";
 import Preloader from "../../common/Preloader/Preloader";
 import ConfirmDialog, {ISimpleDialogContentState} from "../../common/ConfirmDialog/ConfirmDialog";
 import {
@@ -14,8 +14,8 @@ import {
   Typography
 } from "@mui/material";
 import {AddCircleOutline, DeleteOutline} from "@mui/icons-material";
-import {HandleAddNotificationContext} from "../../common/Notifications/notificationsSlice";
-import {HandleChangeAuthStatusContext} from "../../../redux/auth/authSlice";
+import {HandleAddNotificationContext} from "../../../redux/slices/notificationsSlice";
+import {HandleChangeAuthStatusContext} from "../../../redux/slices/authSlice";
 import {httpClient} from "../../../utils/httpClient";
 import {ROUTES_API} from "../../../config/routesApi";
 import "./UserRolesEdit.scss";

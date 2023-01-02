@@ -6,9 +6,8 @@ import "./Login.scss"
 import Preloader from "../Preloader/Preloader";
 import {httpClient} from "../../../utils/httpClient";
 import {ROUTES_API} from "../../../config/routesApi";
-import {IResponseLogin} from "../../../redux/auth/authTypes";
-import {HandleAddNotificationContext} from "../Notifications/notificationsSlice";
-import { HandleChangeAuthStatusContext, setProfile } from "../../../redux/auth/authSlice";
+import {HandleAddNotificationContext} from "../../../redux/slices/notificationsSlice";
+import { HandleChangeAuthStatusContext, setProfile } from "../../../redux/slices/authSlice";
 import {
   KEY_LOCAL_STORAGE_AUTHORIZATION_ACCESS_TOKEN,
   KEY_LOCAL_STORAGE_AUTHORIZATION_PROFILE
@@ -17,8 +16,9 @@ import {
   getConfigurations,
   getConfigurationsStatus,
   refreshConfigurations
-} from "../../../redux/configurations/configurationsSlice";
+} from "../../../redux/slices/configurationsSlice";
 import {STORE_STATUSES} from "../../../config/storeStatuses";
+import {IResponseLogin} from "../../../types";
 
 const Login: FC = () => {
   const dispatch = useAppDispatch();

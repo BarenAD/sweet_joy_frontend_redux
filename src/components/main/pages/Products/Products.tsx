@@ -1,9 +1,8 @@
 import React, {FC, ReactElement, useCallback, useEffect, useMemo, useRef, useState} from "react";
 import "./Products.scss";
-import {IProduct} from "../../../App/appTypes";
+import {IProduct} from "../../../../types";
 import {useAppSelector} from "../../../../redux/hooks";
-import {getCategories, getProducts, getShopProducts, getShops} from "../../../App/appSlice";
-import { actionOnTheSite } from "../../../../redux/metrics/metricsSlice";
+import { actionOnTheSite } from "../../../../redux/slices/metricsSlice";
 import {METRIC_ACTIONS} from "../../../../config/metricActions";
 import {COUNT_PRODUCTS_ROWS, PRODUCT_CARD_WIDTH} from "../../../../config/config";
 import {
@@ -17,11 +16,17 @@ import Filters, {DEFAULT_VALUE_FILTERS, IFiltersState} from "../../../common/Fil
 import ProductDetailsModal from "../../../common/ProductDetailsModal/ProductDetailsModal";
 import Demo from "../../../common/Demo/Demo";
 import {SITE_CONFIG_IDENTIFIERS} from "../../../../config/siteConfigIdentifiers";
-import {getConfigurations} from "../../../../redux/configurations/configurationsSlice";
+import {getConfigurations} from "../../../../redux/slices/configurationsSlice";
 import ConfigManager from "../../../common/ConfigManager/ConfigManager";
+import {getProductsStore} from "../../../../redux/slices/productsSlice";
+import {getShops} from "../../../../redux/slices/shopsSlice";
+import {getCategories} from "../../../../redux/slices/categoriesSlice";
+import {getShopProducts} from "../../../../redux/slices/shopProductsSlice";
+import Preloader from "../../../common/Preloader/Preloader";
+import {STORE_STATUSES} from "../../../../config/storeStatuses";
 
 const Products: FC = () => {
-  const products = useAppSelector(getProducts);
+  const products = useAppSelector(getProductsStore);
   const shops = useAppSelector(getShops);
   const categories = useAppSelector(getCategories);
   const shopProducts = useAppSelector(getShopProducts);
@@ -54,17 +59,21 @@ const Products: FC = () => {
   const filteredProducts = useMemo<IProduct[]>(() => {
     return filterProducts(
       shopProducts,
-      products,
+      products.products,
       filtersState
     );
   }, [
     shopProducts,
-    products,
+    products.products,
     filtersState
   ]);
 
+  const countPages = useMemo<number>(() => {
+    return Math.ceil(Object.keys(filteredProducts).length / countCardsPerPage);
+  }, [countCardsPerPage, filteredProducts]);
+
   const renderedProductsByPagination = useMemo(() => {
-    if (!countCardsPerPage) {
+    if (!countCardsPerPage || !countPages || products.status === STORE_STATUSES.LOADING) {
       return null;
     }
     const startValue = (currentPage-1) * (countCardsPerPage);
@@ -84,10 +93,6 @@ const Products: FC = () => {
     });
   }, [filteredProducts, countCardsPerPage, currentPage]);
 
-  const countPages = useMemo<number>(() => {
-    return Math.ceil(Object.keys(filteredProducts).length / countCardsPerPage);
-  }, [countCardsPerPage, filteredProducts]);
-
   const handleOpenDetails = (product: IProduct) => {
     actionOnTheSite({...METRIC_ACTIONS.PRODUCT_OPEN_DETAILS, payload: {product_id: product.id}});
     setModalContent(<ProductDetailsModal product={product} />);
@@ -97,6 +102,14 @@ const Products: FC = () => {
     actionOnTheSite({...METRIC_ACTIONS.PRODUCT_CHANGE_PAGE, payload: {new_page: newPage}})
     setCurrentPage(newPage);
   };
+
+  if (products.status === STORE_STATUSES.LOADING) {
+    return (
+      <div className='preloader-center'>
+        <Preloader size={50} />
+      </div>
+    );
+  }
 
   return (
     <div className="products-container">

@@ -12,9 +12,9 @@ import {
 } from "@mui/material";
 import {Clear, EditOutlined} from "@mui/icons-material";
 import ConfirmDialog, {ISimpleDialogContentState} from "../../../common/ConfirmDialog/ConfirmDialog";
-import {HandleAddNotificationContext} from "../../../common/Notifications/notificationsSlice";
-import {HandleChangeAuthStatusContext} from "../../../../redux/auth/authSlice";
-import {IDocument, IDocumentLocation} from "../../../App/appTypes";
+import {HandleAddNotificationContext} from "../../../../redux/slices/notificationsSlice";
+import {HandleChangeAuthStatusContext} from "../../../../redux/slices/authSlice";
+import {IDocument, IDocumentLocation} from "../../../../types";
 import {httpClient, IFetchWithTokenResponse} from "../../../../utils/httpClient";
 import {ROUTES_API} from "../../../../config/routesApi";
 import Preloader from "../../../common/Preloader/Preloader";

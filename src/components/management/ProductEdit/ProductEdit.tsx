@@ -1,5 +1,5 @@
 import React, {FC, useContext, useEffect, useState} from "react";
-import {ICategory, IProduct} from "../../App/appTypes";
+import {ICategory, IProduct} from "../../../types";
 import {Autocomplete, Button, IconButton, TextField, Typography} from "@mui/material";
 import "./ProductEdit.scss";
 import Preloader from "../../common/Preloader/Preloader";
@@ -7,8 +7,8 @@ import {AddCircleOutline, DeleteOutline, EditOutlined} from "@mui/icons-material
 import {IParseToFormDataProps, parseToFormData} from "../../../utils/utils";
 import {httpClient} from "../../../utils/httpClient";
 import {ROUTES_API} from "../../../config/routesApi";
-import {HandleAddNotificationContext} from "../../common/Notifications/notificationsSlice";
-import {HandleChangeAuthStatusContext} from "../../../redux/auth/authSlice";
+import {HandleAddNotificationContext} from "../../../redux/slices/notificationsSlice";
+import {HandleChangeAuthStatusContext} from "../../../redux/slices/authSlice";
 
 type IProductEditProps = {
   product?: IProduct;

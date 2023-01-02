@@ -1,10 +1,11 @@
-import {IProduct, IShopProduct} from "../../App/appTypes";
+import {IProduct, IShopProduct} from "../../../types";
 import React, {FC, ReactElement, useState} from "react";
 import {useAppSelector} from "../../../redux/hooks";
-import {getCategories, getShopProducts} from "../../App/appSlice";
 import "./ProductDetailsModal.scss";
 import ShopProduct from "../ShopProduct/ShopProduct";
 import CustomModal from "../CustomModal/CustomModal";
+import {getShopProducts} from "../../../redux/slices/shopProductsSlice";
+import {getCategories} from "../../../redux/slices/categoriesSlice";
 
 type TypeProps = {
   product: IProduct;
@@ -75,23 +76,25 @@ const ProductDetailsModal: FC<TypeProps> = ({
           <span>
             Категории товара:
           </span>
-          <div className="categories-container">
-            {product.categories.map((categoryId: number) => {
-              const category = categories.find(findCategory => findCategory.id === categoryId);
-              if (!category) {
-                return null;
-              }
-              return (
-                <span
-                  className="product-category-container"
-                  key={`PRODUCT_${product.id}_DETAILS_MODAL_CATEGORY_${category.id}`}
-                  title={category.name}
-                >
-                  {category.name}
-                </span>
-              );
-            })}
-          </div>
+          {product.categories.length && categories.length &&
+            <div className="categories-container">
+              {product.categories.map((categoryId: number) => {
+                const category = categories.find(findCategory => findCategory.id === categoryId);
+                if (!category) {
+                  return null;
+                }
+                return (
+                  <span
+                    className="product-category-container"
+                    key={`PRODUCT_${product.id}_DETAILS_MODAL_CATEGORY_${category.id}`}
+                    title={category.name}
+                  >
+                    {category.name}
+                  </span>
+                );
+              })}
+            </div>
+          }
         </div>
       </div>
       {shopProducts &&

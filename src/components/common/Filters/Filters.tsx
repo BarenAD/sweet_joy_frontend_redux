@@ -10,9 +10,9 @@ import {
   Select,
   Switch, TextField, Typography
 } from "@mui/material";
-import {actionOnTheSite} from "../../../redux/metrics/metricsSlice";
+import {actionOnTheSite} from "../../../redux/slices/metricsSlice";
 import {METRIC_ACTIONS} from "../../../config/metricActions";
-import {ICategory, IShop} from "../../App/appTypes";
+import {ICategory, IShop} from "../../../types";
 import Preloader from "../Preloader/Preloader";
 import {DELAY_APPLIED_FILTERS} from "../../../config/config";
 

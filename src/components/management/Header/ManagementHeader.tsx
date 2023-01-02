@@ -5,15 +5,15 @@ import React, {FC, useContext, useState} from "react";
 import {MANAGEMENT_PAGES} from "../pages/Main/ManagementMain";
 import "./ManagementHeader.scss";
 import {httpClient} from "../../../utils/httpClient";
-import {IResponseLogin} from "../../../redux/auth/authTypes";
 import {ROUTES_API} from "../../../config/routesApi";
 import {
   KEY_LOCAL_STORAGE_AUTHORIZATION_ACCESS_TOKEN,
   KEY_LOCAL_STORAGE_AUTHORIZATION_PROFILE
 } from "../../../config/config";
-import {getProfile, HandleChangeAuthStatusContext, setProfile} from "../../../redux/auth/authSlice";
-import {HandleAddNotificationContext} from "../../common/Notifications/notificationsSlice";
+import {getProfile, HandleChangeAuthStatusContext, setProfile} from "../../../redux/slices/authSlice";
+import {HandleAddNotificationContext} from "../../../redux/slices/notificationsSlice";
 import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
+import {IResponseLogin} from "../../../types";
 
 type IManagementHeaderProps = {
   setIsOpenDrawer: (newStatus: boolean) => void;

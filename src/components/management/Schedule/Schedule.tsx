@@ -1,5 +1,5 @@
 import React, {FC} from "react";
-import {ISchedule} from "../../App/appTypes";
+import {ISchedule} from "../../../types";
 import {Card} from "@mui/material";
 import {AddCircleOutline, EditOutlined} from "@mui/icons-material";
 import "./Schedule.scss";

@@ -1,32 +1,34 @@
 import {FC} from "react";
 import "./Header.scss";
 import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
-import {getDocuments} from "../../App/appSlice";
 import {SITE_CONFIG_IDENTIFIERS} from "../../../config/siteConfigIdentifiers";
 import {Link} from "react-router-dom";
-import {actionOnTheSite} from "../../../redux/metrics/metricsSlice";
+import {actionOnTheSite} from "../../../redux/slices/metricsSlice";
 import {METRIC_ACTIONS} from "../../../config/metricActions";
 import {DOCUMENT_LOCATIONS} from "../../../config/documentLocations";
 import {ROUTES} from "../../../config/routes";
-import {getConfigurations} from "../../../redux/configurations/configurationsSlice";
+import {getConfigurationsStore} from "../../../redux/slices/configurationsSlice";
 import {Button, Typography} from "@mui/material";
+import {getDocuments} from "../../../redux/slices/documentsSlice";
+import {STORE_STATUSES} from "../../../config/storeStatuses";
 
 const Header: FC = () => {
   const dispatch = useAppDispatch();
-  const siteConfigurations = useAppSelector(getConfigurations);
+  const siteConfigurations = useAppSelector(getConfigurationsStore);
   const documentOnTopBar = useAppSelector(getDocuments)[DOCUMENT_LOCATIONS.MAIN_TOP_BAR_DOCUMENT];
 
   return (
     <div className='top-bar-main-container'>
-      {!!siteConfigurations[SITE_CONFIG_IDENTIFIERS.DEMO_MODE]?.value ?
-        <Link to='/management' className='link-container'>
-          <Button>
-            <b>Панель управления</b>
-          </Button>
-        </Link>
-        :
-        <img src='/images/logo.gif' alt='BARENAD'/>
-      }
+      {siteConfigurations.status === STORE_STATUSES.COMPLETE && (
+        !!siteConfigurations.configurations[SITE_CONFIG_IDENTIFIERS.DEMO_MODE]?.value ?
+          <Link to='/management' className='link-container'>
+            <Button>
+              <b>Панель управления</b>
+            </Button>
+          </Link>
+          :
+          <img src='/images/logo.gif' alt='BARENAD'/>
+      )}
       <Link
         to={ROUTES.PRODUCTS.link}
         className='link-container'
@@ -76,7 +78,7 @@ const Header: FC = () => {
       </Link>
       <Typography
         className='container-advantages'
-        dangerouslySetInnerHTML={{__html: siteConfigurations[SITE_CONFIG_IDENTIFIERS.HEADER_LAST]?.value || 'BARENAD'}}
+        dangerouslySetInnerHTML={{__html: siteConfigurations.configurations[SITE_CONFIG_IDENTIFIERS.HEADER_LAST]?.value || ''}}
       >
       </Typography>
     </div>

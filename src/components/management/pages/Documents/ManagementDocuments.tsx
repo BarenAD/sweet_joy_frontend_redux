@@ -13,11 +13,11 @@ import {
 } from "@mui/material";
 import {AddCircleOutline, Clear, DeleteOutline, EditOutlined, InsertDriveFileOutlined} from "@mui/icons-material";
 import Filters, {DEFAULT_VALUE_FILTERS, IFiltersState} from "../../../common/Filters/Filters";
-import {IDocument} from "../../../App/appTypes";
+import {IDocument} from "../../../../types";
 import {httpClient} from "../../../../utils/httpClient";
 import {ROUTES_API} from "../../../../config/routesApi";
-import {HandleAddNotificationContext} from "../../../common/Notifications/notificationsSlice";
-import {HandleChangeAuthStatusContext} from "../../../../redux/auth/authSlice";
+import {HandleAddNotificationContext} from "../../../../redux/slices/notificationsSlice";
+import {HandleChangeAuthStatusContext} from "../../../../redux/slices/authSlice";
 import Preloader from "../../../common/Preloader/Preloader";
 import "./ManagementDocuments.scss";
 import {MANAGEMENT_COUNT_DOCUMENTS_ON_PAGE} from "../../../../config/config";

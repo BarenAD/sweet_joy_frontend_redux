@@ -1,5 +1,5 @@
 import React, {FC, ReactElement, useContext, useEffect, useMemo, useState} from "react";
-import {IPermission, IRole, IRolePermission} from "../../App/appTypes";
+import {IPermission, IRole, IRolePermission} from "../../../types";
 import {
   FormControl,
   IconButton, InputLabel, MenuItem,
@@ -15,8 +15,8 @@ import {
 import "./RolePermissionsEdit.scss";
 import {httpClient} from "../../../utils/httpClient";
 import {ROUTES_API} from "../../../config/routesApi";
-import {HandleAddNotificationContext} from "../../common/Notifications/notificationsSlice";
-import {HandleChangeAuthStatusContext} from "../../../redux/auth/authSlice";
+import {HandleAddNotificationContext} from "../../../redux/slices/notificationsSlice";
+import {HandleChangeAuthStatusContext} from "../../../redux/slices/authSlice";
 import {AddCircleOutline, DeleteOutline} from "@mui/icons-material";
 import ConfirmDialog, {ISimpleDialogContentState} from "../../common/ConfirmDialog/ConfirmDialog";
 import Preloader from "../../common/Preloader/Preloader";

@@ -1,5 +1,5 @@
 import {useAppSelector} from "../../../redux/hooks";
-import {getConfigurations} from "../../../redux/configurations/configurationsSlice";
+import {getConfigurations} from "../../../redux/slices/configurationsSlice";
 import React, {useEffect, useState} from "react";
 import {Card, FormControlLabel, Switch, Typography} from "@mui/material";
 import {KEY_LOCAL_STORAGE_IS_DEBUG} from "../../../config/config";

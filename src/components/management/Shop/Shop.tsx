@@ -1,5 +1,5 @@
 import React, {FC} from "react";
-import {ISchedule, IShop} from "../../App/appTypes";
+import {ISchedule} from "../../../types";
 import {Card, IconButton, Typography} from "@mui/material";
 import {preparePhoneByMask} from "../../../utils/utils";
 import {AddCircleOutline, MapOutlined, Schedule as ScheduleIcon} from "@mui/icons-material";

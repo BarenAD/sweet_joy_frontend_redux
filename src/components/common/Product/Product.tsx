@@ -1,6 +1,6 @@
 import React, {FC} from "react";
 import "./Product.scss";
-import {IProduct} from "../../App/appTypes";
+import {IProduct} from "../../../types";
 import {Card} from "@mui/material";
 import {AddCircleOutline} from "@mui/icons-material";
 

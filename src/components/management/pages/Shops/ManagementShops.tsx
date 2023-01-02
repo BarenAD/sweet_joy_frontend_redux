@@ -1,7 +1,7 @@
 import React, {FC, ReactElement, useContext, useEffect, useState} from "react";
-import {ISchedule} from "../../../App/appTypes";
-import {HandleAddNotificationContext} from "../../../common/Notifications/notificationsSlice";
-import {HandleChangeAuthStatusContext} from "../../../../redux/auth/authSlice";
+import {ISchedule} from "../../../../types";
+import {HandleAddNotificationContext} from "../../../../redux/slices/notificationsSlice";
+import {HandleChangeAuthStatusContext} from "../../../../redux/slices/authSlice";
 import ConfirmDialog, {ISimpleDialogContentState} from "../../../common/ConfirmDialog/ConfirmDialog";
 import {httpClient, IFetchWithTokenResponse} from "../../../../utils/httpClient";
 import {ROUTES_API} from "../../../../config/routesApi";

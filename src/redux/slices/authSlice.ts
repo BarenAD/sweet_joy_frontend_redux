@@ -5,7 +5,7 @@ import {
 } from "../../config/config";
 import {IRootState} from "../store";
 import {createContext} from "react";
-import {IProfile} from "./authTypes";
+import {IProfile} from "../../types";
 
 type IAuthStore = {
   status: boolean;

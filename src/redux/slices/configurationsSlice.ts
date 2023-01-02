@@ -3,10 +3,10 @@ import {SITE_CONFIG_IDENTIFIERS} from "../../config/siteConfigIdentifiers";
 import {IBaseStore, IRootState} from "../store";
 import {
   IKeyStringStoreObject,
-} from "../../components/App/appTypes";
+} from "../../types";
 import {httpClient} from "../../utils/httpClient";
 import {ROUTES_API} from "../../config/routesApi";
-import {addNotification} from "../../components/common/Notifications/notificationsSlice";
+import {addNotification} from "./notificationsSlice";
 import {STORE_STATUSES} from "../../config/storeStatuses";
 import {ERRORS} from "../../config/errors";
 import {KEY_LOCAL_STORAGE_IS_DEBUG} from "../../config/config";
@@ -73,5 +73,6 @@ export const configurationsSlice = createSlice({
 
 export const getConfigurations = (state: IRootState) => state.configurations.configurations;
 export const getConfigurationsStatus = (state: IRootState) => state.configurations.status;
+export const getConfigurationsStore = (state: IRootState) => state.configurations;
 
 export default configurationsSlice.reducer;

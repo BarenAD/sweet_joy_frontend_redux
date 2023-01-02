@@ -2,7 +2,12 @@ import {API_URL} from "./config";
 
 export const ROUTES_API = {
   PROFILE_PERMISSIONS: `${API_URL}/profile/permissions`,
-  GET_APP_DATA: `${API_URL}/data`,
+  PRODUCTS: `${API_URL}/products`,
+  PRODUCTS_CATEGORIES: `${API_URL}/products/categories`,
+  CATEGORIES: `${API_URL}/categories`,
+  SHOPS: `${API_URL}/shops`,
+  SHOPS_PRODUCTS: `${API_URL}/shops/products`,
+  DOCUMENTS: `${API_URL}/documents`,
   GET_CONFIGURATIONS: `${API_URL}/configurations`,
   LOGIN: `${API_URL}/auth/login`,
   REGISTRATION: `${API_URL}/auth/register`,

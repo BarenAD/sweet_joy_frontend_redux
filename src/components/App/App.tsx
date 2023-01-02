@@ -1,23 +1,19 @@
-import React, {FC, useEffect} from "react";
+import React, {FC} from "react";
 import "./App.scss";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
 import {Navigate, Route, Routes} from "react-router";
 import Main from "../main/pages/Main/Main";
 import {ROUTES} from "../../config/routes";
 import ManagementMain from "../management/pages/Main/ManagementMain";
-import {changeAuthStatus, getAuthStatus, HandleChangeAuthStatusContext} from "../../redux/auth/authSlice";
+import {changeAuthStatus, getAuthStatus, HandleChangeAuthStatusContext} from "../../redux/slices/authSlice";
 import Login from "../common/Login/Login";
 import {
   addNotification,
   HandleAddNotificationContext,
   INotificationAction
-} from "../common/Notifications/notificationsSlice";
+} from "../../redux/slices/notificationsSlice";
 import Notifications from "../common/Notifications/Notifications";
 import Registration from "../common/Registration/Registration";
-import {getConfigurationsStatus, refreshConfigurations} from "../../redux/configurations/configurationsSlice";
-import {STATUS_CODES} from "http";
-import {STORE_STATUSES} from "../../config/storeStatuses";
-import Preloader from "../common/Preloader/Preloader";
 
 const App: FC = () => {
   const dispatch = useAppDispatch();

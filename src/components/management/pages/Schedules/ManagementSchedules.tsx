@@ -1,9 +1,9 @@
 import React, {FC, ReactElement, useContext, useEffect, useState} from "react";
-import {ISchedule} from "../../../App/appTypes";
+import {ISchedule} from "../../../../types";
 import {httpClient} from "../../../../utils/httpClient";
 import {ROUTES_API} from "../../../../config/routesApi";
-import {HandleAddNotificationContext} from "../../../common/Notifications/notificationsSlice";
-import {HandleChangeAuthStatusContext} from "../../../../redux/auth/authSlice";
+import {HandleAddNotificationContext} from "../../../../redux/slices/notificationsSlice";
+import {HandleChangeAuthStatusContext} from "../../../../redux/slices/authSlice";
 import Preloader from "../../../common/Preloader/Preloader";
 import CustomModal from "../../../common/CustomModal/CustomModal";
 import Schedule from "../../Schedule/Schedule";

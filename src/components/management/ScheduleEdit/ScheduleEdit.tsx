@@ -1,5 +1,5 @@
 import React, {FC, useState} from "react";
-import {ISchedule} from "../../App/appTypes";
+import {ISchedule} from "../../../types";
 import {Card, IconButton, TextField, Typography} from "@mui/material";
 import {RUS_WEEK_DAYS, WEEK_DAYS} from "../../../config/config";
 import {AddCircleOutline, DeleteOutline, EditOutlined} from "@mui/icons-material";

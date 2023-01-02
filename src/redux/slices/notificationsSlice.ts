@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {IRootState} from "../../../redux/store";
+import {IRootState} from "../store";
 import {createContext, ReactElement} from "react";
-import {FORMAT_DATE_NOTIFICATION, NOTIFICATIONS_MAX_COUNT} from "../../../config/config";
+import {FORMAT_DATE_NOTIFICATION, NOTIFICATIONS_MAX_COUNT} from "../../config/config";
 import {format} from "date-fns";
 
 export type INotificationAction = {

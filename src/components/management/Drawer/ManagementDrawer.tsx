@@ -4,7 +4,7 @@ import {Drawer} from "@mui/material";
 import {MANAGEMENT_PAGES} from "../pages/Main/ManagementMain";
 import "./ManagementDrawer.scss";
 import {useAppSelector} from "../../../redux/hooks";
-import {getProfile} from "../../../redux/auth/authSlice";
+import {getProfile} from "../../../redux/slices/authSlice";
 import {checkAllowByPermissions} from "../../../utils/utils";
 
 type IManagementDrawerProps = {

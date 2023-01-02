@@ -13,10 +13,10 @@ import {
 import {AddCircleOutline, Clear, DeleteOutline, EditOutlined} from "@mui/icons-material";
 import {httpClient} from "../../../../utils/httpClient";
 import {ROUTES_API} from "../../../../config/routesApi";
-import {HandleAddNotificationContext} from "../../../common/Notifications/notificationsSlice";
-import {HandleChangeAuthStatusContext} from "../../../../redux/auth/authSlice";
+import {HandleAddNotificationContext} from "../../../../redux/slices/notificationsSlice";
+import {HandleChangeAuthStatusContext} from "../../../../redux/slices/authSlice";
 import Preloader from "../../../common/Preloader/Preloader";
-import {ICategory} from "../../../App/appTypes";
+import {ICategory} from "../../../../types";
 import "./ManagementCategories.scss";
 import {MANAGEMENT_COUNT_CATEGORIES_ON_PAGE} from "../../../../config/config";
 import ConfirmDialog, {ISimpleDialogContentState} from "../../../common/ConfirmDialog/ConfirmDialog";
