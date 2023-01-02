@@ -81,7 +81,7 @@ export const productsSlice = createSlice({
           products: state.products.map((product) => {
             return {
               ...product,
-              categories: data[product.id].map((category: ICategory) => category.id) ?? [],
+              categories: data[product.id].map((category: IProductCategory) => category.category_id) ?? [],
             };
           }),
         };

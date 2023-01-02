@@ -8,15 +8,25 @@ import {ISchedule} from "../../../../types";
 import Map from "../../../common/Map/Map";
 import {MapOutlined} from "@mui/icons-material";
 import {RUS_WEEK_DAYS, WEEK_DAYS, WEEK_DAYS_ORDER} from "../../../../config/config";
-import {getShops} from "../../../../redux/slices/shopsSlice";
+import {getShopsStore} from "../../../../redux/slices/shopsSlice";
+import {STORE_STATUSES} from "../../../../config/storeStatuses";
+import Preloader from "../../../common/Preloader/Preloader";
 
 const Contacts: FC = () => {
   const [modalContent, setModalContent] = useState<ReactElement | null>(null);
-  const shops = useAppSelector(getShops);
+  const shops = useAppSelector(getShopsStore);
 
   const handlePreviewMap = (integratedMap: string) => {
     setModalContent(<Map map={integratedMap}/>);
   };
+
+  if (shops.status !== STORE_STATUSES.COMPLETE) {
+    return (
+      <div className='preloader-center'>
+        <Preloader size={50} />
+      </div>
+    );
+  }
 
   return (
     <div className='contacts-main-container'>
@@ -26,7 +36,7 @@ const Contacts: FC = () => {
         }}
         children={modalContent}
       />
-      {shops.map((shop) => {
+      {shops.shops.map((shop) => {
         return (
           <Card
             className='customize-card'

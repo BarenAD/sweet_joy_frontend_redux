@@ -54,12 +54,12 @@ export const httpClient = async <T,>({
     preparedHeaders.append('Authorization', `Bearer ${accessToken}`);
   }
 
-  if (preparedIsDebug && handleAddNotification) {
-    handleAddNotification({
-      type: 'info',
-      message: `[DEBUG] Запрос: ${url.replace(API_URL, '')}`,
-    });
-  }
+  // if (preparedIsDebug && handleAddNotification) {
+  //   handleAddNotification({
+  //     type: 'info',
+  //     message: `[DEBUG] Запрос: ${url.replace(API_URL, '')}`,
+  //   });
+  // }
 
   const timeBeforeFetch: number = new Date().getTime();
   return await fetch(url, {

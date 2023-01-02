@@ -19,17 +19,17 @@ import {SITE_CONFIG_IDENTIFIERS} from "../../../../config/siteConfigIdentifiers"
 import {getConfigurations} from "../../../../redux/slices/configurationsSlice";
 import ConfigManager from "../../../common/ConfigManager/ConfigManager";
 import {getProductsStore} from "../../../../redux/slices/productsSlice";
-import {getShops} from "../../../../redux/slices/shopsSlice";
-import {getCategories} from "../../../../redux/slices/categoriesSlice";
-import {getShopProducts} from "../../../../redux/slices/shopProductsSlice";
+import {getShopsStore} from "../../../../redux/slices/shopsSlice";
+import {getCategoriesStore} from "../../../../redux/slices/categoriesSlice";
+import {getShopProductsStore} from "../../../../redux/slices/shopProductsSlice";
 import Preloader from "../../../common/Preloader/Preloader";
 import {STORE_STATUSES} from "../../../../config/storeStatuses";
 
 const Products: FC = () => {
   const products = useAppSelector(getProductsStore);
-  const shops = useAppSelector(getShops);
-  const categories = useAppSelector(getCategories);
-  const shopProducts = useAppSelector(getShopProducts);
+  const shops = useAppSelector(getShopsStore);
+  const categories = useAppSelector(getCategoriesStore);
+  const shopProducts = useAppSelector(getShopProductsStore);
   const configurations = useAppSelector(getConfigurations);
   const [modalContent, setModalContent] = useState<ReactElement | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -58,7 +58,7 @@ const Products: FC = () => {
 
   const filteredProducts = useMemo<IProduct[]>(() => {
     return filterProducts(
-      shopProducts,
+      shopProducts.shopProducts,
       products.products,
       filtersState
     );
@@ -87,15 +87,15 @@ const Products: FC = () => {
         <Product
           key={`KEY_CARD_PRODUCT_${product.id}`}
           product={product}
-          handleOnClick={() => {handleOpenDetails(product)}}
+          handleOnClick={() => {handleOpenDetails(product.id)}}
         />
       );
     });
-  }, [filteredProducts, countCardsPerPage, currentPage]);
+  }, [products.status, filteredProducts, countCardsPerPage, currentPage]);
 
-  const handleOpenDetails = (product: IProduct) => {
-    actionOnTheSite({...METRIC_ACTIONS.PRODUCT_OPEN_DETAILS, payload: {product_id: product.id}});
-    setModalContent(<ProductDetailsModal product={product} />);
+  const handleOpenDetails = (productId: number) => {
+    actionOnTheSite({...METRIC_ACTIONS.PRODUCT_OPEN_DETAILS, payload: {product_id: productId}});
+    setModalContent(<ProductDetailsModal productId={productId} />);
   }
 
   const handleChangePage = (event: object, newPage: number) => {
@@ -121,12 +121,15 @@ const Products: FC = () => {
       />
       <div>
         <Filters
-          shops={shops}
-          categories={categories}
+          shops={shops.shops}
+          categories={categories.categories}
           currentState={filtersState}
           handleOnChange={setFiltersState}
           disabled={{
             reverseShopId: 'hide',
+            filterByShop: shops.status === STORE_STATUSES.COMPLETE && shopProducts.status === STORE_STATUSES.COMPLETE ? undefined : 'disabled',
+            filterByCategories: categories.status === STORE_STATUSES.COMPLETE ? undefined : 'disabled',
+            allOrNothing: categories.status === STORE_STATUSES.COMPLETE ? undefined : 'disabled',
           }}
         />
         {!!configurations[SITE_CONFIG_IDENTIFIERS.DEMO_MODE]?.value &&

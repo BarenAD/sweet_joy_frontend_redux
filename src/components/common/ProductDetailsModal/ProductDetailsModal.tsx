@@ -1,22 +1,33 @@
-import {IProduct, IShopProduct} from "../../../types";
-import React, {FC, ReactElement, useState} from "react";
+import {IShopProduct} from "../../../types";
+import React, {FC, ReactElement, useMemo, useState} from "react";
 import {useAppSelector} from "../../../redux/hooks";
 import "./ProductDetailsModal.scss";
 import ShopProduct from "../ShopProduct/ShopProduct";
 import CustomModal from "../CustomModal/CustomModal";
-import {getShopProducts} from "../../../redux/slices/shopProductsSlice";
-import {getCategories} from "../../../redux/slices/categoriesSlice";
+import {getShopProductsStore} from "../../../redux/slices/shopProductsSlice";
+import {getCategoriesStore} from "../../../redux/slices/categoriesSlice";
+import {STORE_STATUSES} from "../../../config/storeStatuses";
+import Preloader from "../Preloader/Preloader";
+import {getProductsStore} from "../../../redux/slices/productsSlice";
 
 type TypeProps = {
-  product: IProduct;
+  productId: number;
 };
 
 const ProductDetailsModal: FC<TypeProps> = ({
-  product,
+  productId,
 }) => {
-  const shopProducts: IShopProduct[] = useAppSelector(getShopProducts)[product.id];
-  const categories = useAppSelector(getCategories);
+  const products = useAppSelector(getProductsStore);
+  const shopProducts = useAppSelector(getShopProductsStore);
+  const categories = useAppSelector(getCategoriesStore);
   const [modalContent, setModalContent] = useState<ReactElement | null>(null);
+  const product = useMemo(() => {
+    return products.products.find((findItem) => findItem.id === productId);
+  }, [productId, products]);
+
+  if (!product) {
+    return null;
+  }
 
   return (
     <div className="product-details-container">
@@ -76,10 +87,10 @@ const ProductDetailsModal: FC<TypeProps> = ({
           <span>
             Категории товара:
           </span>
-          {product.categories.length && categories.length &&
-            <div className="categories-container">
-              {product.categories.map((categoryId: number) => {
-                const category = categories.find(findCategory => findCategory.id === categoryId);
+          <div className="categories-container">
+            {products.status === STORE_STATUSES.COMPLETE && categories.status === STORE_STATUSES.COMPLETE ?
+              product.categories.map((categoryId: number) => {
+                const category = categories.categories.find(findCategory => findCategory.id === categoryId);
                 if (!category) {
                   return null;
                 }
@@ -89,25 +100,29 @@ const ProductDetailsModal: FC<TypeProps> = ({
                     key={`PRODUCT_${product.id}_DETAILS_MODAL_CATEGORY_${category.id}`}
                     title={category.name}
                   >
-                    {category.name}
-                  </span>
+                {category.name}
+              </span>
                 );
-              })}
-            </div>
-          }
+              })
+              :
+              <Preloader size={40} />
+            }
+          </div>
         </div>
       </div>
-      {shopProducts &&
-        <div className="shop-products-container">
-          {shopProducts.map((shopProduct: IShopProduct) => (
+      <div className="shop-products-container">
+        {shopProducts.status === STORE_STATUSES.COMPLETE ?
+          shopProducts.shopProducts[product.id]?.map((shopProduct: IShopProduct) => (
             <ShopProduct
               key={`KEY_PRODUCT_${product.id}_DETAILS_SHOP_PRODUCT_${shopProduct.id}`}
               shopProduct={shopProduct}
               handlePreviewMap={setModalContent}
             />
-          ))}
-        </div>
-      }
+          ))
+          :
+          <Preloader size={40} />
+        }
+      </div>
     </div>
   );
 }
