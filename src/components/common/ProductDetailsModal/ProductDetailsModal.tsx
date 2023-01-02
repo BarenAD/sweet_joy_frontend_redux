@@ -87,9 +87,9 @@ const ProductDetailsModal: FC<TypeProps> = ({
           <span>
             Категории товара:
           </span>
-          <div className="categories-container">
-            {products.status === STORE_STATUSES.COMPLETE && categories.status === STORE_STATUSES.COMPLETE ?
-              product.categories.map((categoryId: number) => {
+          {products.status === STORE_STATUSES.COMPLETE && categories.status === STORE_STATUSES.COMPLETE ?
+            <div className="categories-container">
+              {product.categories.map((categoryId: number) => {
                 const category = categories.categories.find(findCategory => findCategory.id === categoryId);
                 if (!category) {
                   return null;
@@ -103,11 +103,13 @@ const ProductDetailsModal: FC<TypeProps> = ({
                 {category.name}
               </span>
                 );
-              })
-              :
+              })}
+            </div>
+            :
+            <div className='preloader-row-center'>
               <Preloader size={40} />
-            }
-          </div>
+            </div>
+          }
         </div>
       </div>
       <div className="shop-products-container">
