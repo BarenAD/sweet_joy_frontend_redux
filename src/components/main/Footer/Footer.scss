@@ -13,6 +13,10 @@
   background: #E0E0E0;
   overflow: hidden;
 
+  a, a:visited {
+    color: rgb(0, 0, 238);
+  }
+
   .main-center-content-container {
     height: 100%;
     flex: 1;
