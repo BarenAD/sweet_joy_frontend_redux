@@ -75,6 +75,7 @@ const UserRolesEdit: FC<IUserRolesEditProps> = ({
               <MenuItem
                 key={`KEY_EDIT_USER_SELECT_ROLE_ITEM_${role.id}`}
                 value={role.id}
+                title={role.description}
               >
                 <Typography>
                   {role.name}
