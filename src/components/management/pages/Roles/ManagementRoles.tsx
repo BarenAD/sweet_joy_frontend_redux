@@ -32,7 +32,7 @@ const ManagementRoles: FC = () => {
   const [dialogContent, setDialogContent] = useState<null | ISimpleDialogContentState>(null);
   const [roles, setRoles] = useState<IRole[]>([]);
   const [permissions, setPermissions] = useState<IPermission[]>([]);
-  const [newRole, setNewRole] = useState<IRole>({id: 0, name: ''});
+  const [newRole, setNewRole] = useState<IRole>({id: 0, name: '', description: ''});
   const [changingRole, setChangingRole] = useState<IRole | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [countPages, setCountPages] = useState<number>(0);
@@ -68,6 +68,11 @@ const ManagementRoles: FC = () => {
                 <TableCell component="th" scope="row">
                   <Typography>
                     {role.name}
+                  </Typography>
+                </TableCell>
+                <TableCell component="th" scope="row">
+                  <Typography>
+                    {role.description}
                   </Typography>
                 </TableCell>
                 <TableCell component="th" scope="row">
@@ -186,7 +191,7 @@ const ManagementRoles: FC = () => {
               response.data,
               ...roles
             ]);
-            setNewRole({id: 0, name: ''});
+            setNewRole({id: 0, name: '', description: ''});
             break;
           case "PUT":
             setRoles(
@@ -270,6 +275,27 @@ const ManagementRoles: FC = () => {
             }}
           />
         </div>
+        <div className='part-container'>
+          <TextField
+            style={{width: '100%'}}
+            label="описание"
+            variant="outlined"
+            value={changingRole?.description ?? newRole.description}
+            disabled={isLoading}
+            onChange={(event) => {
+              changingRole ?
+                setChangingRole({
+                  ...changingRole,
+                  description: event.target.value,
+                })
+                :
+                setNewRole({
+                  ...newRole,
+                  description: event.target.value,
+                });
+            }}
+          />
+        </div>
         {isLoading && (changingRole || newRole.name) ?
           <div className='part-container part-container-center'>
             <Preloader size={30} />
@@ -323,6 +349,7 @@ const ManagementRoles: FC = () => {
             <TableHead>
               <TableRow>
                 <TableCell>Название роли</TableCell>
+                <TableCell>Описание</TableCell>
                 <TableCell>Действие</TableCell>
               </TableRow>
             </TableHead>
