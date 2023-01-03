@@ -1,0 +1,47 @@
+@import "src/config/variables";
+
+.root-container {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.flexbox-center {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.preloader-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.product-category-container {
+  display: block;
+  width: $categoryContainerWidth;
+  max-width: 100%;
+  box-sizing: border-box;
+  font-weight: bold;
+  padding: 7px 5px;
+  margin: $categoryContainerMargin;
+  border: 1px solid rgba(0,0,0,0.4);
+  border-radius: 10px;
+  background: rgba(0,0,0,0.1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis !important;
+}
+
+.product-category-container-delete {
+  &:hover {
+    background: rgba(255,0,0,0.2);;
+    cursor: pointer;
+  }
+}

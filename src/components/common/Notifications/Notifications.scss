@@ -1,0 +1,25 @@
+.notifications-content-container {
+  .notification-container {
+    position: relative;
+    width: 85vw;
+    max-width: 400px;
+    margin-top: 7px;
+    height: max-content;
+    max-height: 200px;
+
+    .notification-message-container {
+      width: 100%;
+      word-wrap: normal;
+      overflow-wrap: anywhere;
+      overflow: hidden;
+    }
+
+    .notification-date-container {
+      position: absolute;
+      bottom: 0;
+      right: 5px;
+      font-size: 12px;
+      color: #8b8b8b;
+    }
+  }
+}

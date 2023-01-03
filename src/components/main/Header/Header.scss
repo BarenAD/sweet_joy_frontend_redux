@@ -1,0 +1,65 @@
+@import "../../../config/variables";
+
+.top-bar-main-container {
+  box-sizing: border-box;
+  position: fixed;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  height: $headerHeight;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  box-shadow: 0 1px 24px 0 rgba(0,0,0,0.14);
+  background: white;
+  overflow: hidden;
+  padding: 0 30px;
+
+  & a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    min-height: $headerHeightElement;
+    text-align: center;
+
+    &:visited {
+      color: $colorTextBlack;
+    }
+  }
+
+  .link-container {
+    text-decoration: none;
+
+    button {
+      color: $colorTextBlack;
+    }
+  }
+
+  .container-advantages {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: $headerHeightElement;
+    flex: 1;
+  }
+}
+
+@media(max-width: $mediaStep2) {
+  .top-bar-main-container {
+    .container-advantages {
+      display: none;
+    }
+  }
+}
+
+@media(max-width: $mediaStep3) {
+  .top-bar-main-container {
+    position: relative;
+    flex-direction: column;
+    height: max-content;
+    margin-bottom: 30px;
+  }
+}

@@ -1,0 +1,36 @@
+@import "../../../../config/variables";
+@import "../../../../assets/commonStyles";
+
+.main-container {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding-top: $headerHeight;
+  padding-bottom: $footerHeight;
+  overflow: hidden;
+
+  .content-container {
+    width: 100%;
+    height: 100%;
+    display: block;
+    overflow: auto;
+
+    .preloader-container {
+      @extend .flexbox-center;
+    }
+  }
+}
+
+@media(max-width: $mediaStep3) {
+  .main-container {
+    padding-top: 0;
+    padding-bottom: 0;
+    overflow: scroll;
+
+    .content-container {
+      height: max-content;
+      overflow: hidden;
+    }
+  }
+}

@@ -1,0 +1,5 @@
+@import "src/assets/commonStyles";
+
+.App {
+  @extend .root-container;
+}

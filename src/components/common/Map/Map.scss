@@ -1,0 +1,17 @@
+@import "src/assets/commonStyles";
+
+.map-container {
+  @extend .flexbox-center;
+  position: relative;
+
+  .preloader-container {
+    position: absolute;
+    z-index: 1;
+  }
+
+  .content {
+    @extend .flexbox-center;
+    position: relative;
+    z-index: 2;
+  }
+}

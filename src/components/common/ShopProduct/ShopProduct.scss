@@ -1,0 +1,38 @@
+@import "src/config/variables";
+
+.shop-product-container {
+  width: 250px;
+  min-width: 250px;
+  height: 200px;
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  margin: 10px;
+  padding: 10px;
+  position: relative;
+
+  .container-preview-map {
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    span {
+      margin-top: 0;
+    }
+  }
+
+  span {
+    margin-top: 10px;
+
+    b {
+      margin-left: 7px;
+    }
+  }
+
+  @media (max-width: $mediaStep3) {
+    min-width: 100px;
+    width: 90%;
+  }
+}

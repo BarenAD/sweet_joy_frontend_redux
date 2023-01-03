@@ -1,63 +1,57 @@
-import React, {useEffect} from 'react';
-import logo from '../../logo.svg';
-import './App.css';
-import {useAppDispatch} from "../../redux/hooks";
-import {refreshStore} from "./appSlice";
+import React, {FC} from "react";
+import "./App.scss";
+import {useAppDispatch, useAppSelector} from "../../redux/hooks";
+import {Navigate, Route, Routes} from "react-router";
+import Main from "../main/pages/Main/Main";
+import {ROUTES} from "../../config/routes";
+import ManagementMain from "../management/pages/Main/ManagementMain";
+import {changeAuthStatus, getAuthStatus, HandleChangeAuthStatusContext} from "../../redux/slices/authSlice";
+import Login from "../common/Login/Login";
+import {
+  addNotification,
+  HandleAddNotificationContext,
+  INotificationAction
+} from "../../redux/slices/notificationsSlice";
+import Notifications from "../common/Notifications/Notifications";
+import Registration from "../common/Registration/Registration";
 
-function App() {
+const App: FC = () => {
   const dispatch = useAppDispatch();
+  const isAuth = useAppSelector(getAuthStatus);
 
-  useEffect(() => {
-    dispatch(refreshStore());
-  }, []);
+  const handleAddNotification = (notification: INotificationAction) => {
+    dispatch(addNotification(notification));
+  };
+  const handleChangeAuthStatus = (newStatus: boolean) => {
+    dispatch(changeAuthStatus(newStatus));
+  };
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
+    <HandleChangeAuthStatusContext.Provider value={handleChangeAuthStatus}>
+      <HandleAddNotificationContext.Provider value={handleAddNotification}>
+        <Notifications />
+        <div className='App'>
+          <Routes>
+            <Route
+              path={ROUTES.REGISTRATION.path}
+              element={isAuth ? <Navigate to={ROUTES.MANAGEMENT.link} replace /> : <Registration />}
+            />
+            <Route
+              path={ROUTES.AUTH.path}
+              element={isAuth ? <Navigate to={ROUTES.MANAGEMENT.link} replace /> : <Login />}
+            />
+            <Route
+              path={ROUTES.MANAGEMENT.path}
+              element={isAuth ? <ManagementMain /> : <Navigate to={ROUTES.AUTH.link} replace />}
+            />
+            <Route
+              path={ROUTES.MAIN.path}
+              element={<Main />}
+            />
+          </Routes>
+        </div>
+      </HandleAddNotificationContext.Provider>
+    </HandleChangeAuthStatusContext.Provider>
   );
 }
 

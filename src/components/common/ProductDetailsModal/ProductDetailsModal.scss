@@ -1,0 +1,107 @@
+@import "src/config/variables";
+@import "src/assets/commonStyles";
+
+.product-details-container {
+  width: max-content;
+  height: max-content;
+  max-width: 100%;
+  overflow: hidden;
+  background: white;
+
+  .preloader-row-center {
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .details-container {
+    max-width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+
+    @media (max-width: $mediaStep2) {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .image-container {
+      width: 700px;
+      max-height: 700px;
+      max-width: 100%;
+      overflow: hidden;
+      border-radius: 10px;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      @media (max-width: $mediaStep1) {
+        width: 400px;
+        max-height: 400px;
+      }
+    }
+
+    .description-container {
+      box-sizing: border-box;
+      padding: 20px;
+      max-width: 100%;
+      overflow: hidden;
+
+      .head {
+        font-weight: bold;
+        font-size: 24px;
+      }
+
+      span {
+        display: block;
+        font-size: 16px;
+        margin-top: 10px;
+      }
+
+      .categories-container {
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        height: max-content;
+        width: $categoryContainerWidth*3+$categoryContainerMargin*6+20;
+        max-width: 100%;
+        max-height: 200px;
+        min-height: 50px;
+        padding: 5px;
+        overflow-y: auto;
+        margin: 20px 20px 20px 0;
+        border: 1px solid rgba(0,0,0,0.4);
+        border-radius: 10px;
+      }
+    }
+  }
+
+  .shop-products-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 20px;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: $mediaStep3) {
+    padding: 0;
+
+    .shop-products-container {
+      flex-direction: column;
+      padding: 0;
+    }
+  }
+}
