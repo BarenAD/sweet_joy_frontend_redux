@@ -31,9 +31,8 @@
   font-weight: bold;
   padding: 7px 5px;
   margin: $categoryContainerMargin;
-  border: 1px solid rgba(0,0,0,0.4);
   border-radius: 10px;
-  background: rgba(0,0,0,0.1);
+  background: rgba(0,0,0,.05);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis !important;
