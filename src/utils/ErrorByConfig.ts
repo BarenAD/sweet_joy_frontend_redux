@@ -21,13 +21,13 @@ export default class ErrorByConfig extends Error {
   ) {
     super(errorConfig.message);
     this.body = errorConfig;
-    if (throwable && throwable.message) {
+    if (throwable?.message) {
       this.throwableMessage = throwable.message;
     }
-    if (throwable && throwable.name) {
+    if (throwable?.name) {
       this.name = throwable.name;
     }
-    if (throwable && throwable.stack) {
+    if (throwable?.stack) {
       this.stack = throwable.stack;
     }
     this.body.jsxError = payload ? getJSXByError(errorConfig.id, payload) : undefined;
