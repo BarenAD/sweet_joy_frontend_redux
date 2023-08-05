@@ -36,7 +36,7 @@
       max-height: 700px;
       max-width: 100%;
       overflow: hidden;
-      border-radius: 0 10px 10px 0;
+      border-radius: 4px;
 
       img {
         width: 100%;
@@ -74,7 +74,7 @@
         flex-wrap: wrap;
         justify-content: space-evenly;
         height: max-content;
-        width: $categoryContainerWidth*4+$categoryContainerMargin*8+20;
+        width: $categoryContainerWidth*4+$categoryContainerMargin*8+20+15;
         max-width: 100%;
         max-height: 200px;
         min-height: 50px;

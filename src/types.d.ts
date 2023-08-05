@@ -23,10 +23,10 @@ export type IProduct = {
   image: string;
   image_mini: string;
   name: string;
-  composition: string;
-  manufacturer: string;
-  description: string;
-  product_unit: string;
+  composition: string | null;
+  manufacturer: string | null;
+  description: string | null;
+  product_unit: string | null;
   categories: number[];
 };
 
